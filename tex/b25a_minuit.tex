@@ -1,0 +1,478 @@
+\section{IMinuit}
+\label{S25a}
+
+Minuit --- программа численной минимизации функций многих переменных,
+широко применяемая в физике элементарных частиц. Есть два питонских
+интерфейса, PyMinuit и IMinuit (он особенно удобен в ipython).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{from} \PY{n+nn}{iminuit} \PY{k}{import} \PY{n}{Minuit}
+        \PY{o}{\PYZpc{}}\PY{k}{pylab} inline
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Populating the interactive namespace from numpy and matplotlib
+
+    \end{Verbatim}
+
+    \subsection{Простой
+пример}\label{ux43fux440ux43eux441ux442ux43eux439-ux43fux440ux438ux43cux435ux440}
+
+Определим квадратичную функцию от двух параметров.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{)}\PY{p}{:}
+            \PY{k}{return} \PY{l+m+mi}{10}\PY{o}{*}\PY{n}{a}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{l+m+mi}{10}\PY{o}{*}\PY{n}{b}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{l+m+mi}{16}\PY{o}{*}\PY{n}{a}\PY{o}{*}\PY{n}{b}\PY{o}{+}\PY{l+m+mi}{12}\PY{o}{*}\PY{n}{a}\PY{o}{\PYZhy{}}\PY{l+m+mi}{24}\PY{o}{*}\PY{n}{b}
+\end{Verbatim}
+
+
+    Создадим объект класса \texttt{Minuit}. \texttt{a} и \texttt{b} --- грубые
+догадки, около чего надо искать минимум; \texttt{error\_a} и
+\texttt{error\_b} --- оценки точности этих догадок (в начале минимизации
+программа будет делать шаги порядка этих величин, потом они будут
+уменьшаться). Пределы изменения задавать не обязательно. Валичина
+\texttt{errordef} показывает, насколько функция должна быть выше своего
+минимума, чтобы это считалось отклонением на одну сигму; поскольку
+минимизируемая функция --- это, как правило, \(\chi^2\), значение 1 по
+умолчанию вполне годится.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{m}\PY{o}{=}\PY{n}{Minuit}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{n}{a}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{error\PYZus{}a}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{limit\PYZus{}a}\PY{o}{=}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+                 \PY{n}{b}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{error\PYZus{}b}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{limit\PYZus{}b}\PY{o}{=}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/usr/lib64/python3.6/site-packages/ipykernel\_launcher.py:2: InitialParamWarning: errordef is not given. Default to 1.
+  
+
+    \end{Verbatim}
+
+    Наиболее популярный метод минимизации --- \texttt{migrad}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{m}\PY{o}{.}\PY{n}{migrad}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} (\{'fval': -17.999997281186666, 'edm': 2.7187527367825896e-06, 'nfcn': 36, 'up': 1.0, 'is\_valid': True, 'has\_valid\_parameters': True, 'has\_accurate\_covar': True, 'has\_posdef\_covar': True, 'has\_made\_posdef\_covar': False, 'hesse\_failed': False, 'has\_covariance': True, 'is\_above\_max\_edm': False, 'has\_reached\_call\_limit': False\},
+         [\{'number': 0, 'name': 'a', 'value': 0.9998227792225478, 'error': 0.5267876810263843, 'is\_const': False, 'is\_fixed': False, 'has\_limits': True, 'has\_lower\_limit': True, 'has\_upper\_limit': True, 'lower\_limit': -10.0, 'upper\_limit': 10.0\},
+          \{'number': 1, 'name': 'b', 'value': 1.9993477581584944, 'error': 0.5267762744877214, 'is\_const': False, 'is\_fixed': False, 'has\_limits': True, 'has\_lower\_limit': True, 'has\_upper\_limit': True, 'lower\_limit': -10.0, 'upper\_limit': 10.0\}])
+\end{Verbatim}
+            
+    Значения параметров.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{m}\PY{o}{.}\PY{n}{values}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} \{'a': 0.9998227792225478, 'b': 1.9993477581584944\}
+\end{Verbatim}
+            
+    Значение функции в точке минимума.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{m}\PY{o}{.}\PY{n}{fval}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} -17.999997281186666
+\end{Verbatim}
+            
+    Ошибки параметров.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{m}\PY{o}{.}\PY{n}{errors}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} \{'a': 0.5267876810263843, 'b': 0.5267762744877214\}
+\end{Verbatim}
+            
+    Если, скажем, \(a\) --- наш окончательный физический результат, то мы
+напишем в статье \(a=1\pm0.5\). На самом деле у нас есть больше
+информации, поскольку ошибки \(a\) и \(b\) сильно скоррелированы.
+Матрица корреляции ошибок:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{m}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} ((0.27776493841711364, 0.22220727646667665),
+         (0.22220727646667665, 0.27776101882046583))
+\end{Verbatim}
+            
+    Минимизация квадратичной формы сводится к решению системы линейных
+уравнений, а матрица корреляции ошибок --- обратная матрица этой системы.
+В таком простом случае не имеет смысла использовать инструмент
+минимизации произвольных функций, такой, как Minuit.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{M}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mf}{10.}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mf}{8.}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{8.}\PY{p}{,}\PY{l+m+mf}{10.}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+        \PY{n}{M}\PY{o}{=}\PY{n}{inv}\PY{p}{(}\PY{n}{M}\PY{p}{)}
+        \PY{n}{M}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} array([[ 0.27777778,  0.22222222],
+               [ 0.22222222,  0.27777778]])
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{M}\PY{n+nd}{@array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{6}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{12}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}10}]:} array([[ 1.],
+                [ 2.]])
+\end{Verbatim}
+            
+    Нарисуем контуры, соответствующие отклонению на 1, 2 и 3 сигмы от
+оптимальной точки.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{m}\PY{o}{.}\PY{n}{draw\PYZus{}mncontour}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{nsigma}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} <matplotlib.contour.QuadContourSet at 0x7fb4cc2e0908>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25a_minuit_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    То же в виде цветов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{g}\PY{p}{,}\PY{n}{r}\PY{o}{=}\PY{n}{m}\PY{o}{.}\PY{n}{mncontour\PYZus{}grid}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{nsigma}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+         \PY{n}{pcolormesh}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{g}\PY{p}{)}
+         \PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} <matplotlib.colorbar.Colorbar at 0x7fb4cc204160>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25a_minuit_2.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Дайте мне 3 параметра, и я профитирую слона. С 4 параметрами
+он будет махать
+хоботом.}\label{ux434ux430ux439ux442ux435-ux43cux43dux435-3-ux43fux430ux440ux430ux43cux435ux442ux440ux430-ux438-ux44f-ux43fux440ux43eux444ux438ux442ux438ux440ux443ux44e-ux441ux43bux43eux43dux430.-ux441-4-ux43fux430ux440ux430ux43cux435ux442ux440ux430ux43cux438-ux43eux43d-ux431ux443ux434ux435ux442-ux43cux430ux445ux430ux442ux44c-ux445ux43eux431ux43eux442ux43eux43c.}
+
+Пусть у нас есть экспериментальные данные, и мы хотим профитировать их
+прямой.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{k}{def} \PY{n+nf}{fit}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{a}\PY{o}{*}\PY{n}{x}\PY{o}{+}\PY{n}{b}
+\end{Verbatim}
+
+
+    Данные не настоящие, а сгенерированные. Все имеют ошибки 0.1.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}
+         \PY{n}{dy}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{o}{*}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{11}\PY{p}{)}
+         \PY{n}{y}\PY{o}{=}\PY{n}{x}\PY{o}{+}\PY{n}{dy}\PY{o}{*}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{l+m+mi}{11}\PY{p}{)}
+\end{Verbatim}
+
+
+    Функция \(\chi^2\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{k}{def} \PY{n+nf}{chi2}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{)}\PY{p}{:}
+             \PY{k}{global} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{dy}
+             \PY{k}{return} \PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{n}{fit}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{n}{dy}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    Минимизируем.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{m}\PY{o}{=}\PY{n}{Minuit}\PY{p}{(}\PY{n}{chi2}\PY{p}{,}\PY{n}{a}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{b}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{error\PYZus{}a}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{error\PYZus{}b}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/usr/lib64/python3.6/site-packages/ipykernel\_launcher.py:1: InitialParamWarning: errordef is not given. Default to 1.
+  """Entry point for launching an IPython kernel.
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{m}\PY{o}{.}\PY{n}{migrad}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} (\{'fval': 6.64280758124837, 'edm': 6.94531024194041e-23, 'nfcn': 32, 'up': 1.0, 'is\_valid': True, 'has\_valid\_parameters': True, 'has\_accurate\_covar': True, 'has\_posdef\_covar': True, 'has\_made\_posdef\_covar': False, 'hesse\_failed': False, 'has\_covariance': True, 'is\_above\_max\_edm': False, 'has\_reached\_call\_limit': False\},
+          [\{'number': 0, 'name': 'a', 'value': 0.947405656327807, 'error': 0.0953462580730457, 'is\_const': False, 'is\_fixed': False, 'has\_limits': False, 'has\_lower\_limit': False, 'has\_upper\_limit': False, 'lower\_limit': 0.0, 'upper\_limit': 0.0\},
+           \{'number': 1, 'name': 'b', 'value': 0.02158642903770963, 'error': 0.05640760704592273, 'is\_const': False, 'is\_fixed': False, 'has\_limits': False, 'has\_lower\_limit': False, 'has\_upper\_limit': False, 'lower\_limit': 0.0, 'upper\_limit': 0.0\}])
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{m}\PY{o}{.}\PY{n}{values}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:} \{'a': 0.947405656327807, 'b': 0.02158642903770963\}
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{m}\PY{o}{.}\PY{n}{fval}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} 6.64280758124837
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{m}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} ((0.009090908928531831, -0.004545454457026877),
+          (-0.004545454457026877, 0.0031818181326472316))
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{m}\PY{o}{.}\PY{n}{draw\PYZus{}mncontour}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{nsigma}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}21}]:} <matplotlib.contour.QuadContourSet at 0x7fb4cc0ab860>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25a_minuit_3.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{g}\PY{p}{,}\PY{n}{r}\PY{o}{=}\PY{n}{m}\PY{o}{.}\PY{n}{mncontour\PYZus{}grid}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{nsigma}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+         \PY{n}{pcolormesh}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{g}\PY{p}{)}
+         \PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}22}]:} <matplotlib.colorbar.Colorbar at 0x7fb4cc127da0>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25a_minuit_4.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Нарисуем на одном графике экспериментальные точки, наш фит (сплошная
+линия) и истинную теоретическую кривую (пунктир).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{errorbar}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{dy}\PY{p}{,}\PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{xt}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{xt}\PY{p}{,}\PY{n}{fit}\PY{p}{(}\PY{n}{m}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{m}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{xt}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{xt}\PY{p}{,}\PY{n}{fit}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{xt}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}23}]:} [<matplotlib.lines.Line2D at 0x7fb4cbf076a0>]
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25a_minuit_5.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Когда фитирующая функция есть линейная комбинация каких-то фиксированных
+функций с неизвестными коэффициентами, минимизация \(\chi^2\) сводится к
+решению системы линейных уравнений. Нет надобности использовать Minuit.
+
+\subsection{Резонанс без
+фона}\label{ux440ux435ux437ux43eux43dux430ux43dux441-ux431ux435ux437-ux444ux43eux43dux430}
+
+Пусть теперь наша фитирующая функция --- Брейт-Вигнеровский резонанс (без
+фона), с двумя параметрами --- положением и шириной (лучше бы ввести
+третий --- высоту, но я не стал этого делать для простоты). Теперь
+\(\chi^2\) --- сложная нелинейная функция параметров.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{k}{def} \PY{n+nf}{fit}\PY{p}{(}\PY{n}{x0}\PY{p}{,}\PY{n}{Gamma}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{p}{(}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{x0}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{Gamma}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+
+    Вот наши экспериментальные данные (с ошибками 0.1).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}
+         \PY{n}{dy}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{o}{*}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{21}\PY{p}{)}
+         \PY{n}{y}\PY{o}{=}\PY{n}{fit}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{dy}\PY{o}{*}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{l+m+mi}{21}\PY{p}{)}
+\end{Verbatim}
+
+
+    Минимизируем \(\chi^2\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{k}{def} \PY{n+nf}{chi2}\PY{p}{(}\PY{n}{x0}\PY{p}{,}\PY{n}{Gamma}\PY{p}{)}\PY{p}{:}
+             \PY{k}{global} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{dy}
+             \PY{k}{return} \PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{n}{fit}\PY{p}{(}\PY{n}{x0}\PY{p}{,}\PY{n}{Gamma}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{n}{dy}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{m}\PY{o}{=}\PY{n}{Minuit}\PY{p}{(}\PY{n}{chi2}\PY{p}{,}\PY{n}{x0}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{error\PYZus{}x0}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{Gamma}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{error\PYZus{}Gamma}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/usr/lib64/python3.6/site-packages/ipykernel\_launcher.py:1: InitialParamWarning: errordef is not given. Default to 1.
+  """Entry point for launching an IPython kernel.
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{m}\PY{o}{.}\PY{n}{migrad}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}23}]:} (\{'fval': 25.075929198875393, 'edm': 8.303934975885262e-07, 'nfcn': 31, 'up': 1.0, 'is\_valid': True, 'has\_valid\_parameters': True, 'has\_accurate\_covar': True, 'has\_posdef\_covar': True, 'has\_made\_posdef\_covar': False, 'hesse\_failed': False, 'has\_covariance': True, 'is\_above\_max\_edm': False, 'has\_reached\_call\_limit': False\},
+          [\{'number': 0, 'name': 'x0', 'value': -0.0934806358702056, 'error': 0.06663336825820534, 'is\_const': False, 'is\_fixed': False, 'has\_limits': False, 'has\_lower\_limit': False, 'has\_upper\_limit': False, 'lower\_limit': 0.0, 'upper\_limit': 0.0\},
+           \{'number': 1, 'name': 'Gamma', 'value': 0.9965125441764586, 'error': 0.02701915613581351, 'is\_const': False, 'is\_fixed': False, 'has\_limits': False, 'has\_lower\_limit': False, 'has\_upper\_limit': False, 'lower\_limit': 0.0, 'upper\_limit': 0.0\}])
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{m}\PY{o}{.}\PY{n}{values}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}24}]:} \{'Gamma': 0.9965125441764586, 'x0': -0.0934806358702056\}
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{m}\PY{o}{.}\PY{n}{fval}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}25}]:} 25.075929198875393
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{m}\PY{o}{.}\PY{n}{errors}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}26}]:} \{'Gamma': 0.02701915613581351, 'x0': 0.06663336825820534\}
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{m}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} ((0.0044400057654336075, -6.554599873966115e-05),
+          (-6.554599873966115e-05, 0.0007300347982914688))
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{m}\PY{o}{.}\PY{n}{draw\PYZus{}mncontour}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x0}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gamma}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{nsigma}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}33}]:} <matplotlib.contour.QuadContourSet at 0x7fb4cbe2b4e0>)
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25a_minuit_6.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{x0}\PY{p}{,}\PY{n}{Gamma}\PY{p}{,}\PY{n}{g}\PY{p}{,}\PY{n}{r}\PY{o}{=}\PY{n}{m}\PY{o}{.}\PY{n}{mncontour\PYZus{}grid}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x0}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gamma}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{nsigma}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+         \PY{n}{pcolormesh}\PY{p}{(}\PY{n}{x0}\PY{p}{,}\PY{n}{Gamma}\PY{p}{,}\PY{n}{g}\PY{p}{)}
+         \PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}34}]:} <matplotlib.colorbar.Colorbar at 0x7fb4cbf0da90>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25a_minuit_7.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Теперь контуры постоянной высоты \(\chi^2\) --- уже не симметричные
+эллипсы с центром в оптимальной точке, а какие-то сложные кривые. Ошибки
+положения и ширины резонанса довольно-таки независимы.
+
+Нарисуем на одном графике экспериментальные точки, наш фит (сплошная
+линия) и истинную теоретическую кривую (пунктир).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{n}{errorbar}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{dy}\PY{p}{,}\PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{xt}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{3.5}\PY{p}{,}\PY{l+m+mf}{3.5}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{xt}\PY{p}{,}\PY{n}{fit}\PY{p}{(}\PY{n}{m}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x0}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{m}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gamma}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{xt}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{xt}\PY{p}{,}\PY{n}{fit}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{xt}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}35}]:} [<matplotlib.lines.Line2D at 0x7fb4cbc7b828>]
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25a_minuit_8.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
