@@ -1,0 +1,825 @@
+\section{pandas}
+\label{pandas}
+
+Пакет для статистической обработки данных, по функциональности близкий к
+R.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\end{Verbatim}
+
+\subsection{Series}
+\label{pandas1}
+
+Одномерный набор данных. Отсутствующий данные записываются как
+\texttt{np.nan} (в этот день термометр сломался или метеоролог был
+пьян); они не участвуют в вычислении средних, среднеквадратичных
+отклонений и т.д.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{l}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{]}
+        \PY{n}{s}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+        \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} 0    1.0
+        1    3.0
+        2    5.0
+        3    NaN
+        4    6.0
+        5    8.0
+        dtype: float64
+\end{Verbatim}
+        
+    Основная информация о наборе данных: среднее, среднеквадратичное
+отклонение, минимум, максимум, медиана (которая отличается от среднего
+для несимметричных распределений).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{s}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} count    5.000000
+        mean     4.600000
+        std      2.701851
+        min      1.000000
+        25\%      3.000000
+        50\%      5.000000
+        75\%      6.000000
+        max      8.000000
+        dtype: float64
+\end{Verbatim}
+        
+    Обычная индексация.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{s}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} 5.0
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{s}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{7}
+        \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} 0    1.0
+        1    3.0
+        2    7.0
+        3    NaN
+        4    6.0
+        5    8.0
+        dtype: float64
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{s}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} 2    7.0
+        3    NaN
+        4    6.0
+        dtype: float64
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{s1}\PY{o}{=}\PY{n}{s}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}
+        \PY{n}{s1}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} 1    3.0
+        2    7.0
+        3    NaN
+        4    6.0
+        5    8.0
+        dtype: float64
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{s2}\PY{o}{=}\PY{n}{s}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+        \PY{n}{s2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} 0    1.0
+        1    3.0
+        2    7.0
+        3    NaN
+        4    6.0
+        dtype: float64
+\end{Verbatim}
+        
+    В сумме \texttt{s1+s2} складываются данные с одинаковыми индексами.
+Поскольку в \texttt{s1} нет данного и индексом 0, а в \texttt{s2} --- с
+индексом 5, в \texttt{s1+s2} в соответствующих позициях будет
+\texttt{NaN}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{s1}\PY{o}{+}\PY{n}{s2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} 0     NaN
+        1     6.0
+        2    14.0
+        3     NaN
+        4    12.0
+        5     NaN
+        dtype: float64
+\end{Verbatim}
+        
+    К наборам данных можно применять функции из \texttt{numpy}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}10}]:} 0       2.718282
+         1      20.085537
+         2    1096.633158
+         3            NaN
+         4     403.428793
+         5    2980.957987
+         dtype: float64
+\end{Verbatim}
+        
+    При создании набора данных \texttt{s} мы не указали, что будет играть
+роль индекса. По умолчанию это последовательность целых чисел 0, 1, 2,
+\ldots{}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{s}\PY{o}{.}\PY{n}{index}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} RangeIndex(start=0, stop=6, step=1)
+\end{Verbatim}
+        
+    Но можно создавать наборы данных с индексом, заданным списком.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{i}\PY{o}{=}\PY{n+nb}{list}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{abcdef}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{i}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} ['a', 'b', 'c', 'd', 'e', 'f']
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{s}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{l}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{n}{i}\PY{p}{)}
+         \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:} a    1.0
+         b    3.0
+         c    5.0
+         d    NaN
+         e    6.0
+         f    8.0
+         dtype: float64
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{s}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} 5.0
+\end{Verbatim}
+        
+    Если индекс --- строка, то вместо
+\texttt{s{[}\textquotesingle{}c\textquotesingle{}{]}} можно писать
+\texttt{s.c}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{s}\PY{o}{.}\PY{n}{c}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} 5.0
+\end{Verbatim}
+        
+    Набор данных можно создать из словаря.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{s}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+         \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} a    1
+         b    2
+         c    0
+         dtype: int64
+\end{Verbatim}
+        
+    Можно отсортировать набор данных.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{s}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}17}]:} c    0
+         a    1
+         b    2
+         dtype: int64
+\end{Verbatim}
+        
+    Роль индекса может играть, скажем, последовательность дат (или времён
+измерения и т.д.).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{d}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{date\PYZus{}range}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{20170101}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{periods}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+        \PY{n}{d}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} DatetimeIndex(['2017-01-01', '2017-01-02', '2017-01-03', '2017-01-04',
+                       '2017-01-05', '2017-01-06', '2017-01-07', '2017-01-08',
+                       '2017-01-09', '2017-01-10'],
+                      dtype='datetime64[ns]', freq='D')
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{s}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{n}{d}\PY{p}{)}
+        \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} 2017-01-01    0.356263
+        2017-01-02   -0.149695
+        2017-01-03    0.823284
+        2017-01-04    1.936065
+        2017-01-05    0.309854
+        2017-01-06    0.642161
+        2017-01-07    0.499560
+        2017-01-08    0.004974
+        2017-01-09    0.245381
+        2017-01-10    0.951140
+        Freq: D, dtype: float64
+\end{Verbatim}
+        
+    Операции сравнения возвращают наборы булевых данных.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{s}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} 2017-01-01     True
+        2017-01-02    False
+        2017-01-03     True
+        2017-01-04     True
+        2017-01-05     True
+        2017-01-06     True
+        2017-01-07     True
+        2017-01-08     True
+        2017-01-09     True
+        2017-01-10     True
+        Freq: D, dtype: bool
+\end{Verbatim}
+        
+    Если такой булев набор использовать для индексации, получится поднабор
+только из тех данных, для которых условие есть \texttt{True}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{s}\PY{p}{[}\PY{n}{s}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} 2017-01-01    0.356263
+        2017-01-03    0.823284
+        2017-01-04    1.936065
+        2017-01-05    0.309854
+        2017-01-06    0.642161
+        2017-01-07    0.499560
+        2017-01-08    0.004974
+        2017-01-09    0.245381
+        2017-01-10    0.951140
+        dtype: float64
+\end{Verbatim}
+        
+    Кумулятивные максимумы --- от первого элемента до текущего.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{s}\PY{o}{.}\PY{n}{cummax}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} 2017-01-01    0.356263
+        2017-01-02    0.356263
+        2017-01-03    0.823284
+        2017-01-04    1.936065
+        2017-01-05    1.936065
+        2017-01-06    1.936065
+        2017-01-07    1.936065
+        2017-01-08    1.936065
+        2017-01-09    1.936065
+        2017-01-10    1.936065
+        Freq: D, dtype: float64
+\end{Verbatim}
+        
+    Кумулятивные суммы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{s}\PY{o}{=}\PY{n}{s}\PY{o}{.}\PY{n}{cumsum}\PY{p}{(}\PY{p}{)}
+        \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} 2017-01-01    0.356263
+        2017-01-02    0.206568
+        2017-01-03    1.029852
+        2017-01-04    2.965918
+        2017-01-05    3.275771
+        2017-01-06    3.917933
+        2017-01-07    4.417493
+        2017-01-08    4.422467
+        2017-01-09    4.667848
+        2017-01-10    5.618988
+        Freq: D, dtype: float64
+\end{Verbatim}
+        
+    Построим график.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}25}]:} [<matplotlib.lines.Line2D at 0x7f13629c9080>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b24_pandas_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{DataFrame}
+\label{pandas2}
+
+Двумерная таблица данных. Имеет индекс и набор столбцов (возможно,
+имеющих разные типы). Таблицу можно построить, например, из словаря,
+значениями в котором являются одномерные наборы данных.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{d}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{two}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{\PYZcb{}}
+         \PY{n}{df}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{d}\PY{p}{)}
+         \PY{n}{df}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}26}]:}    one  two
+         a  1.0    1
+         b  2.0    2
+         c  3.0    3
+         d  NaN    4
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{df}\PY{o}{.}\PY{n}{index}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} Index(['a', 'b', 'c', 'd'], dtype='object')
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{df}\PY{o}{.}\PY{n}{columns}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}28}]:} Index(['one', 'two'], dtype='object')
+\end{Verbatim}
+        
+    Если в качестве индекса указать имя столбца, получится одномерный набор
+данных.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}29}]:} a    1.0
+         b    2.0
+         c    3.0
+         d    NaN
+         Name: one, dtype: float64
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{df}\PY{o}{.}\PY{n}{one}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}30}]:} a    1.0
+         b    2.0
+         c    3.0
+         d    NaN
+         Name: one, dtype: float64
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}31}]:} 3.0
+\end{Verbatim}
+        
+    Однако если указать диапазон индексов, то это означает диапазон строк.
+Причём последняя строка включается в таблицу.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}32}]:}    one  two
+         b  2.0    2
+         c  3.0    3
+         d  NaN    4
+\end{Verbatim}
+        
+    Диапазон целых чисел даёт диапазон строк с такими номерами, не включая
+последнюю строку (как обычно при индексировании списков). Всё это
+кажется довольно нелогичным.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{df}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}33}]:}    one  two
+         b  2.0    2
+         c  3.0    3
+\end{Verbatim}
+        
+    Логичнее работает атрибут \texttt{loc}: первая позиция --- всегда индекс
+строки, а вторая --- столбца.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}34}]:} one    2.0
+         two    2.0
+         Name: b, dtype: float64
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}35}]:} 2.0
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}36}]:} a    1.0
+         b    2.0
+         Name: one, dtype: float64
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{:}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}37}]:}    one  two
+         a  1.0    1
+         b  2.0    2
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}38}]:} a    1.0
+         b    2.0
+         c    3.0
+         d    NaN
+         Name: one, dtype: float64
+\end{Verbatim}
+        
+    К таблице можно добавлять новые столбцы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{three}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{two}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{flag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{two}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{l+m+mi}{2}
+         \PY{n}{df}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}39}]:}    one  two  three   flag
+         a  1.0    1    1.0  False
+         b  2.0    2    4.0  False
+         c  3.0    3    9.0   True
+         d  NaN    4    NaN   True
+\end{Verbatim}
+        
+    И удалять имеющиеся.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{k}{del} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{two}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{foo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{l+m+mf}{0.}
+         \PY{n}{df}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}40}]:}    one  three   flag  foo
+         a  1.0    1.0  False  0.0
+         b  2.0    4.0  False  0.0
+         c  3.0    9.0   True  0.0
+         d  NaN    NaN   True  0.0
+\end{Verbatim}
+        
+    Добавим копию столбца \texttt{one}, в которую входят только строки до
+второй.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one\PYZus{}tr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+         \PY{n}{df}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}41}]:}    one  three   flag  foo  one\_tr
+         a  1.0    1.0  False  0.0     1.0
+         b  2.0    4.0  False  0.0     2.0
+         c  3.0    9.0   True  0.0     NaN
+         d  NaN    NaN   True  0.0     NaN
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{n}{df}\PY{o}{=}\PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one\PYZus{}tr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+         \PY{n}{df}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}42}]:}    one  one\_tr
+         a  1.0     1.0
+         b  2.0     2.0
+         c  3.0     NaN
+         d  NaN     NaN
+\end{Verbatim}
+        
+    Можно объединять таблицы по вертикали и по горизонтали.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{df2}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{e}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{\PYZcb{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{one\PYZus{}tr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{e}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{\PYZcb{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+         \PY{n}{df2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}43}]:}    one  one\_tr
+         e    0     2.0
+         f    1     NaN
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{df}\PY{p}{,}\PY{n}{df2}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}44}]:}    one  one\_tr
+         a  1.0     1.0
+         b  2.0     2.0
+         c  3.0     NaN
+         d  NaN     NaN
+         e  0.0     2.0
+         f  1.0     NaN
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n}{df2}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{two}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{\PYZcb{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{three}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{\PYZcb{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+         \PY{n}{df2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}45}]:}    three  two
+         a    NaN  0.0
+         b    NaN  1.0
+         c    2.0  NaN
+         d    3.0  NaN
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{df}\PY{p}{,}\PY{n}{df2}\PY{p}{]}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}46}]:}    one  one\_tr  three  two
+         a  1.0     1.0    NaN  0.0
+         b  2.0     2.0    NaN  1.0
+         c  3.0     NaN    2.0  NaN
+         d  NaN     NaN    3.0  NaN
+\end{Verbatim}
+        
+    Создадим таблицу из массива случайных чисел.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{df}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+                         \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{B}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{D}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+         \PY{n}{df}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}10}]:}           A         B         C         D
+         0  0.706305 -0.789569 -0.692519  0.340655
+         1  0.277662  1.168946 -0.456736 -0.824495
+         2 -1.742185 -1.623243 -0.188642 -0.164130
+         3 -0.486917 -0.404665  0.828688  1.960935
+         4 -0.009105  1.221108  0.399887  3.075690
+         5  0.440579  1.513206  0.251294  0.838322
+         6  1.800180  1.877250 -0.721819 -1.637900
+         7  0.518764  1.372829 -0.513600 -0.544454
+         8 -0.823112 -1.188590  1.861447  1.272845
+         9  1.103270 -1.380487  0.227549  0.769414
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{df2}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{B}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+         \PY{n}{df}\PY{o}{+}\PY{n}{df2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:}           A         B         C   D
+         0 -0.396002 -0.388489 -0.938762 NaN
+         1  0.025981 -0.822861 -1.221219 NaN
+         2 -1.859502 -0.265075 -1.399910 NaN
+         3 -0.937928 -0.118183 -0.413946 NaN
+         4 -0.038995  1.159641  2.223911 NaN
+         5  0.478176 -0.599153 -1.214517 NaN
+         6  1.387845  0.992897 -0.214836 NaN
+         7       NaN       NaN       NaN NaN
+         8       NaN       NaN       NaN NaN
+         9       NaN       NaN       NaN NaN
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{df}\PY{o}{+}\PY{l+m+mi}{3}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:}           A         B         C         D
+         0  4.412610  1.420863  1.614962  3.681311
+         1  3.555324  5.337893  2.086527  1.351011
+         2 -0.484370 -0.246485  2.622715  2.671739
+         3  2.026166  2.190670  4.657376  6.921870
+         4  2.981789  5.442216  3.799774  9.151381
+         5  3.881158  6.026413  3.502587  4.676644
+         6  6.600359  6.754500  1.556363 -0.275800
+         7  4.037527  5.745658  1.972800  1.911092
+         8  1.353775  0.622821  6.722893  5.545690
+         9  5.206539  0.239026  3.455098  4.538828
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:}           A         B         C         D
+         0  0.649027 -0.710050 -0.638478  0.334105
+         1  0.274108  0.920339 -0.441021 -0.734205
+         2 -0.985349 -0.998625 -0.187526 -0.163394
+         3 -0.467903 -0.393711  0.737045  0.924856
+         4 -0.009105  0.939480  0.389314  0.065855
+         5  0.426463  0.998342  0.248657  0.743522
+         6  0.973807  0.953409 -0.660751 -0.997749
+         7  0.495807  0.980468 -0.491316 -0.517951
+         8 -0.733266 -0.927844  0.958058  0.955940
+         9  0.892686 -0.981946  0.225590  0.695714
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:}                A          B          C          D
+         count  10.000000  10.000000  10.000000  10.000000
+         mean    0.178544   0.176679   0.099555   0.508688
+         std     1.007094   1.373741   0.805262   1.391815
+         min    -1.742185  -1.623243  -0.721819  -1.637900
+         25\%    -0.367464  -1.088834  -0.499384  -0.449373
+         50\%     0.359121   0.382141   0.019453   0.555035
+         75\%     0.659420   1.334899   0.362739   1.164214
+         max     1.800180   1.877250   1.861447   3.075690
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{B}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:}           A         B         C         D
+         2 -1.742185 -1.623243 -0.188642 -0.164130
+         9  1.103270 -1.380487  0.227549  0.769414
+         8 -0.823112 -1.188590  1.861447  1.272845
+         0  0.706305 -0.789569 -0.692519  0.340655
+         3 -0.486917 -0.404665  0.828688  1.960935
+         1  0.277662  1.168946 -0.456736 -0.824495
+         4 -0.009105  1.221108  0.399887  3.075690
+         7  0.518764  1.372829 -0.513600 -0.544454
+         5  0.440579  1.513206  0.251294  0.838322
+         6  1.800180  1.877250 -0.721819 -1.637900
+\end{Verbatim}
+        
+    Атрибут \texttt{iloc} подобен \texttt{loc}: первый индекс --- номер
+строки, второй --- номер столбца. Это целые числа, конец диапазона на
+включается (как обычно в питоне).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{df}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} A   -1.742185
+         B   -1.623243
+         C   -0.188642
+         D   -0.164130
+         Name: 2, dtype: float64
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{df}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}17}]:}           A         B         C         D
+         1  0.277662  1.168946 -0.456736 -0.824495
+         2 -1.742185 -1.623243 -0.188642 -0.164130
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{df}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}18}]:}           A         B
+         1  0.277662  1.168946
+         2 -1.742185 -1.623243
+\end{Verbatim}
+        
+    Построим графики кумулятивных сумм --- мировые линии четырёх пьяных, у
+которых величина каждого шага --- гауссова случайная величина.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{cs}\PY{o}{=}\PY{n}{df}\PY{o}{.}\PY{n}{cumsum}\PY{p}{(}\PY{p}{)}
+         \PY{n}{cs}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}19}]:}           A         B         C         D
+         0  0.706305 -0.789569 -0.692519  0.340655
+         1  0.983967  0.379378 -1.149255 -0.483839
+         2 -0.758218 -1.243865 -1.337898 -0.647969
+         3 -1.245135 -1.648530 -0.509210  1.312965
+         4 -1.254240 -0.427422 -0.109322  4.388656
+         5 -0.813661  1.085784  0.141971  5.226978
+         6  0.986519  2.963035 -0.579848  3.589078
+         7  1.505282  4.335864 -1.093447  3.044624
+         8  0.682170  3.147274  0.767999  4.317469
+         9  1.785440  1.766788  0.995548  5.086883
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{cs}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}57}]:} [<matplotlib.lines.Line2D at 0x7f13628a3390>,
+          <matplotlib.lines.Line2D at 0x7f13628a3550>,
+          <matplotlib.lines.Line2D at 0x7f13628a3748>,
+          <matplotlib.lines.Line2D at 0x7f13628a3940>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b24_pandas_2.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}

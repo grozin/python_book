@@ -1,0 +1,1672 @@
+\section{numpy}
+\label{numpy}
+
+Пакет \texttt{numpy} предоставляет \(n\)-мерные однородные массивы (все
+элементы одного типа); в них нельзя вставить или удалить элемент в
+произвольном месте. В \texttt{numpy} реализовано много операций над
+массивами в целом. Если задачу можно решить, произведя некоторую
+последовательность операций над массивами, то это будет столь же
+эффективно, как в \texttt{C} или \texttt{matlab} --- львиная доля времени
+тратится в библиотечных функциях, написанных на \texttt{C}.
+
+\subsection{Одномерные массивы}
+\label{numpy1}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{from} \PY{n+nn}{numpy} \PY{k}{import} \PY{p}{(}\PY{n}{array}\PY{p}{,}\PY{n}{zeros}\PY{p}{,}\PY{n}{ones}\PY{p}{,}\PY{n}{arange}\PY{p}{,}\PY{n}{linspace}\PY{p}{,}\PY{n}{logspace}\PY{p}{,}
+                           \PY{n}{float64}\PY{p}{,}\PY{n}{int64}\PY{p}{,}\PY{n}{sin}\PY{p}{,}\PY{n}{cos}\PY{p}{,}\PY{n}{pi}\PY{p}{,}\PY{n}{exp}\PY{p}{,}\PY{n}{log}\PY{p}{,}\PY{n}{sqrt}\PY{p}{,}\PY{n+nb}{abs}\PY{p}{,}
+                           \PY{n}{nan}\PY{p}{,}\PY{n}{inf}\PY{p}{,}\PY{n+nb}{any}\PY{p}{,}\PY{n+nb}{all}\PY{p}{,}\PY{n}{sort}\PY{p}{,}\PY{n}{hstack}\PY{p}{,}\PY{n}{vstack}\PY{p}{,}\PY{n}{hsplit}\PY{p}{,}
+                           \PY{n}{delete}\PY{p}{,}\PY{n}{insert}\PY{p}{,}\PY{n}{append}\PY{p}{,}\PY{n}{eye}\PY{p}{,}\PY{n}{fromfunction}\PY{p}{,}
+                           \PY{n}{trace}\PY{p}{,}\PY{n}{diag}\PY{p}{,}\PY{n}{average}\PY{p}{,}\PY{n}{std}\PY{p}{,}\PY{n}{outer}\PY{p}{,}\PY{n}{meshgrid}\PY{p}{)}
+\end{Verbatim}
+
+    Можно преобразовать список в массив.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{a}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+        \PY{n}{a}\PY{p}{,}\PY{n+nb}{type}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} (array([0, 2, 1]), numpy.ndarray)
+\end{Verbatim}
+        
+    \texttt{print} печатает массивы в удобной форме.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0 2 1]
+
+    \end{Verbatim}
+
+    Класс \texttt{ndarray} имеет много методов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} \{'T',
+         '\_\_abs\_\_',
+         '\_\_add\_\_',
+         '\_\_and\_\_',
+         '\_\_array\_\_',
+         '\_\_array\_finalize\_\_',
+         '\_\_array\_interface\_\_',
+         '\_\_array\_prepare\_\_',
+         '\_\_array\_priority\_\_',
+         '\_\_array\_struct\_\_',
+         '\_\_array\_wrap\_\_',
+         '\_\_bool\_\_',
+         '\_\_complex\_\_',
+         '\_\_contains\_\_',
+         '\_\_copy\_\_',
+         '\_\_deepcopy\_\_',
+         '\_\_delitem\_\_',
+         '\_\_divmod\_\_',
+         '\_\_float\_\_',
+         '\_\_floordiv\_\_',
+         '\_\_getitem\_\_',
+         '\_\_iadd\_\_',
+         '\_\_iand\_\_',
+         '\_\_ifloordiv\_\_',
+         '\_\_ilshift\_\_',
+         '\_\_imatmul\_\_',
+         '\_\_imod\_\_',
+         '\_\_imul\_\_',
+         '\_\_index\_\_',
+         '\_\_int\_\_',
+         '\_\_invert\_\_',
+         '\_\_ior\_\_',
+         '\_\_ipow\_\_',
+         '\_\_irshift\_\_',
+         '\_\_isub\_\_',
+         '\_\_iter\_\_',
+         '\_\_itruediv\_\_',
+         '\_\_ixor\_\_',
+         '\_\_len\_\_',
+         '\_\_lshift\_\_',
+         '\_\_matmul\_\_',
+         '\_\_mod\_\_',
+         '\_\_mul\_\_',
+         '\_\_neg\_\_',
+         '\_\_or\_\_',
+         '\_\_pos\_\_',
+         '\_\_pow\_\_',
+         '\_\_radd\_\_',
+         '\_\_rand\_\_',
+         '\_\_rdivmod\_\_',
+         '\_\_rfloordiv\_\_',
+         '\_\_rlshift\_\_',
+         '\_\_rmatmul\_\_',
+         '\_\_rmod\_\_',
+         '\_\_rmul\_\_',
+         '\_\_ror\_\_',
+         '\_\_rpow\_\_',
+         '\_\_rrshift\_\_',
+         '\_\_rshift\_\_',
+         '\_\_rsub\_\_',
+         '\_\_rtruediv\_\_',
+         '\_\_rxor\_\_',
+         '\_\_setitem\_\_',
+         '\_\_setstate\_\_',
+         '\_\_sub\_\_',
+         '\_\_truediv\_\_',
+         '\_\_xor\_\_',
+         'all',
+         'any',
+         'argmax',
+         'argmin',
+         'argpartition',
+         'argsort',
+         'astype',
+         'base',
+         'byteswap',
+         'choose',
+         'clip',
+         'compress',
+         'conj',
+         'conjugate',
+         'copy',
+         'ctypes',
+         'cumprod',
+         'cumsum',
+         'data',
+         'diagonal',
+         'dot',
+         'dtype',
+         'dump',
+         'dumps',
+         'fill',
+         'flags',
+         'flat',
+         'flatten',
+         'getfield',
+         'imag',
+         'item',
+         'itemset',
+         'itemsize',
+         'max',
+         'mean',
+         'min',
+         'nbytes',
+         'ndim',
+         'newbyteorder',
+         'nonzero',
+         'partition',
+         'prod',
+         'ptp',
+         'put',
+         'ravel',
+         'real',
+         'repeat',
+         'reshape',
+         'resize',
+         'round',
+         'searchsorted',
+         'setfield',
+         'setflags',
+         'shape',
+         'size',
+         'sort',
+         'squeeze',
+         'std',
+         'strides',
+         'sum',
+         'swapaxes',
+         'take',
+         'tobytes',
+         'tofile',
+         'tolist',
+         'tostring',
+         'trace',
+         'transpose',
+         'var',
+         'view'\}
+\end{Verbatim}
+        
+    Наш массив одномерный.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{a}\PY{o}{.}\PY{n}{ndim}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} 1
+\end{Verbatim}
+        
+    В \(n\)-мерном случае возвращается кортеж размеров по каждой координате.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{a}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} (3,)
+\end{Verbatim}
+        
+    \texttt{size} --- это полное число элементов в массиве; \texttt{len} ---
+размер по первой координате (в 1-мерном случае это то же самое).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{,}\PY{n}{a}\PY{o}{.}\PY{n}{size}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} (3, 3)
+\end{Verbatim}
+        
+    \texttt{numpy} предоставляет несколько типов для целых (\texttt{int16},
+\texttt{int32}, \texttt{int64}) и чисел с плавающей точкой
+(\texttt{float32}, \texttt{float64}).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{a}\PY{o}{.}\PY{n}{dtype}\PY{p}{,}\PY{n}{a}\PY{o}{.}\PY{n}{dtype}\PY{o}{.}\PY{n}{name}\PY{p}{,}\PY{n}{a}\PY{o}{.}\PY{n}{itemsize}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} (dtype('int64'), 'int64', 8)
+\end{Verbatim}
+        
+    Индексировать массив можно обычным образом.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} 2
+\end{Verbatim}
+        
+    Массивы --- изменяемые объекты.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{3}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0 3 1]
+
+    \end{Verbatim}
+
+    Массивы, разумеется, можно использовать в \texttt{for} циклах. Но при
+этом теряется главное преимущество \texttt{numpy} --- быстродействие.
+Всегда, когда это возможно, лучше использовать операции над массивами
+как едиными целыми.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{a}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0
+3
+1
+
+    \end{Verbatim}
+
+    Массив чисел с плавающей точкой.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{b}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+         \PY{n}{b}\PY{o}{.}\PY{n}{dtype}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} dtype('float64')
+\end{Verbatim}
+        
+    Точно такой же массив.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{c}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{float64}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{c}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  2.  1.]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{1.2}\PY{p}{,}\PY{l+m+mf}{1.5}\PY{p}{,}\PY{l+m+mf}{1.8}\PY{p}{]}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{int64}\PY{p}{)}
+\end{Verbatim}
+
+    Массив, значения которого вычисляются функцией. Функции передаётся
+массив. Так что в ней можно использовать только такие операции, которые
+применимы к массивам.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+             \PY{k}{return} \PY{n}{i}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+         \PY{n}{a}\PY{o}{=}\PY{n}{fromfunction}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{p}{)}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{int64}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0 1 2 3 4]
+[ 0  1  4  9 16]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{a}\PY{o}{=}\PY{n}{fromfunction}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{p}{)}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{float64}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  1.  2.  3.  4.]
+[  0.   1.   4.   9.  16.]
+
+    \end{Verbatim}
+
+    Массивы, заполненные нулями или единицами. Часто лучше сначала создать
+такой массив, а потом присваивать значения его элементам.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{a}\PY{o}{=}\PY{n}{zeros}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  0.  0.]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{b}\PY{o}{=}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{int64}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[1 1 1]
+
+    \end{Verbatim}
+
+    Функция \texttt{arange} подобна \texttt{range}. Аргументы могут быть с
+плавающей точкой. Следует избегать ситуаций, когда
+\((конец-начало)/шаг\) --- целое число, потому что в этом случае включение
+последнего элемента зависит от ошибок округления. Лучше, чтобы конец
+диапазона был где-то посредине шага.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{a}\PY{o}{=}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0 2 4 6 8]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{b}\PY{o}{=}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{0.}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  2.  4.  6.  8.]
+
+    \end{Verbatim}
+
+    Последовательности чисел с постоянным шагом можно также создавать
+функцией \texttt{linspace}. Начало и конец диапазона включаются;
+последний аргумент --- число точек.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{a}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  2.  4.  6.  8.]
+
+    \end{Verbatim}
+
+    Последовательность чисел с постоянным шагом по логарифмической шкале от
+\(10^0\) до \(10^1\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{b}\PY{o}{=}\PY{n}{logspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  1.           1.77827941   3.16227766   5.62341325  10.        ]
+
+    \end{Verbatim}
+
+    Массив случайных чисел.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{k+kn}{from} \PY{n+nn}{numpy}\PY{n+nn}{.}\PY{n+nn}{random} \PY{k}{import} \PY{n}{random}\PY{p}{,}\PY{n}{normal}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{random}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.63038745  0.24031792  0.75969506  0.98191274  0.9023238 ]
+
+    \end{Verbatim}
+
+    Случайные числа с нормальным (гауссовым) распределением (среднее
+\texttt{0}, среднеквадратичное отклонение \texttt{1}).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-0.06409544  0.26656068 -1.83718422 -1.01312915  0.0445343 ]
+
+    \end{Verbatim}
+
+\subsection{Операции над одномерными массивами}
+\label{numpy2}
+
+Арифметические операции проводятся поэлементно.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{+}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  1.           3.77827941   7.16227766  11.62341325  18.        ]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{\PYZhy{}}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-1.          0.22172059  0.83772234  0.37658675 -2.        ]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{*}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  0.           3.55655882  12.64911064  33.74047951  80.        ]
+
+    \end{Verbatim}
+
+    Скалярное произведение
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{a}\PY{n+nd}{@b}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}28}]:} 129.9461489721723
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{/}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.          1.12468265  1.26491106  1.06696765  0.8       ]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  0.   4.  16.  36.  64.]
+
+    \end{Verbatim}
+
+    Когда операнды разных типов, они пиводятся к большему типу.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{i}\PY{o}{=}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{int64}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{+}\PY{n}{i}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 1.  3.  5.  7.  9.]
+
+    \end{Verbatim}
+
+    \texttt{numpy} содержит элементарные функции, которые тоже применяются к
+массивам поэлементно. Они называются универсальными функциями
+(\texttt{ufunc}).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{sin}\PY{p}{,}\PY{n+nb}{type}\PY{p}{(}\PY{n}{sin}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}32}]:} (<ufunc 'sin'>, numpy.ufunc)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.          0.90929743 -0.7568025  -0.2794155   0.98935825]
+
+    \end{Verbatim}
+
+    Один из операндов может быть скаляром, а не массивом.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 1.  3.  5.  7.  9.]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  0.   4.   8.  12.  16.]
+
+    \end{Verbatim}
+
+    Сравнения дают булевы массивы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{\PYZgt{}}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[False  True  True  True False]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{==}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[False False False False False]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{c}\PY{o}{=}\PY{n}{a}\PY{o}{\PYZgt{}}\PY{l+m+mi}{5}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{c}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[False False False  True  True]
+
+    \end{Verbatim}
+
+    Кванторы ``существует'' и ``для всех''.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n+nb}{any}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{p}{,}\PY{n+nb}{all}\PY{p}{(}\PY{n}{c}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}39}]:} (True, False)
+\end{Verbatim}
+        
+    Модификация на месте.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{n}{a}\PY{o}{+}\PY{o}{=}\PY{l+m+mi}{1}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 1.  3.  5.  7.  9.]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{b}\PY{o}{*}\PY{o}{=}\PY{l+m+mi}{2}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  2.           3.55655882   6.32455532  11.2468265   20.        ]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{n}{b}\PY{o}{/}\PY{o}{=}\PY{n}{a}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 2.          1.18551961  1.26491106  1.6066895   2.22222222]
+
+    \end{Verbatim}
+
+    Так делать можно.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{a}\PY{o}{+}\PY{o}{=}\PY{n}{i}
+\end{Verbatim}
+
+    А так нельзя.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{n}{i}\PY{o}{+}\PY{o}{=}\PY{n}{a}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        TypeError                                 Traceback (most recent call last)
+
+        <ipython-input-44-300abee39dd1> in <module>()
+    ----> 1 i+=a
+    
+
+        TypeError: Cannot cast ufunc add output from dtype('float64') to dtype('int64') with casting rule 'same\_kind'
+
+    \end{Verbatim}
+
+    При выполнении операций над массивами деление на 0 не возбуждает
+исключения, а даёт значения \texttt{np.nan} или \texttt{np.inf}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,}\PY{l+m+mf}{0.0}\PY{p}{,}\PY{l+m+mf}{1.0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.0}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{1.0}\PY{p}{,}\PY{l+m+mf}{0.0}\PY{p}{,}\PY{l+m+mf}{0.0}\PY{p}{,}\PY{l+m+mf}{0.0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  0.  nan  inf -inf]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/usr/lib64/python3.6/site-packages/ipykernel/\_\_main\_\_.py:1: RuntimeWarning: divide by zero encountered in true\_divide
+  if \_\_name\_\_ == '\_\_main\_\_':
+/usr/lib64/python3.6/site-packages/ipykernel/\_\_main\_\_.py:1: RuntimeWarning: invalid value encountered in true\_divide
+  if \_\_name\_\_ == '\_\_main\_\_':
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{n}{nan}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{inf}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{inf}\PY{o}{*}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mf}{1.}\PY{o}{/}\PY{n}{inf}\PY{p}{,}\PY{n}{inf}\PY{o}{/}\PY{n}{inf}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}46}]:} (nan, inf, nan, 0.0, nan)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{n}{nan}\PY{o}{==}\PY{n}{nan}\PY{p}{,}\PY{n}{inf}\PY{o}{==}\PY{n}{inf}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}47}]:} (False, True)
+\end{Verbatim}
+        
+    Сумма и произведение всех элементов массива; максимальный и минимальный
+элемент; среднее и среднеквадратичное отклонение.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{n}{b}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{b}\PY{o}{.}\PY{n}{prod}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{b}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{b}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{b}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{b}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}48}]:} (8.2793423935260435,
+          10.708241812210389,
+          2.2222222222222223,
+          1.1855196066926152,
+          1.6558684787052087,
+          0.40390033426607452)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{n}{x}\PY{o}{=}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{)}
+         \PY{n}{x}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}49}]:} (-0.048736395274562645, 0.98622825985036244)
+\end{Verbatim}
+        
+    Функция \texttt{sort} возвращает отсортированную копию, метод
+\texttt{sort} сортирует на месте.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}50}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{sort}\PY{p}{(}\PY{n}{b}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 1.18551961  1.26491106  1.6066895   2.          2.22222222]
+[ 2.          1.18551961  1.26491106  1.6066895   2.22222222]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}51}]:} \PY{n}{b}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 1.18551961  1.26491106  1.6066895   2.          2.22222222]
+
+    \end{Verbatim}
+
+    Объединение массивов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{n}{a}\PY{o}{=}\PY{n}{hstack}\PY{p}{(}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  2.           4.           6.           8.          10.           1.18551961
+   1.26491106   1.6066895    2.           2.22222222]
+
+    \end{Verbatim}
+
+    Расщепление массива в позициях 3 и 6.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{n}{hsplit}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}53}]:} [array([ 2.,  4.,  6.]),
+          array([  8.        ,  10.        ,   1.18551961]),
+          array([ 1.26491106,  1.6066895 ,  2.        ,  2.22222222])]
+\end{Verbatim}
+        
+    Функции \texttt{delete}, \texttt{insert} и \texttt{append} не меняют
+массив на месте, а возвращают новый массив, в котором удалены, вставлены
+в середину или добавлены в конец какие-то элементы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}54}]:} \PY{n}{a}\PY{o}{=}\PY{n}{delete}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{]}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  2.           4.           6.           8.          10.           1.26491106
+   2.           2.22222222]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}55}]:} \PY{n}{a}\PY{o}{=}\PY{n}{insert}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  2.           4.           0.           0.           6.           8.          10.
+   1.26491106   2.           2.22222222]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}56}]:} \PY{n}{a}\PY{o}{=}\PY{n}{append}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  2.           4.           0.           0.           6.           8.          10.
+   1.26491106   2.           2.22222222   1.           2.           3.        ]
+
+    \end{Verbatim}
+
+    Есть несколько способов индексации массива. Вот обычный индекс.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{a}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.   0.1  0.2  0.3  0.4  0.5  0.6  0.7  0.8  0.9  1. ]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}58}]:} \PY{n}{b}\PY{o}{=}\PY{n}{a}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.2
+
+    \end{Verbatim}
+
+    Диапазон индексов. Создаётся новый заголовок массива, указывающий на те
+же данные. Изменения, сделанные через такой массив, видны и в исходном
+массиве.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}59}]:} \PY{n}{b}\PY{o}{=}\PY{n}{a}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{:}\PY{l+m+mi}{6}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.2  0.3  0.4  0.5]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}60}]:} \PY{n}{b}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.2}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-0.2  0.3  0.4  0.5]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}61}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.   0.1 -0.2  0.3  0.4  0.5  0.6  0.7  0.8  0.9  1. ]
+
+    \end{Verbatim}
+
+    Диапазон с шагом 2.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}62}]:} \PY{n}{b}\PY{o}{=}\PY{n}{a}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.1  0.3  0.5  0.7  0.9]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}63}]:} \PY{n}{b}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.1}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  -0.1 -0.2  0.3  0.4  0.5  0.6  0.7  0.8  0.9  1. ]
+
+    \end{Verbatim}
+
+    Массив в обратном порядке.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}64}]:} \PY{n}{b}\PY{o}{=}\PY{n}{a}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 1.   0.9  0.8  0.7  0.6  0.5  0.4  0.3 -0.2 -0.1]
+
+    \end{Verbatim}
+
+    Подмассиву можно присвоить значение --- массив правильного размера или
+скаляр.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}65}]:} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.   0.  -0.2  0.3  0.   0.5  0.6  0.   0.8  0.9  1. ]
+
+    \end{Verbatim}
+
+    Тут опять создаётся только новый заголовок, указывающий на те же данные.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}66}]:} \PY{n}{b}\PY{o}{=}\PY{n}{a}\PY{p}{[}\PY{p}{:}\PY{p}{]}
+         \PY{n}{b}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mf}{0.1}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.   0.1 -0.2  0.3  0.   0.5  0.6  0.   0.8  0.9  1. ]
+
+    \end{Verbatim}
+
+    Чтобы скопировать и данные массива, нужно использовать метод
+\texttt{copy}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}67}]:} \PY{n}{b}\PY{o}{=}\PY{n}{a}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+         \PY{n}{b}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.   0.1  0.   0.3  0.   0.5  0.6  0.   0.8  0.9  1. ]
+[ 0.   0.1 -0.2  0.3  0.   0.5  0.6  0.   0.8  0.9  1. ]
+
+    \end{Verbatim}
+
+    Можно задать список индексов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}68}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-0.2  0.3  0.5]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}69}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-0.2  0.3  0.5]
+
+    \end{Verbatim}
+
+    Можно задать булев массив той же величины.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}70}]:} \PY{n}{b}\PY{o}{=}\PY{n}{a}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[False  True False  True False  True  True False  True  True  True]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}71}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{[}\PY{n}{b}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.1  0.3  0.5  0.6  0.8  0.9  1. ]
+
+    \end{Verbatim}
+
+\subsection{2-мерные массивы}
+\label{numpy3}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}72}]:} \PY{n}{a}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,}\PY{l+m+mf}{1.0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.0}\PY{p}{,}\PY{l+m+mf}{0.0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 0.  1.]
+ [-1.  0.]]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}73}]:} \PY{n}{a}\PY{o}{.}\PY{n}{ndim}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}73}]:} 2
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}74}]:} \PY{n}{a}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}74}]:} (2, 2)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}75}]:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{,}\PY{n}{a}\PY{o}{.}\PY{n}{size}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}75}]:} (2, 4)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}76}]:} \PY{n}{a}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}76}]:} -1.0
+\end{Verbatim}
+        
+    Атрибуту \texttt{shape} можно присвоить новое значение --- кортеж размеров
+по всем координатам. Получится новый заголовок массива; его данные не
+изменятся.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}77}]:} \PY{n}{b}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  1.  2.  3.]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}78}]:} \PY{n}{b}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}78}]:} (4,)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}79}]:} \PY{n}{b}\PY{o}{.}\PY{n}{shape}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 0.  1.]
+ [ 2.  3.]]
+
+    \end{Verbatim}
+
+    Поэлементное и матричное умножение.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}80}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{o}{*}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 0.  1.]
+ [-2.  0.]]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}81}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{n+nd}{@b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 2.  3.]
+ [ 0. -1.]]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}82}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{n+nd}{@a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[-1.  0.]
+ [-3.  2.]]
+
+    \end{Verbatim}
+
+    Умножение матрицы на вектор.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}83}]:} \PY{n}{v}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{float64}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{n+nd}{@v}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-1. -1.]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}84}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{v}\PY{n+nd}{@b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-2. -2.]
+
+    \end{Verbatim}
+
+    Внешнее произведение \(a_{ij}=u_i v_j\)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}85}]:} \PY{n}{u}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{v}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{u}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{v}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 1.  2.]
+[ 2.  3.  4.]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}86}]:} \PY{n}{a}\PY{o}{=}\PY{n}{outer}\PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{n}{v}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 2.  3.  4.]
+ [ 4.  6.  8.]]
+
+    \end{Verbatim}
+
+    Двумерные массивы, зависящие только от одного индекса: \(x_{ij}=u_j\),
+\(y_{ij}=v_i\)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}87}]:} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{n}{meshgrid}\PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{n}{v}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 1.  2.]
+ [ 1.  2.]
+ [ 1.  2.]]
+[[ 2.  2.]
+ [ 3.  3.]
+ [ 4.  4.]]
+
+    \end{Verbatim}
+
+    Единичная матрица.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}88}]:} \PY{n}{I}\PY{o}{=}\PY{n}{eye}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{I}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 1.  0.  0.  0.]
+ [ 0.  1.  0.  0.]
+ [ 0.  0.  1.  0.]
+ [ 0.  0.  0.  1.]]
+
+    \end{Verbatim}
+
+    Метод \texttt{reshape} делает то же самое, что присваивание атрибуту
+\texttt{shape}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}89}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{I}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 1.  0.  0.  0.  0.  1.  0.  0.  0.  0.  1.  0.  0.  0.  0.  1.]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}90}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{I}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 1.  0.  0.  0.  0.  1.  0.  0.]
+ [ 0.  0.  1.  0.  0.  0.  0.  1.]]
+
+    \end{Verbatim}
+
+    Строка.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}91}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{I}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  1.  0.  0.]
+
+    \end{Verbatim}
+
+    Цикл по строкам.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}92}]:} \PY{k}{for} \PY{n}{row} \PY{o+ow}{in} \PY{n}{I}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{row}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 1.  0.  0.  0.]
+[ 0.  1.  0.  0.]
+[ 0.  0.  1.  0.]
+[ 0.  0.  0.  1.]
+
+    \end{Verbatim}
+
+    Столбец.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}93}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{I}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  0.  1.  0.]
+
+    \end{Verbatim}
+
+    Подматрица.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}94}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{I}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 0.  0.]
+ [ 1.  0.]]
+
+    \end{Verbatim}
+
+    Можно построить двумерный массив из функции.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}95}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+             \PY{k}{return} \PY{l+m+mi}{10}\PY{o}{*}\PY{n}{i}\PY{o}{+}\PY{n}{j}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{fromfunction}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{int64}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[0 0 0 0]
+ [1 1 1 1]
+ [2 2 2 2]
+ [3 3 3 3]]
+[[0 1 2 3]
+ [0 1 2 3]
+ [0 1 2 3]
+ [0 1 2 3]]
+[[ 0  1  2  3]
+ [10 11 12 13]
+ [20 21 22 23]
+ [30 31 32 33]]
+
+    \end{Verbatim}
+
+    Транспонированная матрица.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}96}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 0.  2.]
+ [ 1.  3.]]
+
+    \end{Verbatim}
+
+    Соединение матриц по горизонтали и по вертикали.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}97}]:} \PY{n}{a}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         \PY{n}{b}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         \PY{n}{c}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{c}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[0 1]
+ [2 3]]
+[[4 5 6]
+ [7 8 9]]
+[[4 5]
+ [6 7]
+ [8 9]]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}98}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{hstack}\PY{p}{(}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[0 1 4 5 6]
+ [2 3 7 8 9]]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}99}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{vstack}\PY{p}{(}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{c}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[0 1]
+ [2 3]
+ [4 5]
+ [6 7]
+ [8 9]]
+
+    \end{Verbatim}
+
+    Сумма всех элементов; суммы столбцов; суммы строк.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}100}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+39
+[11 13 15]
+[15 24]
+
+    \end{Verbatim}
+
+    Аналогично работают \texttt{prod}, \texttt{max}, \texttt{min} и т.д.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}101}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[7 8 9]
+[4 7]
+
+    \end{Verbatim}
+
+    След --- сумма диагональных элементов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}102}]:} \PY{n}{trace}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}102}]:} 3
+\end{Verbatim}
+        
+\subsection{Линейная алгебра}
+\label{numpy4}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}103}]:} \PY{k+kn}{from} \PY{n+nn}{numpy}\PY{n+nn}{.}\PY{n+nn}{linalg} \PY{k}{import} \PY{n}{det}\PY{p}{,}\PY{n}{inv}\PY{p}{,}\PY{n}{solve}\PY{p}{,}\PY{n}{eig}
+          \PY{n}{det}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}103}]:} -2.0
+\end{Verbatim}
+        
+    Обратная матрица.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}104}]:} \PY{n}{a1}\PY{o}{=}\PY{n}{inv}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{a1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[-1.5  0.5]
+ [ 1.   0. ]]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}105}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{n+nd}{@a1}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{a1}\PY{n+nd}{@a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 1.  0.]
+ [ 0.  1.]]
+[[ 1.  0.]
+ [ 0.  1.]]
+
+    \end{Verbatim}
+
+    Решение линейной системы \(au=v\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}106}]:} \PY{n}{v}\PY{o}{=}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n}{float64}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{a1}\PY{n+nd}{@v}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.5  0. ]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}107}]:} \PY{n}{u}\PY{o}{=}\PY{n}{solve}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{v}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{u}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.5  0. ]
+
+    \end{Verbatim}
+
+    Проверим.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}108}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{n+nd}{@u}\PY{o}{\PYZhy{}}\PY{n}{v}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.  0.]
+
+    \end{Verbatim}
+
+    Собственные значения и собственные векторы: \(a u_i = \lambda_i u_i\).
+\texttt{l} --- одномерный массив собственных значений \(\lambda_i\),
+столбцы матрицы \(u\) --- собственные векторы \(u_i\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}109}]:} \PY{n}{l}\PY{p}{,}\PY{n}{u}\PY{o}{=}\PY{n}{eig}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-0.56155281  3.56155281]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}110}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{u}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[-0.87192821 -0.27032301]
+ [ 0.48963374 -0.96276969]]
+
+    \end{Verbatim}
+
+    Проверим.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}111}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+              \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{n+nd}{@u}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{i}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{l}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n}{u}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  0.00000000e+00   1.66533454e-16]
+[  1.11022302e-16   0.00000000e+00]
+
+    \end{Verbatim}
+
+    Функция \texttt{diag} от одномерного массива строит диагональную
+матрицу; от квадратной матрицы --- возвращает одномерный массив её
+диагональных элементов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}112}]:} \PY{n}{L}\PY{o}{=}\PY{n}{diag}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{L}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{diag}\PY{p}{(}\PY{n}{L}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[-0.56155281  0.        ]
+ [ 0.          3.56155281]]
+[-0.56155281  3.56155281]
+
+    \end{Verbatim}
+
+    Все уравнения \(a u_i = \lambda_i u_i\) можно собрать в одно матричное
+уравнение \(a u = u \Lambda\), где \(\Lambda\) --- диагональная матрица с
+собственными значениями \(\lambda_i\) по диагонали.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}113}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{n+nd}{@u}\PY{o}{\PYZhy{}}\PY{n}{u}\PY{n+nd}{@L}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[  0.00000000e+00   1.11022302e-16]
+ [  1.66533454e-16   0.00000000e+00]]
+
+    \end{Verbatim}
+
+    Поэтому \(u^{-1} a u = \Lambda\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}114}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{inv}\PY{p}{(}\PY{n}{u}\PY{p}{)}\PY{n+nd}{@a}\PY{n+nd}{@u}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ -5.61552813e-01   0.00000000e+00]
+ [ -2.22044605e-16   3.56155281e+00]]
+
+    \end{Verbatim}
+
+    Найдём теперь левые собственные векторы \(v_i a = \lambda_i v_i\)
+(собственные значения \(\lambda_i\) те же самые).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}115}]:} \PY{n}{l}\PY{p}{,}\PY{n}{v}\PY{o}{=}\PY{n}{eig}\PY{p}{(}\PY{n}{a}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{v}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[-0.56155281  3.56155281]
+[[-0.96276969 -0.48963374]
+ [ 0.27032301 -0.87192821]]
+
+    \end{Verbatim}
+
+    Собственные векторы нормированы на 1.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}116}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{u}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@u}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{v}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@v}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 1.         -0.23570226]
+ [-0.23570226  1.        ]]
+[[ 1.          0.23570226]
+ [ 0.23570226  1.        ]]
+
+    \end{Verbatim}
+
+    Левые и правые собственные векторы, соответствующие разным собственным
+значениям, ортогональны, потому что
+\(v_i a u_j = \lambda_i v_i u_j = \lambda_j v_i u_j\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}117}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{v}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@u}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[  9.71825316e-01   0.00000000e+00]
+ [ -5.55111512e-17   9.71825316e-01]]
+
+    \end{Verbatim}
+
+\subsection{Преобразование Фурье}
+\label{numpy5}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}118}]:} \PY{n}{a}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 0.   0.1  0.2  0.3  0.4  0.5  0.6  0.7  0.8  0.9  1. ]
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}119}]:} \PY{k+kn}{from} \PY{n+nn}{numpy}\PY{n+nn}{.}\PY{n+nn}{fft} \PY{k}{import} \PY{n}{fft}\PY{p}{,}\PY{n}{ifft}
+          \PY{n}{b}\PY{o}{=}\PY{n}{fft}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[ 5.50+0.j         -0.55+1.87312798j -0.55+0.85581671j -0.55+0.47657771j
+ -0.55+0.25117658j -0.55+0.07907806j -0.55-0.07907806j -0.55-0.25117658j
+ -0.55-0.47657771j -0.55-0.85581671j -0.55-1.87312798j]
+
+    \end{Verbatim}
+
+    Обратное преобразование Фурье.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}120}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{ifft}\PY{p}{(}\PY{n}{b}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[  1.61486985e-15+0.j   1.00000000e-01+0.j   2.00000000e-01+0.j
+   3.00000000e-01+0.j   4.00000000e-01+0.j   5.00000000e-01+0.j
+   6.00000000e-01+0.j   7.00000000e-01+0.j   8.00000000e-01+0.j
+   9.00000000e-01+0.j   1.00000000e+00+0.j]
+
+    \end{Verbatim}
+
+\subsection{Интегрирование}
+\label{numpy6}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}121}]:} \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{integrate} \PY{k}{import} \PY{n}{quad}\PY{p}{,}\PY{n}{odeint}
+          \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{special} \PY{k}{import} \PY{n}{erf}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}122}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+    Адаптивное численное интегрирование (может быть до бесконечности).
+\texttt{err} --- оценка ошибки.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}123}]:} \PY{n}{res}\PY{p}{,}\PY{n}{err}\PY{o}{=}\PY{n}{quad}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{inf}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{sqrt}\PY{p}{(}\PY{n}{pi}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{res}\PY{p}{,}\PY{n}{err}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.886226925453 0.8862269254527579 7.101318390472462e-09
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}124}]:} \PY{n}{res}\PY{p}{,}\PY{n}{err}\PY{o}{=}\PY{n}{quad}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{sqrt}\PY{p}{(}\PY{n}{pi}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{erf}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}\PY{n}{res}\PY{p}{,}\PY{n}{err}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.746824132812 0.7468241328124271 8.291413475940725e-15
+
+    \end{Verbatim}
+
+\subsection{Дифференциальные уравнения}
+\label{numpy7}
+
+    Уравнение осциллятора с затуханием \(\ddot{x} + 2 a \dot{x} + x = 0\).
+Перепишем его в виде системы уравнений первого порядка для \(x\),
+\(v=\dot{x}\):
+
+\(\frac{d}{dt} \begin{pmatrix}x\\v\end{pmatrix} = \begin{pmatrix}v\\-2av-x\end{pmatrix}\)
+
+Решим эту систему численно при \(a=0.2\) с начальным условием
+\(\begin{pmatrix}x\\v\end{pmatrix}=\begin{pmatrix}1\\0\end{pmatrix}\)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}125}]:} \PY{n}{a}\PY{o}{=}\PY{l+m+mf}{0.2}
+          \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{t}\PY{p}{)}\PY{p}{:}
+              \PY{k}{global} \PY{n}{a}
+              \PY{k}{return} \PY{p}{[}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{a}\PY{o}{*}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}126}]:} \PY{n}{t}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{1000}\PY{p}{)}
+          \PY{n}{x}\PY{o}{=}\PY{n}{odeint}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{t}\PY{p}{)}
+\end{Verbatim}
+
+    Графики координаты и скорости.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}127}]:} \PY{k+kn}{from} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{import} \PY{n}{plot}
+          \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+          \PY{n}{plot}\PY{p}{(}\PY{n}{t}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}127}]:} [<matplotlib.lines.Line2D at 0x7f2fade9a6d8>,
+           <matplotlib.lines.Line2D at 0x7f2fade9a8d0>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b21_numpy_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Точное решение для координаты.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}128}]:} \PY{n}{b}\PY{o}{=}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{a}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+          \PY{n}{x0}\PY{o}{=}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{a}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{cos}\PY{p}{(}\PY{n}{b}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{o}{+}\PY{n}{a}\PY{o}{/}\PY{n}{b}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{b}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    Максимальное отличие численного решения от точного.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}129}]:} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{x0}\PY{p}{)}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}129}]:} 7.4104573116740013e-08
+\end{Verbatim}

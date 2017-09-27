@@ -1,0 +1,778 @@
+\section{Модули}
+\label{S110}
+
+Модуль --- это просто файл типа \texttt{.py}, содержащий
+последовательность операторов питона. Его можно использовать двумя
+способами: либо запустить как программу, либо импортировать в другой
+модуль, чтобы сделать доступными определёённые там функции и переменные.
+При импортировании все операторы модуля выполняются от начала до конца,
+включая определения функций и классов и присваивания переменным.
+Впрочем, при повторном импортировании модуль не выполняется. Если Вы его
+изменили и хотите импортировать изменённую версию, нужно приложить
+специальные усилия.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{math}
+        \PY{n}{math}\PY{p}{,}\PY{n+nb}{type}\PY{p}{(}\PY{n}{math}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}1}]:} (<module 'math' from '/usr/lib64/python3.6/lib-dynload/math.cpython-36m-x86\_64-linux-gnu.so'>,
+         module)
+\end{Verbatim}
+        
+    Модуль имеет своё пространство имён. Оператор \texttt{import\ math}
+вводит \emph{объект типа модуль} \texttt{math} в текущее пространство
+имён. Имена, определённые в модуле, при этом в текущем пространстве имён
+не появляются --- их нужно использовать как \texttt{math.что\_то}. Функция
+\texttt{dir} возвращает список имён в модуле (как и в классе или
+объекте).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n+nb}{dir}\PY{p}{(}\PY{n}{math}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} ['\_\_doc\_\_',
+         '\_\_file\_\_',
+         '\_\_loader\_\_',
+         '\_\_name\_\_',
+         '\_\_package\_\_',
+         '\_\_spec\_\_',
+         'acos',
+         'acosh',
+         'asin',
+         'asinh',
+         'atan',
+         'atan2',
+         'atanh',
+         'ceil',
+         'copysign',
+         'cos',
+         'cosh',
+         'degrees',
+         'e',
+         'erf',
+         'erfc',
+         'exp',
+         'expm1',
+         'fabs',
+         'factorial',
+         'floor',
+         'fmod',
+         'frexp',
+         'fsum',
+         'gamma',
+         'gcd',
+         'hypot',
+         'inf',
+         'isclose',
+         'isfinite',
+         'isinf',
+         'isnan',
+         'ldexp',
+         'lgamma',
+         'log',
+         'log10',
+         'log1p',
+         'log2',
+         'modf',
+         'nan',
+         'pi',
+         'pow',
+         'radians',
+         'sin',
+         'sinh',
+         'sqrt',
+         'tan',
+         'tanh',
+         'tau',
+         'trunc']
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{math}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}doc\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} 'This module is always available.  It provides access to the\textbackslash{}nmathematical functions defined by the C standard.'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{math}\PY{o}{.}\PY{n}{pi}\PY{p}{,}\PY{n}{math}\PY{o}{.}\PY{n}{exp}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} (3.141592653589793, <function math.exp>)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{math}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{pi}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} 23.140692632779267
+\end{Verbatim}
+        
+    Встроенные функции, классы и т.д. языка питон живут в модуле
+\texttt{builtins}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{k+kn}{import} \PY{n+nn}{builtins}
+        \PY{n+nb}{dir}\PY{p}{(}\PY{n}{builtins}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} ['ArithmeticError',
+         'AssertionError',
+         'AttributeError',
+         'BaseException',
+         'BlockingIOError',
+         'BrokenPipeError',
+         'BufferError',
+         'BytesWarning',
+         'ChildProcessError',
+         'ConnectionAbortedError',
+         'ConnectionError',
+         'ConnectionRefusedError',
+         'ConnectionResetError',
+         'DeprecationWarning',
+         'EOFError',
+         'Ellipsis',
+         'EnvironmentError',
+         'Exception',
+         'False',
+         'FileExistsError',
+         'FileNotFoundError',
+         'FloatingPointError',
+         'FutureWarning',
+         'GeneratorExit',
+         'IOError',
+         'ImportError',
+         'ImportWarning',
+         'IndentationError',
+         'IndexError',
+         'InterruptedError',
+         'IsADirectoryError',
+         'KeyError',
+         'KeyboardInterrupt',
+         'LookupError',
+         'MemoryError',
+         'ModuleNotFoundError',
+         'NameError',
+         'None',
+         'NotADirectoryError',
+         'NotImplemented',
+         'NotImplementedError',
+         'OSError',
+         'OverflowError',
+         'PendingDeprecationWarning',
+         'PermissionError',
+         'ProcessLookupError',
+         'RecursionError',
+         'ReferenceError',
+         'ResourceWarning',
+         'RuntimeError',
+         'RuntimeWarning',
+         'StopAsyncIteration',
+         'StopIteration',
+         'SyntaxError',
+         'SyntaxWarning',
+         'SystemError',
+         'SystemExit',
+         'TabError',
+         'TimeoutError',
+         'True',
+         'TypeError',
+         'UnboundLocalError',
+         'UnicodeDecodeError',
+         'UnicodeEncodeError',
+         'UnicodeError',
+         'UnicodeTranslateError',
+         'UnicodeWarning',
+         'UserWarning',
+         'ValueError',
+         'Warning',
+         'ZeroDivisionError',
+         '\_\_IPYTHON\_\_',
+         '\_\_build\_class\_\_',
+         '\_\_debug\_\_',
+         '\_\_doc\_\_',
+         '\_\_import\_\_',
+         '\_\_loader\_\_',
+         '\_\_name\_\_',
+         '\_\_package\_\_',
+         '\_\_spec\_\_',
+         'abs',
+         'all',
+         'any',
+         'ascii',
+         'bin',
+         'bool',
+         'bytearray',
+         'bytes',
+         'callable',
+         'chr',
+         'classmethod',
+         'compile',
+         'complex',
+         'copyright',
+         'credits',
+         'delattr',
+         'dict',
+         'dir',
+         'divmod',
+         'dreload',
+         'enumerate',
+         'eval',
+         'exec',
+         'filter',
+         'float',
+         'format',
+         'frozenset',
+         'get\_ipython',
+         'getattr',
+         'globals',
+         'hasattr',
+         'hash',
+         'help',
+         'hex',
+         'id',
+         'input',
+         'int',
+         'isinstance',
+         'issubclass',
+         'iter',
+         'len',
+         'license',
+         'list',
+         'locals',
+         'map',
+         'max',
+         'memoryview',
+         'min',
+         'next',
+         'object',
+         'oct',
+         'open',
+         'ord',
+         'pow',
+         'print',
+         'property',
+         'range',
+         'repr',
+         'reversed',
+         'round',
+         'set',
+         'setattr',
+         'slice',
+         'sorted',
+         'staticmethod',
+         'str',
+         'sum',
+         'super',
+         'tuple',
+         'type',
+         'vars',
+         'zip']
+\end{Verbatim}
+        
+    Если Вам лень полностью писать имя модуля перед каждым использованием
+функции из него, можно использовать \texttt{as} и задать ему краткое
+имя.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{k+kn}{import} \PY{n+nn}{random} \PY{k}{as} \PY{n+nn}{r}
+        \PY{n}{r}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} <module 'random' from '/usr/lib64/python3.6/random.py'>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n+nb}{dir}\PY{p}{(}\PY{n}{r}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} ['BPF',
+         'LOG4',
+         'NV\_MAGICCONST',
+         'RECIP\_BPF',
+         'Random',
+         'SG\_MAGICCONST',
+         'SystemRandom',
+         'TWOPI',
+         '\_BuiltinMethodType',
+         '\_MethodType',
+         '\_Sequence',
+         '\_Set',
+         '\_\_all\_\_',
+         '\_\_builtins\_\_',
+         '\_\_cached\_\_',
+         '\_\_doc\_\_',
+         '\_\_file\_\_',
+         '\_\_loader\_\_',
+         '\_\_name\_\_',
+         '\_\_package\_\_',
+         '\_\_spec\_\_',
+         '\_acos',
+         '\_bisect',
+         '\_ceil',
+         '\_cos',
+         '\_e',
+         '\_exp',
+         '\_inst',
+         '\_itertools',
+         '\_log',
+         '\_pi',
+         '\_random',
+         '\_sha512',
+         '\_sin',
+         '\_sqrt',
+         '\_test',
+         '\_test\_generator',
+         '\_urandom',
+         '\_warn',
+         'betavariate',
+         'choice',
+         'choices',
+         'expovariate',
+         'gammavariate',
+         'gauss',
+         'getrandbits',
+         'getstate',
+         'lognormvariate',
+         'normalvariate',
+         'paretovariate',
+         'randint',
+         'random',
+         'randrange',
+         'sample',
+         'seed',
+         'setstate',
+         'shuffle',
+         'triangular',
+         'uniform',
+         'vonmisesvariate',
+         'weibullvariate']
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{p}{[}\PY{n}{r}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} [0.09637772172557402,
+         0.89551664168298,
+         0.9426823013506337,
+         0.4094328234976712,
+         0.7232184697800689,
+         0.8586383884595843,
+         0.2778551445357017,
+         0.4321903116808209,
+         0.30183017632492515,
+         0.3057854562362986]
+\end{Verbatim}
+        
+    Такая форма оператора \texttt{import} вводит перечисленные имена
+(функции, переменные, классы) из модуля в текущее пространство имён. Мне
+она нравится --- использовать импортированные таким образом объекты
+удобно, не надо писать перед каждым имя модуля.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{k+kn}{from} \PY{n+nn}{sys} \PY{k}{import} \PY{n}{path}
+\end{Verbatim}
+
+    Переменная \texttt{path} --- это список имён директорий, в которых
+оператор \texttt{import} ищет модули. В начале в него входит
+\texttt{\textquotesingle{}\textquotesingle{}} --- директория, в которой
+находится текущая программа (или текущая директория в случае
+интерактивной сессии); директории, перечисленные в переменной окружения
+\texttt{PYTHONPATH} (если такая переменная есть); и стандартные
+директории для данной версии питона. Но это обычный список, его можно
+менять стандартными языковыми средствами. Например, ревнители
+безопасности считают, что опасно включать текущую директорию в
+\texttt{path} --- если пользователю в его директорию кто-нибудь подсунет
+зловредную версию \texttt{math.py}, а программа пользователя выполнит
+\texttt{import\ math}, то этот модуль выполнится, и может, скажем,
+удалить все файлы этого пользователя. Такие ревнители могут сделать
+\texttt{path=path{[}1:{]}}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{path}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} ['',
+          '/usr/lib64/python36.zip',
+          '/usr/lib64/python3.6',
+          '/usr/lib64/python3.6/lib-dynload',
+          '/usr/lib64/python3.6/site-packages',
+          '/usr/lib64/python3.6/site-packages/IPython/extensions',
+          '/home/grozin/.ipython']
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/home/grozin/python}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{path}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} ['',
+          '/usr/lib64/python36.zip',
+          '/usr/lib64/python3.6',
+          '/usr/lib64/python3.6/lib-dynload',
+          '/usr/lib64/python3.6/site-packages',
+          '/usr/lib64/python3.6/site-packages/IPython/extensions',
+          '/home/grozin/.ipython',
+          '/home/grozin/python']
+\end{Verbatim}
+        
+    Если Вам лень писать каждый раз длинное имя функции из модуля, можно
+дать ему короткий псевдоним.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{k+kn}{from} \PY{n+nn}{math} \PY{k}{import} \PY{n}{factorial} \PY{k}{as} \PY{n}{f}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+\end{Verbatim}
+        
+    Для самых ленивых есть оператор \texttt{from\ ...\ import\ *}, который
+импортирует в текущее пространство имён все имена, определённые в
+модуле. Обычно это плохая идея --- Вы засоряете текущее пространство имён,
+и даже не знаете, чем. Такую форму импорта разумно использовать, когда
+Вы импортируете свой модуль, про который Вы всё знаете. Ну или в
+интерактивной сессии, когда Вы хотите попробовать всякие функции из
+какого-нибудь модуля. Но не в программе, которая пишется всерьёз и
+надолго.
+
+Например, в текущей директории есть файл \texttt{fac.py}. Мы работаем в
+\texttt{ipython}, который предоставляет всякие удобства для
+интерактивной работы. Например, можно выполнить \texttt{shell} команду,
+если в начале строки поставить \texttt{!} (только не пробуйте этого
+делать в обычном интерпретаторе питон). Так что легко распечатать этот
+файл. В нём определена одна функция \texttt{fac}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{o}{!}cat fac.py
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\#!/usr/bin/env python3
+'В этом модуле определена функция fac'
+
+def fac(n):
+    'calculate factorial of n'
+    assert type(n) is int and n >= 0
+    r = 1
+    for i in range(2, n + 1):
+        r *= i
+    return r
+
+if \_\_name\_\_ == '\_\_main\_\_':
+    from sys import argv, exit
+    if len(argv) != 2:
+        print('usage: ./fac.py n')
+        exit(1)
+    print(fac(int(argv[1])))
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{k+kn}{from} \PY{n+nn}{fac} \PY{k}{import} \PY{o}{*}
+         \PY{n}{fac}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} 3628800
+\end{Verbatim}
+        
+    Файл \texttt{fac.py} показывает типичное устройство любого файла на
+питоне. Первая строка позволяет запустить такой файл, если у него
+установлен бит, позволяющий исполнять его текущему пользователю. Почему
+не просто \texttt{\#!/usr/bin/python3} ? Потому что на некоторых машинах
+питон может быть в \texttt{/usr/local/bin} или ещё где-то; стандартная
+\texttt{unix}-утилита \texttt{env} (предположительно) всегда живёт в
+\texttt{/usr/bin}. Она позволяет установить какие-нибудь переменные
+окружения, а затем, если есть аргумент --- имя программы, запускает эту
+программу в этом модифицированном окружении; если такого аргумента нет,
+просто печатает это окружение. Так что, вызвав просто \texttt{env}, Вы
+получите список всех текущих переменных окружения с их значениями. В
+данном случае вызывается \texttt{/usr/bin/env\ python3}, то есть никакие
+изменения окружения не произвадятся, и \texttt{env} вызывает
+\texttt{python3}, расположенный где угодно в \texttt{\$PATH}. Почему
+\texttt{python3}? \texttt{python} может быть симлинком либо на
+\texttt{python2}, либо на \texttt{python3}; в свою очередь,
+\texttt{python3} может быть симлинком, скажем, на \texttt{python3.6}.
+Если наша программа предназначена для питона 3, то в первой строке лучше
+указывать \texttt{python3}, иначе на некоторых машинах могут возникнуть
+неприятные сюрпризы.
+
+Дальше следует док-строка модуля. Потом определения всех функций,
+классов и т.д. Заключительная часть файла выполняется, если он запущен
+как программа, а не импортируется куда-то. В этой части обычно пишут
+какие-нибудь простые тесты определённых в файле функций. В данном случае
+используется \texttt{sys.argv} --- список строк-аргументов командной
+строки. \texttt{argv{[}0{]}} --- это имя программы, нас интересует
+переданный ей параметр, \texttt{argv{[}1{]}}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{k+kn}{import} \PY{n+nn}{fac}
+         \PY{n}{fac}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}doc\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}17}]:} 'В этом модуле определена функция fac'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{help}\PY{p}{(}\PY{n}{fac}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Help on module fac:
+
+NAME
+    fac - В этом модуле определена функция fac
+
+FUNCTIONS
+    fac(n)
+        calculate factorial of n
+
+FILE
+    /home/grozin/python/book/fac.py
+
+
+
+    \end{Verbatim}
+
+    Функция \texttt{dir} без аргумента возвращает список имён в текущем
+пространстве имён. Многие имена в этом списке определены
+\texttt{ipython}-ом; в сессии с обычным интерпретатором питон их бы не
+было.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n+nb}{dir}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}19}]:} ['In',
+          'Out',
+          '\_',
+          '\_1',
+          '\_11',
+          '\_12',
+          '\_14',
+          '\_16',
+          '\_17',
+          '\_2',
+          '\_3',
+          '\_4',
+          '\_5',
+          '\_6',
+          '\_7',
+          '\_8',
+          '\_9',
+          '\_\_',
+          '\_\_\_',
+          '\_\_builtin\_\_',
+          '\_\_builtins\_\_',
+          '\_\_doc\_\_',
+          '\_\_loader\_\_',
+          '\_\_name\_\_',
+          '\_\_package\_\_',
+          '\_\_spec\_\_',
+          '\_dh',
+          '\_exit\_code',
+          '\_i',
+          '\_i1',
+          '\_i10',
+          '\_i11',
+          '\_i12',
+          '\_i13',
+          '\_i14',
+          '\_i15',
+          '\_i16',
+          '\_i17',
+          '\_i18',
+          '\_i19',
+          '\_i2',
+          '\_i3',
+          '\_i4',
+          '\_i5',
+          '\_i6',
+          '\_i7',
+          '\_i8',
+          '\_i9',
+          '\_ih',
+          '\_ii',
+          '\_iii',
+          '\_oh',
+          '\_sh',
+          'builtins',
+          'exit',
+          'f',
+          'fac',
+          'get\_ipython',
+          'math',
+          'path',
+          'quit',
+          'r']
+\end{Verbatim}
+        
+    В локальном пространстве имён этой функции два имени.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+             \PY{n}{y}\PY{o}{=}\PY{l+m+mi}{0}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['x', 'y']
+
+    \end{Verbatim}
+
+    В каждом модуле есть строковая переменная \texttt{\_\_name\_\_}, она
+содержит имя модуля. Главная программа (или интерактивная сессия) тоже
+является модулем, его имя \texttt{\_\_main\_\_}. Этим и объясняется вид
+оператора \texttt{if}, который стоит в конце файла \texttt{fac.py}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n+nv+vm}{\PYZus{}\PYZus{}name\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}22}]:} '\_\_main\_\_'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{r}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}name\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}23}]:} 'random'
+\end{Verbatim}
+        
+    Модули не обязательно должны размещаться непосредственно в какой-нибудь
+директории из \texttt{sys.path}; они могут находиться в поддиректории.
+Например, в текущей директории (включённой в \texttt{path}) есть
+поддиректория \texttt{d1}, в ней поддиректория \texttt{d2}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{o}{!}ls d1
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\_\_pycache\_\_  d2  m1.py
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{o}{!}ls d1/d2
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\_\_pycache\_\_  m2.py
+
+    \end{Verbatim}
+
+    Мы можем импортировать модули \texttt{m1} и \texttt{m2} так.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{k+kn}{import} \PY{n+nn}{d1}\PY{n+nn}{.}\PY{n+nn}{m1}
+         \PY{n}{d1}\PY{o}{.}\PY{n}{m1}\PY{o}{.}\PY{n}{f1}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}26}]:} 1
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{k+kn}{import} \PY{n+nn}{d1}\PY{n+nn}{.}\PY{n+nn}{d2}\PY{n+nn}{.}\PY{n+nn}{m2}
+         \PY{n}{d1}\PY{o}{.}\PY{n}{d2}\PY{o}{.}\PY{n}{m2}\PY{o}{.}\PY{n}{f2}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} 2
+\end{Verbatim}
+        
+    Такое поддерево директорий с модулями можно превратить в пакет, который
+с точки зрения пользователя выглядит как единый модуль. Для этого нужно
+добавить файл \texttt{\_\_init\_\_.py}. Вот другое поддерево с теми же
+файлами \texttt{m1.py} и \texttt{m2.py}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{o}{!}ls p1
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\_\_init\_\_.py  \_\_pycache\_\_  m1.py  p2
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{o}{!}ls p1/p2
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\_\_pycache\_\_  m2.py
+
+    \end{Verbatim}
+
+    Только добавлен файл \texttt{\_\_init\_\_.py}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{o}{!}cat p1/\PYZus{}\PYZus{}init\PYZus{}\PYZus{}.py
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+'Пакет, экспортирующий f1 из модуля m1 и f2 из модуля m2'
+from p1.m1 import f1
+from p1.p2.m2 import f2
+
+    \end{Verbatim}
+
+    Теперь мы можем импортировать этот пакет.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{k+kn}{import} \PY{n+nn}{p1}
+\end{Verbatim}
+
+    Питон находит в \texttt{sys.path} директорию \texttt{p1}, содержащую
+\texttt{\_\_init\_\_.py}, и интерпретирует её как пакет. При импорте
+выполняется этот файл \texttt{\_\_init\_\_.py}, инициализирующий пакет.
+Все функции, переменные и т.д., определённые в этом файле
+(непосредственно или через импорт), становятся символами этого пакета.
+\texttt{\_\_init\_\_.py} может включать не все функции из модулей этого
+дерева директорий (и даже не все модули); символы, не определённые в
+\texttt{\_\_init\_\_.py}, недоступны после импорта пакета (конечно,
+пользователь всегда может импортировать любой модуль напрямую и получить
+доступ ко всем его символам).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{p1}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}doc\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}32}]:} 'Пакет, экспортирующий f1 из модуля m1 и f2 из модуля m2'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{p1}\PY{o}{.}\PY{n}{f1}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{p1}\PY{o}{.}\PY{n}{f2}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}33}]:} (1, 2)
+\end{Verbatim}

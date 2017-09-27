@@ -1,0 +1,1921 @@
+\section{SymPy}
+\label{sympy}
+
+\texttt{SymPy} --- это пакет для символьных вычислений на питоне, подобный
+системе \emph{Mathematica}. Он работает с выражениями, содержащими
+символы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{from} \PY{n+nn}{sympy} \PY{k}{import} \PY{o}{*}
+        \PY{n}{init\PYZus{}printing}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    Основными кирпичиками, из которых строятся выражения, являются символы.
+Символ имеет имя, которое используется при печати выражений. Объекты
+класса \texttt{Symbol} нужно создавать и присваивать переменным питона,
+чтобы их можно было использовать. В принципе, имя символа и имя
+переменной, которой мы присваиваем этот символ --- две независимые вещи, и
+можно написать
+\texttt{abc=Symbol(\textquotesingle{}xyz\textquotesingle{})}. Но тогда
+при вводе программы Вы будете использовать \texttt{abc}, а при печати
+результатов \texttt{SymPy} будет использовать \texttt{xyz}, что приведёт
+к ненужной путанице. Поэтому лучше, чтобы имя символа совпадало с именем
+переменной питона, которой он присваивается.
+
+В языках, специально предназначенных для символьных вычислений, таких,
+как \emph{Mathematica}, если Вы используете переменную, которой ничего
+не было присвоено, то она автоматически воспринимается как символ с тем
+же именем. Питон не был изначально предназначен для символьных
+вычислений. Если Вы используете переменную, которой ничего не было
+присвоено, Вы получите сообщение об ошибке. Объекты типа \texttt{Symbol}
+нужно создавать явно.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{x}\PY{o}{=}\PY{n}{Symbol}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{a}\PY{o}{=}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+        \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}3}]:}
+    
+    \[x^{2} - 1\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n+nb}{type}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} sympy.core.add.Add
+\end{Verbatim}
+        
+    Можно определить несколько символов одновременно. Строка разбивается на
+имена по пробелам.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{o}{=}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y z}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    Подставим вместо \(x\) выражение \(y+1\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}6}]:}
+    
+    \[\left(y + 1\right)^{2} - 1\]
+
+    
+
+\subsection{Многочлены и рациональные функции}
+\label{sympy02}
+
+\texttt{SymPy} не раскрывает скобки автоматически. Для этого
+используется функция \texttt{expand}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{a}\PY{o}{=}\PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{n}{z}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{6}
+        \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}7}]:}
+    
+    \[\left(x + y - z\right)^{6}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{a}\PY{o}{=}\PY{n}{expand}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+        \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}8}]:}
+    
+    \[x^{6} + 6 x^{5} y - 6 x^{5} z + 15 x^{4} y^{2} - 30 x^{4} y z + 15 x^{4} z^{2} + 20 x^{3} y^{3} - 60 x^{3} y^{2} z + 60 x^{3} y z^{2} - 20 x^{3} z^{3} + 15 x^{2} y^{4} - 60 x^{2} y^{3} z + 90 x^{2} y^{2} z^{2} - 60 x^{2} y z^{3} + 15 x^{2} z^{4} + 6 x y^{5} - 30 x y^{4} z + 60 x y^{3} z^{2} - 60 x y^{2} z^{3} + 30 x y z^{4} - 6 x z^{5} + y^{6} - 6 y^{5} z + 15 y^{4} z^{2} - 20 y^{3} z^{3} + 15 y^{2} z^{4} - 6 y z^{5} + z^{6}\]
+
+    
+
+    Степень многочлена \(a\) по \(x\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{degree}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}9}]:}
+    
+    \[6\]
+
+    
+
+    Соберём вместе члены с определёнными степенями \(x\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{collect}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}10}]:}
+    
+    \[x^{6} + x^{5} \left(6 y - 6 z\right) + x^{4} \left(15 y^{2} - 30 y z + 15 z^{2}\right) + x^{3} \left(20 y^{3} - 60 y^{2} z + 60 y z^{2} - 20 z^{3}\right) + x^{2} \left(15 y^{4} - 60 y^{3} z + 90 y^{2} z^{2} - 60 y z^{3} + 15 z^{4}\right) + x \left(6 y^{5} - 30 y^{4} z + 60 y^{3} z^{2} - 60 y^{2} z^{3} + 30 y z^{4} - 6 z^{5}\right) + y^{6} - 6 y^{5} z + 15 y^{4} z^{2} - 20 y^{3} z^{3} + 15 y^{2} z^{4} - 6 y z^{5} + z^{6}\]
+
+    
+
+    Многочлен с целыми коэффициентами можно записать в виде произведения
+таких многочленов (причём каждый сомножитель уже невозможно
+расфакторизовать дальше, оставаясь в рамках многочленов с целыми
+коэффициентами). Существуют эффективные алгоритмы для решения этой
+задачи.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{a}\PY{o}{=}\PY{n}{factor}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+         \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}11}]:}
+    
+    \[\left(x + y - z\right)^{6}\]
+
+    
+
+    \texttt{SymPy} не сокращает отношения многочленов на их наибольший общий
+делитель автоматически. Для этого используется функция \texttt{cancel}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{a}\PY{o}{=}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}12}]:}
+    
+    \[\frac{x^{3} - y^{3}}{x^{2} - y^{2}}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{cancel}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}13}]:}
+    
+    \[\frac{x^{2} + x y + y^{2}}{x + y}\]
+
+    
+
+    \texttt{SymPy} не приводит суммы рациональных выражений к общему
+знаменателю автоматически. Для этого используется функция
+\texttt{together}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{a}\PY{o}{=}\PY{n}{y}\PY{o}{/}\PY{p}{(}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{p}{)}\PY{o}{+}\PY{n}{x}\PY{o}{/}\PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{n}{y}\PY{p}{)}
+         \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}14}]:}
+    
+    \[\frac{x}{x + y} + \frac{y}{x - y}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{together}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}15}]:}
+    
+    \[\frac{x \left(x - y\right) + y \left(x + y\right)}{\left(x - y\right) \left(x + y\right)}\]
+
+    
+
+    Функция \texttt{simplify} пытается переписать выражение \emph{в наиболее
+простом виде}. Это понятие не имеет чёткого определения (в разных
+ситуациях \emph{наиболее простыми} могут считаться разные формы
+выражения), и не существует алгоритма такого упрощения. Функция
+\texttt{symplify} работает эвристически, и невозможно заранее
+предугадать, какие упрощения она попытается сделать. Поэтому её удобно
+использовать в интерактивных сессиях, чтобы посмотреть, удастся ли ей
+записать выражение в каком-нибудь разумном виде, но нежелательно
+использовать в программах. В них лучше применять более
+специализированные функции, которые выполняют одно определённое
+преобразование выражения.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{simplify}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}16}]:}
+    
+    \[\frac{x^{2} + y^{2}}{x^{2} - y^{2}}\]
+
+    
+
+    Разложение на элементарные дроби по отношению к \(x\) и \(y\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{apart}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}17}]:}
+    
+    \[- \frac{y}{x + y} + \frac{y}{x - y} + 1\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{apart}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}18}]:}
+    
+    \[\frac{x}{x + y} + \frac{x}{x - y} - 1\]
+
+    
+
+    Подставим конкретные численные значения вместо переменных \(x\) и \(y\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{a}\PY{o}{=}\PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{x}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{y}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{\PYZcb{}}\PY{p}{)}
+         \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}19}]:}
+    
+    \[- \frac{5}{3}\]
+
+    
+
+    А сколько это будет численно?
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{a}\PY{o}{.}\PY{n}{n}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}20}]:}
+    
+    \[-1.66666666666667\]
+
+    
+
+\subsection{Элементарные функции}
+\label{sympy03}
+
+\texttt{SymPy} автоматически применяет упрощения элементарных функция
+(которые справедливы во всех случаях).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{sin}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}21}]:}
+    
+    \[- \sin{\left (x \right )}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{cos}\PY{p}{(}\PY{n}{pi}\PY{o}{/}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}\PY{n}{tan}\PY{p}{(}\PY{l+m+mi}{5}\PY{o}{*}\PY{n}{pi}\PY{o}{/}\PY{l+m+mi}{6}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}22}]:}
+    
+    \[\left ( \frac{\sqrt{2}}{2}, \quad - \frac{\sqrt{3}}{3}\right )\]
+
+    
+
+    \texttt{SymPy} может работать с числами с плавающей точкой, имеющими
+сколь угодно большую точность. Вот \(\pi\) с 100 значащими цифрами.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{pi}\PY{o}{.}\PY{n}{n}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}23}]:}
+    
+    \[3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068\]
+
+    
+
+    \texttt{E} --- это основание натуральных логарифмов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{log}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}\PY{n}{log}\PY{p}{(}\PY{n}{E}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}24}]:}
+    
+    \[\left ( 0, \quad 1\right )\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{exp}\PY{p}{(}\PY{n}{log}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{log}\PY{p}{(}\PY{n}{exp}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}25}]:}
+    
+    \[\left ( x, \quad \log{\left (e^{x} \right )}\right )\]
+
+    
+
+    А почему не \(x\)? Попробуйте подставить \(x=2\pi i\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}26}]:}
+    
+    \[0\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{sqrt}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{,}\PY{n}{sqrt}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}27}]:}
+    
+    \[\left ( x^{2}, \quad \sqrt{x^{4}}\right )\]
+
+    
+
+    А почему не \(x^2\)? Попробуйте подставить \(x=i\).
+
+Символы могут иметь некоторые свойства. Например, они могут быть
+положительными. Тогда \texttt{SymPy} может сильнее упростить квадратные
+корни.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{p}\PY{p}{,}\PY{n}{q}\PY{o}{=}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p q}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{positive}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         \PY{n}{sqrt}\PY{p}{(}\PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}28}]:}
+    
+    \[p\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{12}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{12}\PY{o}{*}\PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}29}]:}
+    
+    \[\left ( 2 \sqrt{3} \sqrt{x^{2} y}, \quad 2 \sqrt{3} p \sqrt{y}\right )\]
+
+    
+
+    Пусть символ \(n\) будет целым (\texttt{I} --- это мнимая единица).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{n}\PY{o}{=}\PY{n}{Symbol}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{integer}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         \PY{n}{simplify}\PY{p}{(}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{o}{*}\PY{n}{I}\PY{o}{*}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}30}]:}
+    
+    \[1\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{sin}\PY{p}{(}\PY{n}{pi}\PY{o}{*}\PY{n}{n}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}31}]:}
+    
+    \[0\]
+
+    
+
+    Метод \texttt{rewrite} пытается переписать выражение в терминах заданной
+функции.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{cos}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{.}\PY{n}{rewrite}\PY{p}{(}\PY{n}{exp}\PY{p}{)}\PY{p}{,}\PY{n}{exp}\PY{p}{(}\PY{n}{I}\PY{o}{*}\PY{n}{x}\PY{p}{)}\PY{o}{.}\PY{n}{rewrite}\PY{p}{(}\PY{n}{cos}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}32}]:}
+    
+    \[\left ( \frac{e^{i x}}{2} + \frac{1}{2} e^{- i x}, \quad i \sin{\left (x \right )} + \cos{\left (x \right )}\right )\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{asin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{.}\PY{n}{rewrite}\PY{p}{(}\PY{n}{log}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}33}]:}
+    
+    \[- i \log{\left (i x + \sqrt{- x^{2} + 1} \right )}\]
+
+    
+
+    Функция \texttt{trigsimp} пытается переписать тригонометрическое
+выражение в \emph{наиболее простом виде}. В программах лучше
+использовать более специализированные функции.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{trigsimp}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}34}]:}
+    
+    \[\cos^{2}{\left (x \right )} + 2\]
+
+    
+
+    Функция \texttt{expand\_trig} разлагает синусы и косинусы сумм и кратных
+углов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{n}{expand\PYZus{}trig}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{expand\PYZus{}trig}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}35}]:}
+    
+    \[\left ( \sin{\left (x \right )} \cos{\left (y \right )} - \sin{\left (y \right )} \cos{\left (x \right )}, \quad 2 \sin{\left (x \right )} \cos{\left (x \right )}\right )\]
+
+    
+
+    Чаще нужно обратное преобразование --- произведений и степеней синусов и
+косинусов в выражения, линейные по этим функциям. Например, пусть мы
+работаем с отрезком ряда Фурье.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{a1}\PY{p}{,}\PY{n}{a2}\PY{p}{,}\PY{n}{b1}\PY{p}{,}\PY{n}{b2}\PY{o}{=}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a1 a2 b1 b2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{a}\PY{o}{=}\PY{n}{a1}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{a2}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{b1}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{b2}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}\PY{p}{)}
+         \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}36}]:}
+    
+    \[a_{1} \cos{\left (x \right )} + a_{2} \cos{\left (2 x \right )} + b_{1} \sin{\left (x \right )} + b_{2} \sin{\left (2 x \right )}\]
+
+    
+
+    Мы хотим возвести его в квадрат и опять получить отрезок ряда Фурье.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n}{a}\PY{o}{=}\PY{p}{(}\PY{n}{a}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{rewrite}\PY{p}{(}\PY{n}{exp}\PY{p}{)}\PY{o}{.}\PY{n}{expand}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{rewrite}\PY{p}{(}\PY{n}{cos}\PY{p}{)}\PY{o}{.}\PY{n}{expand}\PY{p}{(}\PY{p}{)}
+         \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}37}]:}
+    
+    \[\frac{a_{1}^{2}}{2} \cos{\left (2 x \right )} + \frac{a_{1}^{2}}{2} + a_{1} a_{2} \cos{\left (x \right )} + a_{1} a_{2} \cos{\left (3 x \right )} + a_{1} b_{1} \sin{\left (2 x \right )} + a_{1} b_{2} \sin{\left (x \right )} + a_{1} b_{2} \sin{\left (3 x \right )} + \frac{a_{2}^{2}}{2} \cos{\left (4 x \right )} + \frac{a_{2}^{2}}{2} - a_{2} b_{1} \sin{\left (x \right )} + a_{2} b_{1} \sin{\left (3 x \right )} + a_{2} b_{2} \sin{\left (4 x \right )} - \frac{b_{1}^{2}}{2} \cos{\left (2 x \right )} + \frac{b_{1}^{2}}{2} + b_{1} b_{2} \cos{\left (x \right )} - b_{1} b_{2} \cos{\left (3 x \right )} - \frac{b_{2}^{2}}{2} \cos{\left (4 x \right )} + \frac{b_{2}^{2}}{2}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{a}\PY{o}{.}\PY{n}{collect}\PY{p}{(}\PY{p}{[}\PY{n}{cos}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{x}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}38}]:}
+    
+    \[\frac{a_{1}^{2}}{2} + a_{1} b_{1} \sin{\left (2 x \right )} + \frac{a_{2}^{2}}{2} \cos{\left (4 x \right )} + \frac{a_{2}^{2}}{2} + a_{2} b_{2} \sin{\left (4 x \right )} + \frac{b_{1}^{2}}{2} - \frac{b_{2}^{2}}{2} \cos{\left (4 x \right )} + \frac{b_{2}^{2}}{2} + \left(\frac{a_{1}^{2}}{2} - \frac{b_{1}^{2}}{2}\right) \cos{\left (2 x \right )} + \left(a_{1} a_{2} - b_{1} b_{2}\right) \cos{\left (3 x \right )} + \left(a_{1} a_{2} + b_{1} b_{2}\right) \cos{\left (x \right )} + \left(a_{1} b_{2} - a_{2} b_{1}\right) \sin{\left (x \right )} + \left(a_{1} b_{2} + a_{2} b_{1}\right) \sin{\left (3 x \right )}\]
+
+    
+
+    Функция \texttt{expand\_log} преобразует логарифмы произведений и
+степеней в суммы логарифмов (только для положительных величин);
+\texttt{logcombine} производит обратное преобразование.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{a}\PY{o}{=}\PY{n}{expand\PYZus{}log}\PY{p}{(}\PY{n}{log}\PY{p}{(}\PY{n}{p}\PY{o}{*}\PY{n}{q}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+         \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}39}]:}
+    
+    \[\log{\left (p \right )} + 2 \log{\left (q \right )}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{n}{logcombine}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}40}]:}
+    
+    \[\log{\left (p q^{2} \right )}\]
+
+    
+
+    Функция \texttt{expand\_power\_exp} переписывает степени, показатели
+которых --- суммы, через произведения степеней.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{expand\PYZus{}power\PYZus{}exp}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{n}{p}\PY{o}{+}\PY{n}{q}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}41}]:}
+    
+    \[x^{p} x^{q}\]
+
+    
+
+    Функция \texttt{expand\_power\_base} переписывает степени, основания
+которых --- произведения, через произведения степеней.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{n}{expand\PYZus{}power\PYZus{}base}\PY{p}{(}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{n}{n}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}42}]:}
+    
+    \[x^{n} y^{n}\]
+
+    
+
+    Функция \texttt{powsimp} выполняет обратные преобразования.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{powsimp}\PY{p}{(}\PY{n}{exp}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{powsimp}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{n}{n}\PY{o}{*}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{n}{n}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}43}]:}
+    
+    \[\left ( e^{x + 2 y}, \quad \left(x y\right)^{n}\right )\]
+
+    
+
+    Можно вводить функции пользователя. Они могут иметь произвольное число
+аргументов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{n}{f}\PY{o}{=}\PY{n}{Function}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}44}]:}
+    
+    \[f{\left (x \right )} + f{\left (x,y \right )}\]
+
+    
+
+\subsection{Структура выражений}
+\label{sympy04}
+
+Внутреннее представление выражения --- это дерево. Функция \texttt{srepr}
+возвращает строку, представляющую его.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n}{srepr}\PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}45}]:} "Add(Symbol('x'), Integer(1))"
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{n}{srepr}\PY{p}{(}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}46}]:} "Add(Symbol('x'), Integer(-1))"
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{n}{srepr}\PY{p}{(}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}47}]:} "Add(Symbol('x'), Mul(Integer(-1), Symbol('y')))"
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{n}{srepr}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}48}]:} "Mul(Rational(2, 3), Symbol('x'), Symbol('y'))"
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{n}{srepr}\PY{p}{(}\PY{n}{x}\PY{o}{/}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}49}]:} "Mul(Symbol('x'), Pow(Symbol('y'), Integer(-1)))"
+\end{Verbatim}
+        
+    Вместо бинарных операций \texttt{+}, \texttt{*}, \texttt{**} и т.д.
+можно использовать функции \texttt{Add}, \texttt{Mul}, \texttt{Pow} и
+т.д.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}50}]:} \PY{n}{Mul}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{Pow}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{o}{==}\PY{n}{x}\PY{o}{/}\PY{n}{y}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}50}]:} True
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}51}]:} \PY{n}{srepr}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}51}]:} "Function('f')(Symbol('x'), Symbol('y'))"
+\end{Verbatim}
+        
+    Атрибут \texttt{func} --- это функция верхнего уровня в выражении, а
+\texttt{args} --- список её аргументов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{n}{a}\PY{o}{=}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+         \PY{n}{a}\PY{o}{.}\PY{n}{func}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}52}]:} sympy.core.mul.Mul
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{n}{a}\PY{o}{.}\PY{n}{args}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}53}]:}
+    
+    \[\left ( 2, \quad x, \quad y^{2}\right )\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}54}]:} \PY{n}{a}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}54}]:}
+    
+    \[2\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}55}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{a}\PY{o}{.}\PY{n}{args}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2
+x
+y**2
+
+    \end{Verbatim}
+
+    Функция \texttt{subs} заменяет переменную на выражение.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}56}]:} \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}56}]:}
+    
+    \[8 x\]
+
+    
+
+    Она можнет заменить несколько переменных. Для этого ей передаётся список
+кортежей или словарь.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{[}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{pi}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}57}]:}
+    
+    \[8 \pi\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}58}]:} \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{x}\PY{p}{:}\PY{n}{pi}\PY{p}{,}\PY{n}{y}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{\PYZcb{}}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}58}]:}
+    
+    \[8 \pi\]
+
+    
+
+    Она может заменить не переменную, а подвыражение --- функцию с
+аргументами.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}59}]:} \PY{n}{a}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{f}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+         \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}59}]:}
+    
+    \[f{\left (x \right )} + 1\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}60}]:} \PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{o}{*}\PY{n}{z}\PY{p}{)}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}60}]:}
+    
+    \[2 z^{2}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}61}]:} \PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{+}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{)}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}61}]:}
+    
+    \[x^{3} + x + y^{2} + y\]
+
+    
+
+    Подстановки производятся последовательно. В данном случае сначала \(x\)
+заменился на \(y\), получилось \(y^3+y^2\); потом в этом результате
+\(y\) заменилось на \(x\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}62}]:} \PY{n}{a}\PY{o}{=}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}
+         \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{[}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}62}]:}
+    
+    \[x^{3} + x^{2}\]
+
+    
+
+    Если написать эти подстановки в другом порядке, результат будет другим.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}63}]:} \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{[}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}63}]:}
+    
+    \[y^{3} + y^{2}\]
+
+    
+
+    Но можно передать функции \texttt{subs} ключевой параметр
+\texttt{simultaneous=True}, тогда подстановки будут производиться
+одновременно. Таким образом можно, например, поменять местами \(x\) и
+\(y\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}64}]:} \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{[}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{]}\PY{p}{,}\PY{n}{simultaneous}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}64}]:}
+    
+    \[x^{3} + y^{2}\]
+
+    
+
+    Можно заменить функцию на другую функцию.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}65}]:} \PY{n}{g}\PY{o}{=}\PY{n}{Function}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{a}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{f}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+         \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{n}{g}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}65}]:}
+    
+    \[g{\left (x \right )} + g{\left (y \right )}\]
+
+    
+
+    Метод \texttt{replace} ищет подвыражения, соответствующие образцу
+(содержащему произвольные переменные), и заменяет их на заданное
+выражение (оно может содержать те же произвольные переменные).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}66}]:} \PY{n}{a}\PY{o}{=}\PY{n}{Wild}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{,}\PY{n}{a}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}66}]:}
+    
+    \[x^{2} + \left(x + y\right)^{2}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}67}]:} \PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{a}\PY{p}{)}\PY{p}{,}\PY{n}{a}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}67}]:}
+    
+    \[x^{2} + f{\left (x,y \right )}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}68}]:} \PY{n}{a}\PY{o}{=}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+         \PY{n}{a}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}68}]:}
+    
+    \[y^{2} + \left(x + 1\right)^{2}\]
+
+    
+
+    Соответствовать образцу должно целое подвыражение, это не может быть
+часть сомножителей в произведении или меньшая степеть в большей.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}69}]:} \PY{n}{a}\PY{o}{=}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{o}{*}\PY{n}{z}
+         \PY{n}{a}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}69}]:}
+    
+    \[2 x y z\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}70}]:} \PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{+}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{)}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}70}]:}
+    
+    \[x^{4} + x^{3} + x + y\]
+
+    
+
+\subsection{Решение уравнений}
+\label{sympy05}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}71}]:} \PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{c}\PY{p}{,}\PY{n}{d}\PY{p}{,}\PY{n}{e}\PY{p}{,}\PY{n}{f}\PY{o}{=}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a b c d e f}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    Уравнение записывается как функция \texttt{Eq} с двумя параметрами.
+Функция \texttt{solve} возврящает список решений.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}72}]:} \PY{n}{solve}\PY{p}{(}\PY{n}{Eq}\PY{p}{(}\PY{n}{a}\PY{o}{*}\PY{n}{x}\PY{p}{,}\PY{n}{b}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}72}]:}
+    
+    \[\left [ \frac{b}{a}\right ]\]
+
+    
+
+    Впрочем, можно передать функции \texttt{solve} просто выражение.
+Подразумевается уравнение, что это выражение равно 0.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}73}]:} \PY{n}{solve}\PY{p}{(}\PY{n}{a}\PY{o}{*}\PY{n}{x}\PY{o}{+}\PY{n}{b}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}73}]:}
+    
+    \[\left [ - \frac{b}{a}\right ]\]
+
+    
+
+    Квадратное уравнение имеет 2 решения.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}74}]:} \PY{n}{solve}\PY{p}{(}\PY{n}{a}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{b}\PY{o}{*}\PY{n}{x}\PY{o}{+}\PY{n}{c}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}74}]:}
+    
+    \[\left [ \frac{1}{2 a} \left(- b + \sqrt{- 4 a c + b^{2}}\right), \quad - \frac{1}{2 a} \left(b + \sqrt{- 4 a c + b^{2}}\right)\right ]\]
+
+    
+
+    Система линейных уравнений.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}75}]:} \PY{n}{solve}\PY{p}{(}\PY{p}{[}\PY{n}{a}\PY{o}{*}\PY{n}{x}\PY{o}{+}\PY{n}{b}\PY{o}{*}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{n}{e}\PY{p}{,}\PY{n}{c}\PY{o}{*}\PY{n}{x}\PY{o}{+}\PY{n}{d}\PY{o}{*}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{n}{f}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}75}]:}
+    
+    \[\left \{ x : \frac{- b f + d e}{a d - b c}, \quad y : \frac{a f - c e}{a d - b c}\right \}\]
+
+    
+
+    Функция \texttt{roots} возвращает корни многочлена с их
+множественностями.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}76}]:} \PY{n}{roots}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{x}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}76}]:}
+    
+    \[\left \{ -2 : 1, \quad 1 : 2\right \}\]
+
+    
+
+    Функция \texttt{solve\_poly\_system} решает систему полиномиальных
+уравнений, строя их базис Грёбнера.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}77}]:} \PY{n}{p1}\PY{o}{=}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+         \PY{n}{p2}\PY{o}{=}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+         \PY{n}{solve\PYZus{}poly\PYZus{}system}\PY{p}{(}\PY{p}{[}\PY{n}{p1}\PY{p}{,}\PY{n}{p2}\PY{p}{]}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}77}]:}
+    
+    \[\left [ \left ( 4 \left(-1 - \sqrt{- \frac{\sqrt{3}}{4} + \frac{1}{2}}\right) \sqrt{- \frac{\sqrt{3}}{4} + \frac{1}{2}} \left(- \sqrt{- \frac{\sqrt{3}}{4} + \frac{1}{2}} + 1\right), \quad - \sqrt{- \frac{\sqrt{3}}{4} + \frac{1}{2}}\right ), \quad \left ( - 4 \left(-1 + \sqrt{- \frac{\sqrt{3}}{4} + \frac{1}{2}}\right) \sqrt{- \frac{\sqrt{3}}{4} + \frac{1}{2}} \left(\sqrt{- \frac{\sqrt{3}}{4} + \frac{1}{2}} + 1\right), \quad \sqrt{- \frac{\sqrt{3}}{4} + \frac{1}{2}}\right ), \quad \left ( 4 \left(-1 - \sqrt{\frac{\sqrt{3}}{4} + \frac{1}{2}}\right) \sqrt{\frac{\sqrt{3}}{4} + \frac{1}{2}} \left(- \sqrt{\frac{\sqrt{3}}{4} + \frac{1}{2}} + 1\right), \quad - \sqrt{\frac{\sqrt{3}}{4} + \frac{1}{2}}\right ), \quad \left ( - 4 \left(-1 + \sqrt{\frac{\sqrt{3}}{4} + \frac{1}{2}}\right) \sqrt{\frac{\sqrt{3}}{4} + \frac{1}{2}} \left(\sqrt{\frac{\sqrt{3}}{4} + \frac{1}{2}} + 1\right), \quad \sqrt{\frac{\sqrt{3}}{4} + \frac{1}{2}}\right )\right ]\]
+
+    
+
+\subsection{Ряды}
+\label{sympy06}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}78}]:} \PY{n}{exp}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{.}\PY{n}{series}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}78}]:}
+    
+    \[1 + x + \frac{x^{2}}{2} + \frac{x^{3}}{6} + \frac{x^{4}}{24} + \mathcal{O}\left(x^{5}\right)\]
+
+    
+
+    Ряд может начинаться с отрицательной степени.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}79}]:} \PY{n}{cot}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{.}\PY{n}{series}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}79}]:}
+    
+    \[\frac{1}{x} - \frac{x}{3} - \frac{x^{3}}{45} + \mathcal{O}\left(x^{5}\right)\]
+
+    
+
+    И даже идти по полуцелым степеням.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}80}]:} \PY{n}{sqrt}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{series}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}80}]:}
+    
+    \[\sqrt{x} - \frac{x^{\frac{3}{2}}}{2} - \frac{x^{\frac{5}{2}}}{8} - \frac{x^{\frac{7}{2}}}{16} - \frac{5 x^{\frac{9}{2}}}{128} + \mathcal{O}\left(x^{5}\right)\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}81}]:} \PY{n}{log}\PY{p}{(}\PY{n}{gamma}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{series}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{)}\PY{o}{.}\PY{n}{rewrite}\PY{p}{(}\PY{n}{zeta}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}81}]:}
+    
+    \[- \gamma x + \frac{\pi^{2} x^{2}}{12} - \frac{x^{3} \zeta\left(3\right)}{3} + \frac{\pi^{4} x^{4}}{360} - \frac{x^{5} \zeta\left(5\right)}{5} + \mathcal{O}\left(x^{6}\right)\]
+
+    
+
+    Подготовим 3 ряда.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}82}]:} \PY{n}{sinx}\PY{o}{=}\PY{n}{series}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}
+         \PY{n}{sinx}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}82}]:}
+    
+    \[x - \frac{x^{3}}{6} + \frac{x^{5}}{120} - \frac{x^{7}}{5040} + \mathcal{O}\left(x^{8}\right)\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}83}]:} \PY{n}{cosx}\PY{o}{=}\PY{n}{series}\PY{p}{(}\PY{n}{cos}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+         \PY{n}{cosx}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}83}]:}
+    
+    \[1 - \frac{x^{2}}{2} + \frac{x^{4}}{24} - \frac{x^{6}}{720} + \mathcal{O}\left(x^{8}\right)\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}84}]:} \PY{n}{tanx}\PY{o}{=}\PY{n}{series}\PY{p}{(}\PY{n}{tan}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+         \PY{n}{tanx}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}84}]:}
+    
+    \[x + \frac{x^{3}}{3} + \frac{2 x^{5}}{15} + \frac{17 x^{7}}{315} + \mathcal{O}\left(x^{8}\right)\]
+
+    
+
+    Произведения и частные рядов не вычисляются автоматически, к ним надо
+применить функцию \texttt{series}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}85}]:} \PY{n}{series}\PY{p}{(}\PY{n}{tanx}\PY{o}{*}\PY{n}{cosx}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}85}]:}
+    
+    \[x - \frac{x^{3}}{6} + \frac{x^{5}}{120} - \frac{x^{7}}{5040} + \mathcal{O}\left(x^{8}\right)\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}86}]:} \PY{n}{series}\PY{p}{(}\PY{n}{sinx}\PY{o}{/}\PY{n}{cosx}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}86}]:}
+    
+    \[x + \frac{x^{3}}{3} + \frac{2 x^{5}}{15} + \frac{17 x^{7}}{315} + \mathcal{O}\left(x^{8}\right)\]
+
+    
+
+    А этот ряд должен быть равен 1. Но поскольку \texttt{sinx} и
+\texttt{cosx} известны лишь с ограниченной точностью, мы получаем 1 с
+той же точностью.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}87}]:} \PY{n}{series}\PY{p}{(}\PY{n}{sinx}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{cosx}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}87}]:}
+    
+    \[1 + \mathcal{O}\left(x^{8}\right)\]
+
+    
+
+    Здесь первые члены сократились, и ответ можно получить лишь с меньшей
+точностью.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}88}]:} \PY{n}{series}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{cosx}\PY{p}{)}\PY{o}{/}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}88}]:}
+    
+    \[\frac{1}{2} - \frac{x^{2}}{24} + \frac{x^{4}}{720} + \mathcal{O}\left(x^{6}\right)\]
+
+    
+
+    Ряды можно дифференцировать и интегрировать.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}89}]:} \PY{n}{diff}\PY{p}{(}\PY{n}{sinx}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}89}]:}
+    
+    \[1 - \frac{x^{2}}{2} + \frac{x^{4}}{24} - \frac{x^{6}}{720} + \mathcal{O}\left(x^{7}\right)\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}90}]:} \PY{n}{integrate}\PY{p}{(}\PY{n}{cosx}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}90}]:}
+    
+    \[x - \frac{x^{3}}{6} + \frac{x^{5}}{120} - \frac{x^{7}}{5040} + \mathcal{O}\left(x^{9}\right)\]
+
+    
+
+    Можно подставить ряд (если он начинается с малого члена) вместо
+переменной разложения в другой ряд. Вот ряды для \(\sin(\tan(x))\) и
+\(\tan(\sin(x))\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}91}]:} \PY{n}{st}\PY{o}{=}\PY{n}{series}\PY{p}{(}\PY{n}{sinx}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{tanx}\PY{p}{)}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+         \PY{n}{st}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}91}]:}
+    
+    \[x + \frac{x^{3}}{6} - \frac{x^{5}}{40} - \frac{55 x^{7}}{1008} + \mathcal{O}\left(x^{8}\right)\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}92}]:} \PY{n}{ts}\PY{o}{=}\PY{n}{series}\PY{p}{(}\PY{n}{tanx}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{sinx}\PY{p}{)}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+         \PY{n}{ts}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}92}]:}
+    
+    \[x + \frac{x^{3}}{6} - \frac{x^{5}}{40} - \frac{107 x^{7}}{5040} + \mathcal{O}\left(x^{8}\right)\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}93}]:} \PY{n}{series}\PY{p}{(}\PY{n}{ts}\PY{o}{\PYZhy{}}\PY{n}{st}\PY{p}{,}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}93}]:}
+    
+    \[\frac{x^{7}}{30} + \mathcal{O}\left(x^{8}\right)\]
+
+    
+
+    В ряд нельзя подставлять численное значение переменной разложения (а
+значит, нельзя и строить график). Для этого нужно сначала убрать
+\(\mathcal{O}\) член, превратив отрезок ряда в многочлен.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}94}]:} \PY{n}{a}\PY{o}{=}\PY{n}{sinx}\PY{o}{.}\PY{n}{removeO}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}95}]:} \PY{n}{a}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}95}]:}
+    
+    \[0.0998334166468254\]
+
+    
+
+\subsection{Производные}
+\label{sympy07}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}96}]:} \PY{n}{a}\PY{o}{=}\PY{n}{x}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{n}{y}\PY{p}{)}
+         \PY{n}{diff}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}96}]:}
+    
+    \[x \cos{\left (x + y \right )} + \sin{\left (x + y \right )}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}97}]:} \PY{n}{diff}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}97}]:}
+    
+    \[x \cos{\left (x + y \right )}\]
+
+    
+
+    Вторая производная по \(x\) и первая по \(y\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}98}]:} \PY{n}{diff}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}98}]:}
+    
+    \[- x \cos{\left (x + y \right )} + 2 \sin{\left (x + y \right )}\]
+
+    
+
+    Можно дифференцировать выражения, содержащие неопределённые функции.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}99}]:} \PY{n}{a}\PY{o}{=}\PY{n}{x}\PY{o}{*}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{b}\PY{o}{=}\PY{n}{diff}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+         \PY{n}{b}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}99}]:}
+    
+    \[2 x^{2} \left. \frac{d}{d \xi_{1}} f{\left (\xi_{1} \right )} \right|_{\substack{ \xi_{1}=x^{2} }} + f{\left (x^{2} \right )}\]
+
+    
+
+    Что это за зверь такой получился?
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}100}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2*x**2*Subs(Derivative(f(\_xi\_1), \_xi\_1), (\_xi\_1,), (x**2,)) + f(x**2)
+
+    \end{Verbatim}
+
+    Функция \texttt{Derivative} представляет невычисленную производную. Её
+можно вычислить методом \texttt{doit}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}101}]:} \PY{n}{a}\PY{o}{=}\PY{n}{Derivative}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+          \PY{n}{Eq}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{a}\PY{o}{.}\PY{n}{doit}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}101}]:}
+    
+    \[\frac{d}{d x} \sin{\left (x \right )} = \cos{\left (x \right )}\]
+
+    
+
+\subsection{Интегралы}
+\label{sympy08}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}102}]:} \PY{n}{integrate}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}102}]:}
+    
+    \[\frac{1}{4} \log{\left (x \right )} - \frac{1}{8} \log{\left (x^{2} - 2 \right )} - \frac{1}{4 x^{2} - 8}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}103}]:} \PY{n}{integrate}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{n}{exp}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}103}]:}
+    
+    \[x - \log{\left (e^{x} + 1 \right )}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}104}]:} \PY{n}{integrate}\PY{p}{(}\PY{n}{log}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}104}]:}
+    
+    \[x \log{\left (x \right )} - x\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}105}]:} \PY{n}{integrate}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}105}]:}
+    
+    \[- x \cos{\left (x \right )} + \sin{\left (x \right )}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}106}]:} \PY{n}{integrate}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}106}]:}
+    
+    \[- \frac{e^{- x^{2}}}{2}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}107}]:} \PY{n}{a}\PY{o}{=}\PY{n}{integrate}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+          \PY{n}{a}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}107}]:}
+    
+    \[\int x^{x}\, dx\]
+
+    
+
+    Получился невычисленный интеграл.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}108}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Integral(x**x, x)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}109}]:} \PY{n}{a}\PY{o}{=}\PY{n}{Integral}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+          \PY{n}{Eq}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{a}\PY{o}{.}\PY{n}{doit}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}109}]:}
+    
+    \[\int \sin{\left (x \right )}\, dx = - \cos{\left (x \right )}\]
+
+    
+
+    Определённые интегралы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}110}]:} \PY{n}{integrate}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{pi}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}110}]:}
+    
+    \[2\]
+
+    
+
+    \texttt{oo} --- это \(\infty\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}111}]:} \PY{n}{integrate}\PY{p}{(}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{oo}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}111}]:}
+    
+    \[\frac{\sqrt{\pi}}{2}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}112}]:} \PY{n}{integrate}\PY{p}{(}\PY{n}{log}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}112}]:}
+    
+    \[- \frac{\pi^{2}}{6}\]
+
+    
+
+\subsection{Суммирование рядов}
+\label{sympy09}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}113}]:} \PY{n}{summation}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{n}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{oo}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}113}]:}
+    
+    \[\frac{\pi^{2}}{6}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}114}]:} \PY{n}{summation}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{n}{n}\PY{o}{/}\PY{n}{n}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{oo}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}114}]:}
+    
+    \[- \frac{\pi^{2}}{12}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}115}]:} \PY{n}{summation}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{n}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{,}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{oo}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}115}]:}
+    
+    \[\frac{\pi^{4}}{90}\]
+
+    
+
+    Невычисленная сумма обозначается \texttt{Sum}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}116}]:} \PY{n}{a}\PY{o}{=}\PY{n}{Sum}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{n}{n}\PY{o}{/}\PY{n}{factorial}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{oo}\PY{p}{)}\PY{p}{)}
+          \PY{n}{Eq}\PY{p}{(}\PY{n}{a}\PY{p}{,}\PY{n}{a}\PY{o}{.}\PY{n}{doit}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}116}]:}
+    
+    \[\sum_{n=0}^{\infty} \frac{x^{n}}{n!} = e^{x}\]
+
+    
+
+\subsection{Пределы}
+\label{sympy10}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}117}]:} \PY{n}{limit}\PY{p}{(}\PY{p}{(}\PY{n}{tan}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{sin}\PY{p}{(}\PY{n}{tan}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{7}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}117}]:}
+    
+    \[\frac{1}{30}\]
+
+    
+
+    Ну это простой предел, считается разложением числителя и знаменателя в
+ряды. А вот если в \(x=0\) существенно особая точка, дело сложнее.
+Посчитаем односторонние пределы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}118}]:} \PY{n}{limit}\PY{p}{(}\PY{p}{(}\PY{n}{tan}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{sin}\PY{p}{(}\PY{n}{tan}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{7}\PY{o}{+}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{+}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}118}]:}
+    
+    \[\frac{1}{30}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}119}]:} \PY{n}{limit}\PY{p}{(}\PY{p}{(}\PY{n}{tan}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{sin}\PY{p}{(}\PY{n}{tan}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{7}\PY{o}{+}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}119}]:}
+    
+    \[0\]
+
+    
+
+\subsection{Дифференциальные уравнения}
+\label{sympy11}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}120}]:} \PY{n}{t}\PY{o}{=}\PY{n}{Symbol}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{x}\PY{o}{=}\PY{n}{Function}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{p}\PY{o}{=}\PY{n}{Function}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    Первого порядка.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}121}]:} \PY{n}{dsolve}\PY{p}{(}\PY{n}{diff}\PY{p}{(}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{t}\PY{p}{)}\PY{o}{+}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}121}]:}
+    
+    \[x{\left (t \right )} = C_{1} e^{- t}\]
+
+    
+
+    Второго порядка.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}122}]:} \PY{n}{dsolve}\PY{p}{(}\PY{n}{diff}\PY{p}{(}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{t}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{+}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}122}]:}
+    
+    \[x{\left (t \right )} = C_{1} \sin{\left (t \right )} + C_{2} \cos{\left (t \right )}\]
+
+    
+
+    Система уравнений первого порядка.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}123}]:} \PY{n}{dsolve}\PY{p}{(}\PY{p}{(}\PY{n}{diff}\PY{p}{(}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{t}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{p}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{diff}\PY{p}{(}\PY{n}{p}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{t}\PY{p}{)}\PY{o}{+}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}123}]:}
+    
+    \[\left [ x{\left (t \right )} = C_{1} \sin{\left (t \right )} + C_{2} \cos{\left (t \right )}, \quad p{\left (t \right )} = C_{1} \cos{\left (t \right )} - C_{2} \sin{\left (t \right )}\right ]\]
+
+    
+
+\subsection{Линейная алгебра}
+\label{sympy12}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}124}]:} \PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{c}\PY{p}{,}\PY{n}{d}\PY{p}{,}\PY{n}{e}\PY{p}{,}\PY{n}{f}\PY{o}{=}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a b c d e f}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    Матрицу можно построить из списка списков.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}125}]:} \PY{n}{M}\PY{o}{=}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{c}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{n}{d}\PY{p}{,}\PY{n}{e}\PY{p}{,}\PY{n}{f}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+          \PY{n}{M}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}125}]:}
+    
+    \[\left[\begin{matrix}a & b & c\\d & e & f\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}126}]:} \PY{n}{M}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}126}]:}
+    
+    \[\left ( 2, \quad 3\right )\]
+
+    
+
+    Матрица-строка.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}127}]:} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}127}]:}
+    
+    \[\left[\begin{matrix}1 & 2 & 3\end{matrix}\right]\]
+
+    
+
+    Матрица-столбец.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}128}]:} \PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}128}]:}
+    
+    \[\left[\begin{matrix}1\\2\\3\end{matrix}\right]\]
+
+    
+
+    Можно построить матрицу из функции.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}129}]:} \PY{k}{def} \PY{n+nf}{g}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{i}\PY{o}{+}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{Matrix}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{g}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}129}]:}
+    
+    \[\left[\begin{matrix}1 & \frac{1}{2} & \frac{1}{3}\\\frac{1}{2} & \frac{1}{3} & \frac{1}{4}\\\frac{1}{3} & \frac{1}{4} & \frac{1}{5}\end{matrix}\right]\]
+
+    
+
+    Или из неопределённой функции.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}130}]:} \PY{n}{g}\PY{o}{=}\PY{n}{Function}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{M}\PY{o}{=}\PY{n}{Matrix}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{g}\PY{p}{)}
+          \PY{n}{M}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}130}]:}
+    
+    \[\left[\begin{matrix}g{\left (0,0 \right )} & g{\left (0,1 \right )} & g{\left (0,2 \right )}\\g{\left (1,0 \right )} & g{\left (1,1 \right )} & g{\left (1,2 \right )}\\g{\left (2,0 \right )} & g{\left (2,1 \right )} & g{\left (2,2 \right )}\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}131}]:} \PY{n}{M}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}131}]:}
+    
+    \[g{\left (1,2 \right )}\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}132}]:} \PY{n}{M}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}
+          \PY{n}{M}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}132}]:}
+    
+    \[\left[\begin{matrix}g{\left (0,0 \right )} & g{\left (0,1 \right )} & g{\left (0,2 \right )}\\g{\left (1,0 \right )} & g{\left (1,1 \right )} & 0\\g{\left (2,0 \right )} & g{\left (2,1 \right )} & g{\left (2,2 \right )}\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}133}]:} \PY{n}{M}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{p}{:}\PY{p}{]}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}133}]:}
+    
+    \[\left[\begin{matrix}g{\left (2,0 \right )} & g{\left (2,1 \right )} & g{\left (2,2 \right )}\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}134}]:} \PY{n}{M}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}134}]:}
+    
+    \[\left[\begin{matrix}g{\left (0,1 \right )}\\g{\left (1,1 \right )}\\g{\left (2,1 \right )}\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}135}]:} \PY{n}{M}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}135}]:}
+    
+    \[\left[\begin{matrix}g{\left (0,1 \right )} & g{\left (0,2 \right )}\\g{\left (1,1 \right )} & 0\end{matrix}\right]\]
+
+    
+
+    Единичная матрица.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}136}]:} \PY{n}{eye}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}136}]:}
+    
+    \[\left[\begin{matrix}1 & 0 & 0\\0 & 1 & 0\\0 & 0 & 1\end{matrix}\right]\]
+
+    
+
+    Матрица из нулей.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}137}]:} \PY{n}{zeros}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}137}]:}
+    
+    \[\left[\begin{matrix}0 & 0 & 0\\0 & 0 & 0\\0 & 0 & 0\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}138}]:} \PY{n}{zeros}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}138}]:}
+    
+    \[\left[\begin{matrix}0 & 0 & 0\\0 & 0 & 0\end{matrix}\right]\]
+
+    
+
+    Диагональная матрица.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}139}]:} \PY{n}{diag}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}139}]:}
+    
+    \[\left[\begin{matrix}1 & 0 & 0\\0 & 2 & 0\\0 & 0 & 3\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}140}]:} \PY{n}{M}\PY{o}{=}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{a}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{a}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+          \PY{n}{diag}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{M}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}140}]:}
+    
+    \[\left[\begin{matrix}1 & 0 & 0 & 0\\0 & a & 1 & 0\\0 & 0 & a & 0\\0 & 0 & 0 & 2\end{matrix}\right]\]
+
+    
+
+    Операции с матрицами.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}141}]:} \PY{n}{A}\PY{o}{=}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{n}{c}\PY{p}{,}\PY{n}{d}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+          \PY{n}{B}\PY{o}{=}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+          \PY{n}{A}\PY{o}{+}\PY{n}{B}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}141}]:}
+    
+    \[\left[\begin{matrix}a + 1 & b + 2\\c + 3 & d + 4\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}142}]:} \PY{n}{A}\PY{o}{*}\PY{n}{B}\PY{p}{,}\PY{n}{B}\PY{o}{*}\PY{n}{A}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}142}]:}
+    
+    \[\left ( \left[\begin{matrix}a + 3 b & 2 a + 4 b\\c + 3 d & 2 c + 4 d\end{matrix}\right], \quad \left[\begin{matrix}a + 2 c & b + 2 d\\3 a + 4 c & 3 b + 4 d\end{matrix}\right]\right )\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}143}]:} \PY{n}{A}\PY{o}{*}\PY{n}{B}\PY{o}{\PYZhy{}}\PY{n}{B}\PY{o}{*}\PY{n}{A}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}143}]:}
+    
+    \[\left[\begin{matrix}3 b - 2 c & 2 a + 3 b - 2 d\\- 3 a - 3 c + 3 d & - 3 b + 2 c\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}144}]:} \PY{n}{simplify}\PY{p}{(}\PY{n}{A}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}144}]:}
+    
+    \[\left[\begin{matrix}\frac{d}{a d - b c} & - \frac{b}{a d - b c}\\- \frac{c}{a d - b c} & \frac{a}{a d - b c}\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}145}]:} \PY{n}{det}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}145}]:}
+    
+    \[a d - b c\]
+
+    
+
+\subsubsection{Собственные значения и векторы}
+\label{sympy13}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}146}]:} \PY{n}{x}\PY{o}{=}\PY{n}{Symbol}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{real}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}147}]:} \PY{n}{M}\PY{o}{=}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{+}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{+}\PY{n}{x}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{+}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{16}\PY{o}{*}\PY{n}{x}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+          \PY{n}{M}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}147}]:}
+    
+    \[\left[\begin{matrix}\left(- x + 1\right)^{3} \left(x + 3\right) & 4 x \left(- x^{2} + 1\right) & \left(- x + 3\right) \left(2 x^{2} - 2\right)\\4 x \left(- x^{2} + 1\right) & - \left(- x + 3\right) \left(x + 1\right)^{3} & \left(x + 3\right) \left(- 2 x^{2} + 2\right)\\\left(- x + 3\right) \left(2 x^{2} - 2\right) & \left(x + 3\right) \left(- 2 x^{2} + 2\right) & 16 x\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}148}]:} \PY{n}{det}\PY{p}{(}\PY{n}{M}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}148}]:}
+    
+    \[0\]
+
+    
+
+    Значит, у этой матрицы есть нулевое подпространство (она обращает
+векторы из этого подпространства в 0). Базис этого подпространства.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}149}]:} \PY{n}{v}\PY{o}{=}\PY{n}{M}\PY{o}{.}\PY{n}{nullspace}\PY{p}{(}\PY{p}{)}
+          \PY{n+nb}{len}\PY{p}{(}\PY{n}{v}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}149}]:}
+    
+    \[1\]
+
+    
+
+    Оно одномерно.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}150}]:} \PY{n}{v}\PY{o}{=}\PY{n}{simplify}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+          \PY{n}{v}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}150}]:}
+    
+    \[\left[\begin{matrix}- \frac{2}{x - 1}\\\frac{2}{x + 1}\\1\end{matrix}\right]\]
+
+    
+
+    Проверим.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}151}]:} \PY{n}{simplify}\PY{p}{(}\PY{n}{M}\PY{o}{*}\PY{n}{v}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}151}]:}
+    
+    \[\left[\begin{matrix}0\\0\\0\end{matrix}\right]\]
+
+    
+
+    Собственные значения и их кратности.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}152}]:} \PY{n}{M}\PY{o}{.}\PY{n}{eigenvals}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}152}]:}
+    
+    \[\left \{ 0 : 1, \quad - \left(x^{2} + 3\right)^{2} : 1, \quad \left(x^{2} + 3\right)^{2} : 1\right \}\]
+
+    
+
+    Если нужны не только собственные значения, но и собственные векторы, то
+нужно использовать метод \texttt{eigenvects}. Он возвращает список
+кортежей. В каждом из них нулевой элемент --- собственное значение, первый
+--- его кратность, и последний --- список собственных векторов, образующих
+базис (их столько, какова кратность).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}153}]:} \PY{n}{v}\PY{o}{=}\PY{n}{M}\PY{o}{.}\PY{n}{eigenvects}\PY{p}{(}\PY{p}{)}
+          \PY{n+nb}{len}\PY{p}{(}\PY{n}{v}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}153}]:}
+    
+    \[3\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}154}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+              \PY{n}{v}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{=}\PY{n}{simplify}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+          \PY{n}{v}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}154}]:}
+    
+    \[\left [ \left ( 0, \quad 1, \quad \left [ \left[\begin{matrix}- \frac{2}{x - 1}\\\frac{2}{x + 1}\\1\end{matrix}\right]\right ]\right ), \quad \left ( - \left(x^{2} + 3\right)^{2}, \quad 1, \quad \left [ \left[\begin{matrix}\frac{x}{2} + \frac{1}{2}\\\frac{x + 1}{x - 1}\\1\end{matrix}\right]\right ]\right ), \quad \left ( \left(x^{2} + 3\right)^{2}, \quad 1, \quad \left [ \left[\begin{matrix}\frac{x - 1}{x + 1}\\- \frac{x}{2} + \frac{1}{2}\\1\end{matrix}\right]\right ]\right )\right ]\]
+
+    
+
+    Проверим.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}155}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+              \PY{n}{z}\PY{o}{=}\PY{n}{M}\PY{o}{*}\PY{n}{v}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{v}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{*}\PY{n}{v}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+              \PY{n}{pprint}\PY{p}{(}\PY{n}{simplify}\PY{p}{(}\PY{n}{z}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+%     \begin{Verbatim}[commandchars=\\\{\}]
+% ⎡0⎤
+% ⎢ ⎥
+% ⎢0⎥
+% ⎢ ⎥
+% ⎣0⎦
+% ⎡0⎤
+% ⎢ ⎥
+% ⎢0⎥
+% ⎢ ⎥
+% ⎣0⎦
+% ⎡0⎤
+% ⎢ ⎥
+% ⎢0⎥
+% ⎢ ⎥
+% ⎣0⎦
+
+%     \end{Verbatim}
+\begin{align*}
+&\left[\begin{matrix}0\\0\\0\end{matrix}\right]\\
+&\left[\begin{matrix}0\\0\\0\end{matrix}\right]\\
+&\left[\begin{matrix}0\\0\\0\end{matrix}\right]
+\end{align*}
+
+\subsubsection{Жорданова нормальная форма}
+\label{sympy14}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}156}]:} \PY{n}{M}\PY{o}{=}\PY{n}{Matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{13}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{o}{\PYZhy{}}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{11}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{41}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{13}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+                    \PY{p}{[}\PY{o}{\PYZhy{}}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{,}\PY{n}{Rational}\PY{p}{(}\PY{l+m+mi}{34}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{)}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+          \PY{n}{M}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}156}]:}
+    
+    \[\left[\begin{matrix}\frac{13}{9} & - \frac{2}{9} & \frac{1}{3} & \frac{4}{9} & \frac{2}{3}\\- \frac{2}{9} & \frac{10}{9} & \frac{2}{15} & - \frac{2}{9} & - \frac{11}{15}\\\frac{1}{5} & - \frac{2}{5} & \frac{41}{25} & - \frac{2}{5} & \frac{12}{25}\\\frac{4}{9} & - \frac{2}{9} & \frac{14}{15} & \frac{13}{9} & - \frac{2}{15}\\- \frac{4}{15} & \frac{8}{15} & \frac{12}{25} & \frac{8}{15} & \frac{34}{25}\end{matrix}\right]\]
+
+    
+
+    Метод \texttt{M.jordan\_form()} возвращает пару матриц, матрицу
+преобразования \(P\) и собственно жорданову форму \(J\):
+\(M = P J P^{-1}\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}157}]:} \PY{n}{P}\PY{p}{,}\PY{n}{J}\PY{o}{=}\PY{n}{M}\PY{o}{.}\PY{n}{jordan\PYZus{}form}\PY{p}{(}\PY{p}{)}
+          \PY{n}{J}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}157}]:}
+    
+    \[\left[\begin{matrix}1 & 0 & 0 & 0 & 0\\0 & 2 & 1 & 0 & 0\\0 & 0 & 2 & 0 & 0\\0 & 0 & 0 & 1 - i & 0\\0 & 0 & 0 & 0 & 1 + i\end{matrix}\right]\]
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}158}]:} \PY{n}{P}\PY{o}{=}\PY{n}{simplify}\PY{p}{(}\PY{n}{P}\PY{p}{)}
+          \PY{n}{P}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}158}]:}
+    
+    \[\left[\begin{matrix}-2 & \frac{10}{9} & 0 & \frac{5 i}{12} & - \frac{5 i}{12}\\-2 & - \frac{5}{9} & 0 & - \frac{5 i}{6} & \frac{5 i}{6}\\0 & 0 & \frac{4}{3} & - \frac{3}{4} & - \frac{3}{4}\\1 & \frac{10}{9} & 0 & - \frac{5 i}{6} & \frac{5 i}{6}\\0 & 0 & 1 & 1 & 1\end{matrix}\right]\]
+
+    
+
+    Проверим.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}159}]:} \PY{n}{Z}\PY{o}{=}\PY{n}{P}\PY{o}{*}\PY{n}{J}\PY{o}{*}\PY{n}{P}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{M}
+          \PY{n}{simplify}\PY{p}{(}\PY{n}{Z}\PY{p}{)}
+\end{Verbatim}
+\texttt{\color{outcolor}Out[{\color{outcolor}159}]:}
+    
+    \[\left[\begin{matrix}0 & 0 & 0 & 0 & 0\\0 & 0 & 0 & 0 & 0\\0 & 0 & 0 & 0 & 0\\0 & 0 & 0 & 0 & 0\\0 & 0 & 0 & 0 & 0\end{matrix}\right]\]
+
+    
+
+\subsection{Графики}
+\label{sympy15}
+
+\texttt{SymPy} использует \texttt{matplotlib}. Однако он распределяет
+точки по \(x\) адаптивно, а не равномерно.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}160}]:} \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+
+    Одна функция.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}161}]:} \PY{n}{plot}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{/}\PY{n}{x}\PY{p}{,}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25_sympy_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}161}]:} <sympy.plotting.plot.Plot at 0x7fac5f8ff6d8>
+\end{Verbatim}
+        
+    Несколько функций.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}162}]:} \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{,}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25_sympy_2.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}162}]:} <sympy.plotting.plot.Plot at 0x7fac5f567390>
+\end{Verbatim}
+        
+    Другие функции надо импортировать из пакета \texttt{sympy.plotting}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}163}]:} \PY{k+kn}{from} \PY{n+nn}{sympy}\PY{n+nn}{.}\PY{n+nn}{plotting} \PY{k}{import} \PY{p}{(}\PY{n}{plot\PYZus{}parametric}\PY{p}{,}\PY{n}{plot\PYZus{}implicit}\PY{p}{,}
+                                      \PY{n}{plot3d}\PY{p}{,}\PY{n}{plot3d\PYZus{}parametric\PYZus{}line}\PY{p}{,}
+                                      \PY{n}{plot3d\PYZus{}parametric\PYZus{}surface}\PY{p}{)}
+\end{Verbatim}
+
+    Параметрический график --- фигура Лиссажу.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}164}]:} \PY{n}{t}\PY{o}{=}\PY{n}{Symbol}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plot\PYZus{}parametric}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{t}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{,}
+                          \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Lissajous}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{xlabel}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{ylabel}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25_sympy_3.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}164}]:} <sympy.plotting.plot.Plot at 0x7fac5f514978>
+\end{Verbatim}
+        
+    Неявный график --- окружность.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}165}]:} \PY{n}{plot\PYZus{}implicit}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25_sympy_4.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}165}]:} <sympy.plotting.plot.Plot at 0x7fac5f625940>
+\end{Verbatim}
+        
+    Поверхность. Если она строится не \texttt{inline}, а в отдельном окне,
+то её можно вертеть мышкой.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}166}]:} \PY{n}{plot3d}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{p}{,}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25_sympy_5.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}166}]:} <sympy.plotting.plot.Plot at 0x7fac71242ac8>
+\end{Verbatim}
+        
+    Несколько поверхностей.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}167}]:} \PY{n}{plot3d}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{p}{,}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{y}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25_sympy_6.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}167}]:} <sympy.plotting.plot.Plot at 0x7fac5f3ac9b0>
+\end{Verbatim}
+        
+    Параметрическая пространственная линия --- спираль.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}168}]:} \PY{n}{a}\PY{o}{=}\PY{l+m+mf}{0.1}
+          \PY{n}{plot3d\PYZus{}parametric\PYZus{}line}\PY{p}{(}\PY{n}{cos}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{a}\PY{o}{*}\PY{n}{t}\PY{p}{,}\PY{p}{(}\PY{n}{t}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25_sympy_7.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}168}]:} <sympy.plotting.plot.Plot at 0x7fac5d25be10>
+\end{Verbatim}
+        
+    Параметрическая поверхность --- тор.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}169}]:} \PY{n}{u}\PY{p}{,}\PY{n}{v}\PY{o}{=}\PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{u v}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{a}\PY{o}{=}\PY{l+m+mf}{0.4}
+          \PY{n}{plot3d\PYZus{}parametric\PYZus{}surface}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{a}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{u}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{,}
+                                    \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{a}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{u}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{,}\PY{n}{a}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{u}\PY{p}{)}\PY{p}{,}
+                                    \PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{v}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b25_sympy_8.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}169}]:} <sympy.plotting.plot.Plot at 0x7fac5d151f60>
+\end{Verbatim}

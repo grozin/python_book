@@ -1,0 +1,180 @@
+\section{Исключения}
+\label{S109}
+
+Всякие недопустимые операции типа деления на 0 или открытия
+несуществующего файла приводят к возбуждению исключений. Интерпретатор
+питон печатает подробную и понятную информацию об исключении. Если это
+интерактивный интерпретатор, то сессия продолжается; исли это программа,
+то её выполнение прекращается. В питоне отладчик приходится использовать
+гораздо реже, чем в более низкоуровневых языках, потому что эти
+сообщения интерпретатора позволяют сразу понять, где и что неверно.
+Впрочем, иногда приходится использовать и отладчик. Допустим, из
+сообщения об ошибке Вы поняли, что некоторая функция вызвана со
+строковым аргументом, а Вы про него думали, что он число. Тогда
+приходится искать --- какая сволочь испортила мою переменную?
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        ZeroDivisionError                         Traceback (most recent call last)
+
+        <ipython-input-1-05c9758a9c21> in <module>()
+    ----> 1 1/0
+    
+
+        ZeroDivisionError: division by zero
+
+    \end{Verbatim}
+
+    Исключения можно отлавливать, и в случае, если они произошли, выполнять
+какой-нибудь корректирующий код.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k}{try}\PY{p}{:}
+            \PY{n}{x}\PY{o}{=}\PY{l+m+mi}{0}
+            \PY{n}{x}\PY{o}{=}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{x}
+        \PY{k}{except} \PY{n+ne}{ZeroDivisionError}\PY{p}{:}
+            \PY{n}{x}\PY{o}{=}\PY{l+m+mi}{5}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} 5
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{k}{try}\PY{p}{:}
+            \PY{n}{s}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xyzzy}\PY{l+s+s1}{\PYZsq{}}
+            \PY{n}{f}\PY{o}{=}\PY{n+nb}{open}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+        \PY{k}{except} \PY{n+ne}{IOError}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cannot open }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+cannot open xyzzy
+
+    \end{Verbatim}
+
+    Исключения --- это объекты. Класс \texttt{Exception} являестя корнем
+дерева классов исключений. Этот объект можно поймать и исследовать.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k}{try}\PY{p}{:}
+            \PY{n}{x}\PY{o}{=}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{0}
+        \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{err}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{err}\PY{p}{)}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{err}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{repr}\PY{p}{(}\PY{n}{err}\PY{p}{)}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{err}\PY{o}{.}\PY{n}{args}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'ZeroDivisionError'>
+division by zero
+ZeroDivisionError('division by zero',)
+('division by zero',)
+
+    \end{Verbatim}
+
+    Если в Вашем коде возникла недопустимая ситуация, нужно возбудить
+исключение оператором \texttt{raise}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{k}{raise} \PY{n+ne}{NameError}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Hi there}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        NameError                                 Traceback (most recent call last)
+
+        <ipython-input-6-d36a3cf2a944> in <module>()
+    ----> 1 raise NameError('Hi there')
+    
+
+        NameError: Hi there
+
+    \end{Verbatim}
+
+    Вот более полезный пример.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{x}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{:}
+                \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x should not be 0}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{k}{try}\PY{p}{:}
+            \PY{n}{x}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+            \PY{n}{x}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{k}{except} \PY{n+ne}{ValueError} \PY{k}{as} \PY{n}{err}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{repr}\PY{p}{(}\PY{n}{err}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ValueError('x should not be 0',)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} 1
+\end{Verbatim}
+        
+    Естественно, можно определять свои классы исключений, наследуя от
+\texttt{Exception} или от какого-нибудь его потомка, подходящего по
+смыслу. Именно так и нужно делать, чтобы Ваши исключения не путались с
+системными.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{k}{class} \PY{n+nc}{MyError}\PY{p}{(}\PY{n+ne}{Exception}\PY{p}{)}\PY{p}{:}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{value}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{o}{=}\PY{n}{value}
+                 
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+             \PY{k}{if} \PY{n}{x}\PY{o}{\PYZlt{}}\PY{l+m+mi}{0}\PY{p}{:}
+                 \PY{k}{raise} \PY{n}{MyError}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+             \PY{k}{else}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{k}{try}\PY{p}{:}
+             \PY{n}{x}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+             \PY{n}{x}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{k}{except} \PY{n}{MyError} \PY{k}{as} \PY{n}{err}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{err}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+-2
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:} 2
+\end{Verbatim}

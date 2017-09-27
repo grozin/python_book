@@ -1,0 +1,584 @@
+\section{mpmath}
+\label{mpmath}
+
+Multiple Precision math
+
+Пакет для работы с числами с плавающей точкой со сколь угодно высокой
+точностью. В нём реализованы алгоритмы вычисления элементарных функций,
+а также большого количества специальных функций.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{from} \PY{n+nn}{mpmath} \PY{k}{import} \PY{o}{*}
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+
+    Точность контролируется глобальным объектом \texttt{mp}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{mp}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Mpmath settings:
+  mp.prec = 53                [default: 53]
+  mp.dps = 15                 [default: 15]
+  mp.trap\_complex = False     [default: False]
+
+    \end{Verbatim}
+
+    \texttt{prec} --- число бит в мантиссе, \texttt{dps} --- число значащих
+десятичных цифр. Если изменить один из этих атрибутов, другой изменится
+соответственно.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{mp}\PY{o}{.}\PY{n}{dps}\PY{o}{=}\PY{l+m+mi}{50}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{mp}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Mpmath settings:
+  mp.prec = 169               [default: 53]
+  mp.dps = 50                 [default: 15]
+  mp.trap\_complex = False     [default: False]
+
+    \end{Verbatim}
+
+    \texttt{mpf} создаёт число с плавающей (multiple precision float) точкой
+из строки или числа.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{x}\PY{o}{=}\PY{n}{mpf}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{0.1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.1
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} mpf('0.10000000000000000000000000000000000000000000000000007')
+\end{Verbatim}
+        
+    А вот так делать не надо. \texttt{0.1} сначала преобразуется в число с
+плавающей точкой со стандартной (т.е. двойной) точностью, а потом уже
+оно преобразуется в \texttt{mpf}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{y}\PY{o}{=}\PY{n}{mpf}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.1000000000000000055511151231257827021181583404541
+
+    \end{Verbatim}
+
+    Чтобы не потерять точность, нужно делать \texttt{mpf} из строки или из
+отношения целых чисел (вероятно, со знаменателем вида \(10^n\)).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{y}\PY{o}{=}\PY{n}{mpf}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{10}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.1
+
+    \end{Verbatim}
+
+    Математические константы типа \(\pi\) или \(e\) реализованы в виде
+\emph{ленивых} объектов. Они содержат сколько-то вычисленных бит плюс
+алгоритм, позволяющий получить больше бит, если потребуется.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{pi}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} <pi: 3.14159\textasciitilde{}>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{mp}\PY{o}{.}\PY{n}{prec}\PY{o}{=}\PY{l+m+mi}{53}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{pi}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+3.14159265358979
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{mp}\PY{o}{.}\PY{n}{prec}\PY{o}{=}\PY{l+m+mi}{169}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{pi}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+3.1415926535897932384626433832795028841971693993751
+
+    \end{Verbatim}
+
+    Когда объект \texttt{pi} встречается в выражении, из него делается число
+с текущей точностью.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{o}{+}\PY{n}{pi}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} mpf('3.1415926535897932384626433832795028841971693993751068')
+\end{Verbatim}
+        
+    Реализованы арифметические операции и элементарные функции.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{sin}\PY{p}{(}\PY{n}{pi}\PY{o}{/}\PY{l+m+mi}{4}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} mpf('0.50000000000000000000000000000000000000000000000000134')
+\end{Verbatim}
+        
+\subsection{Специальные функции}
+\label{mpmath2}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{besselj}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{,}
+               \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{besselj}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{,}
+               \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{besselj}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b23_mpmath_1.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{legendre}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{,}
+               \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{legendre}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{,}
+               \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{legendre}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{,}
+               \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{legendre}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b23_mpmath_2.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{polylog}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{,}
+               \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{polylog}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{,}
+               \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{polylog}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b23_mpmath_3.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{pi}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{/}\PY{n}{zeta}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{n}{pi}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{o}{/}\PY{n}{zeta}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+6.0 90.0
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{splot}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{:}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{gamma}\PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{n}{j}\PY{o}{*}\PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b23_mpmath_4.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{gamma}\PY{p}{(}\PY{l+m+mf}{1.5}\PY{p}{)}\PY{o}{/}\PY{n}{sqrt}\PY{p}{(}\PY{n}{pi}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}18}]:} mpf('0.5')
+\end{Verbatim}
+        
+\subsection{Решение уравнений}
+\label{mpmath3}
+
+Корни многочлена
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{l}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+         \PY{n}{r}\PY{o}{=}\PY{n}{polyroots}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+         \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{r}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+-0.75487766624669276004950889635852869189460661777279
+(0.8774388331233463800247544481792643459473033088864 - 0.74486176661974423659317042860439236724016308490682j)
+(0.8774388331233463800247544481792643459473033088864 + 0.74486176661974423659317042860439236724016308490682j)
+(-0.5 + 0.86602540378443864676372317075293618347140262690519j)
+(-0.5 - 0.86602540378443864676372317075293618347140262690519j)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{r}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{polyval}\PY{p}{(}\PY{n}{l}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.0
+(2.672764710092195646140536467151481878815196880105e-51 - 4.6512209026900071036135543450317217153701063147101e-51j)
+(2.672764710092195646140536467151481878815196880105e-51 + 4.6512209026900071036135543450317217153701063147101e-51j)
+(0.0 + 0.0j)
+(0.0 + 0.0j)
+
+    \end{Verbatim}
+
+    Решение уравнения
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{plot}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{pi}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b23_mpmath_5.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{findroot}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{,}\PY{l+m+mf}{0.7}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}23}]:} mpf('0.58853274398186107743245204570290368853127151610903053')
+\end{Verbatim}
+        
+    Решение системы уравнений
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{findroot}\PY{p}{(}\PY{p}{[}\PY{k}{lambda} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{:}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{k}{lambda} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{:}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{0.25}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}24}]:} matrix(
+         [['0.9659258262890682867497431997288973676339048390084'],
+          ['0.25881904510252076234889883762404832834906890131993']])
+\end{Verbatim}
+        
+\subsection{Производные}
+\label{mpmath4}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{diff}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{l+m+mf}{0.5}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}25}]:} mpf('-1.4841132216030061397200811175950101054335633325969314')
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{diff}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{l+m+mf}{0.5}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}26}]:} mpf('1.085956198316836423877087470206751841523721503427788')
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{diff}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{:}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{n}{pi}\PY{p}{,}\PY{n}{pi}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} mpf('-1.0')
+\end{Verbatim}
+        
+\subsection{Интегралы}
+\label{mpmath5}
+
+При вычислении этого интеграла все вычисления будут производиться с
+точностью, на 5 значащих цифр большей; затем она вернётся к прежней.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{k}{with} \PY{n}{extradps}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{:}
+             \PY{n}{I}\PY{o}{=}\PY{n}{quad}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{log}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{I}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1.803085354739391428099607242267174986147479438510748322
+
+    \end{Verbatim}
+
+    Допустим, у нас есть причины подозревать, что этот интеграл равен
+\(\zeta(3)\), умноженному на рациональное число (с не очень большими
+числителем и знаменателем). \texttt{pslq({[}x1,x2,...{]})} находит целые
+числа \(n_1\), \(n_2\), \ldots{} такие, что
+\(n_1\,x_1 + n_2\,x_2 + \cdots = 0\). Это --- метод нахождения тождеств,
+называемый \emph{экспериментальной математикой}. Для этого часто
+требуются вычисления с очень высокой точностью.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{pslq}\PY{p}{(}\PY{p}{[}\PY{n}{I}\PY{p}{,}\PY{n}{zeta}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}29}]:} [-2, 3]
+\end{Verbatim}
+        
+    То есть наш интеграл равен \(\frac{3}{2} \zeta(3)\). Это, конечно, не
+доказательство. Но если мы ещё увеличим точность вычисления интеграла, а
+результат \texttt{pslq} не изменится, то мы можем быть практически
+уверены, что этот результат верен.
+
+Двойной интеграл:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{quad}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{:}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{x}\PY{o}{*}\PY{n}{y}\PY{p}{)}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}30}]:} mpf('0.82246703342411321823620758332301259460947495060339899')
+\end{Verbatim}
+        
+\subsection{Сумма ряда}
+\label{mpmath6}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{k}{with} \PY{n}{extradps}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{:}
+             \PY{n}{s}\PY{o}{=}\PY{n}{nsum}\PY{p}{(}\PY{k}{lambda} \PY{n}{n}\PY{p}{:}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n}{n}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{inf}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.9470328294972459175765032344735219149279070829288860442
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{pslq}\PY{p}{(}\PY{p}{[}\PY{n}{s}\PY{p}{,}\PY{n}{pi}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}32}]:} [-720, 7]
+\end{Verbatim}
+        
+    То есть эта сумма, вероятно, равна \(\frac{7}{720} \pi^4\).
+
+\subsection{Дифференциальные уравнения}
+\label{mpmath7}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{a}\PY{o}{=}\PY{n}{mpf}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{0.2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{t}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+             \PY{k}{global} \PY{n}{a}
+             \PY{k}{return} \PY{p}{[}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{a}\PY{o}{*}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{x}\PY{o}{=}\PY{n}{odefun}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{n}{x}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}35}]:} [mpf('0.59496623263788777500734762840237378880987158574261147'),
+          mpf('-0.69387986210972080683187214187798497495035321299936026')]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{k}{lambda} \PY{n}{t}\PY{p}{:}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{k}{lambda} \PY{n}{t}\PY{p}{:}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b23_mpmath_6.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{Матрицы}
+\label{mpmath8}
+
+Матрицы разреженные, реализованы как словари. Квадратная матрица
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n}{matrix}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}37}]:} matrix(
+         [['0.0', '0.0'],
+          ['0.0', '0.0']])
+\end{Verbatim}
+        
+    Прямоугольная матрица
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{M}\PY{o}{=}\PY{n}{matrix}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+         \PY{n}{M}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}38}]:} matrix(
+         [['0.0', '0.0', '0.0'],
+          ['0.0', '0.0', '0.0']])
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{M}\PY{o}{.}\PY{n}{rows}\PY{p}{,}\PY{n}{M}\PY{o}{.}\PY{n}{cols}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}39}]:} (2, 3)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{n}{M}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{1}
+         \PY{n}{M}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}40}]:} matrix(
+         [['0.0', '1.0', '0.0'],
+          ['0.0', '0.0', '0.0']])
+\end{Verbatim}
+        
+    Операции с матрицами
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{M1}\PY{o}{=}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         \PY{n}{M2}\PY{o}{=}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{n}{M1}\PY{o}{+}\PY{n}{M2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}42}]:} matrix(
+         [['1.0', '1.0'],
+          ['1.0', '-1.0']])
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{M1}\PY{o}{*}\PY{n}{M2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}43}]:} matrix(
+         [['0.0', '-1.0'],
+          ['1.0', '0.0']])
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{n}{M2}\PY{o}{*}\PY{n}{M1}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}44}]:} matrix(
+         [['0.0', '1.0'],
+          ['-1.0', '0.0']])
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n}{M1}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}45}]:} matrix(
+         [['0.0', '1.0'],
+          ['1.0', '0.0']])
+\end{Verbatim}
+        
+    Решение системы линейных уравнений
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{n}{A}\PY{o}{=}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         \PY{n}{b}\PY{o}{=}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+         \PY{n}{b}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}46}]:} matrix(
+         [['1.0'],
+          ['-1.0']])
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{n}{x}\PY{o}{=}\PY{n}{lu\PYZus{}solve}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{)}
+         \PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}47}]:} matrix(
+         [['-3.0'],
+          ['2.0']])
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{n}{A}\PY{o}{*}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{b}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}48}]:} matrix(
+         [['0.0'],
+          ['0.0']])
+\end{Verbatim}
+        
+    Собственные значения и собственные векторы
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{n}{l}\PY{p}{,}\PY{n}{u}\PY{o}{=}\PY{n}{eig}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+         \PY{n}{l}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}49}]:} [mpf('-0.37228132326901432992530573410946465911013222899139797'),
+          mpf('5.3722813232690143299253057341094646591101322289914067')]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}50}]:} \PY{n}{u}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}50}]:} matrix(
+         [['-0.82456484013239376536905071707877267896095335074304', '-0.42222915041526045335929057758178658089159736117701'],
+          ['0.56576746496899228472288762798052673125191630934726', '-0.92305231425019333318861560854941073593095247730112']])
+\end{Verbatim}
+        
+    Диагональная матрица
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}51}]:} \PY{n}{L}\PY{o}{=}\PY{n}{diag}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+         \PY{n}{L}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}51}]:} matrix(
+         [['-0.3722813232690143299253057341094646591101322289914', '0.0'],
+          ['0.0', '5.3722813232690143299253057341094646591101322289914']])
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{n}{A}\PY{o}{*}\PY{n}{u}\PY{o}{\PYZhy{}}\PY{n}{u}\PY{o}{*}\PY{n}{L}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}52}]:} matrix(
+         [['-2.0045735325691467346054023503636114091113976600788e-51', '5.3455294201843912922810729343029637576303937602101e-51'],
+          ['0.0', '1.069105884036878258456214586860592751526078752042e-50']])
+\end{Verbatim}

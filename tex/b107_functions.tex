@@ -1,0 +1,692 @@
+\section{Функции}
+\label{S107}
+
+Это простейшая в мире функция. Она не имеет параметров, ничего не делает
+и ничего не возвращает. Оператор \texttt{pass} означает ``ничего не
+делай''; он используется там, где синтаксически необходим оператор, а
+делать ничено не нужно (после \texttt{if} или \texttt{elif}, после
+\texttt{def} и т.д.).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k}{pass}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{f}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} <function \_\_main\_\_.f>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{k}{pass}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n+nb}{type}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} function
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{r}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{r}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+None
+
+    \end{Verbatim}
+
+    Эта функция более полезна: она имеет параметр и что-то возвращает.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+            \PY{k}{return} \PY{n}{x}\PY{o}{+}\PY{l+m+mi}{1}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}\PY{n}{f}\PY{p}{(}\PY{l+m+mf}{1.0}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} (2, 2.0)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{f}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{abc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        TypeError                                 Traceback (most recent call last)
+
+        <ipython-input-8-410386031a44> in <module>()
+    ----> 1 f('abc')
+    
+
+        <ipython-input-6-e9c32f618734> in f(x)
+          1 def f(x):
+    ----> 2     return x+1
+    
+
+        TypeError: must be str, not int
+
+    \end{Verbatim}
+
+    Если у функции много параметров, то возникает желание вызывать её
+попроще в наиболее часто встречающихся случаях. Для этого в операторе
+\texttt{def} можно задать значения некоторых параметров по умолчанию
+(они должны размещаться в конце списка параметров). При вызове
+необходимо указать все обязательные параметры (у которых нет значений по
+умолчанию), а необязательные можно и не указывать. Если при вызове
+указывать параметры в виде \texttt{имя=значение}, то это можно делать в
+любом порядке. Это гораздо удобнее, чем вспоминать, является данный
+параметр восьмым или девятым при вызове какой-нибудь сложной функции.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{a}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{b}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{a}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{b}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mf}{1.0}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1.0    0    b
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mf}{1.0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1.0    1    b
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mf}{1.0}\PY{p}{,}\PY{n}{b}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1.0    0    a
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mf}{1.0}\PY{p}{,}\PY{n}{b}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{a}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1.0    2    a
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{f}\PY{p}{(}\PY{n}{a}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{x}\PY{o}{=}\PY{l+m+mf}{2.0}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2.0    2    b
+
+    \end{Verbatim}
+
+    Переменные, использующиеся в функции, являются локальными. Присваивание
+им не меняет значений глобальных переменных с такими же именами.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{a}\PY{o}{=}\PY{l+m+mi}{1}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n}{a}\PY{o}{=}\PY{l+m+mi}{2}
+             \PY{k}{return} \PY{n}{a}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{f}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}17}]:} 2
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{a}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}18}]:} 1
+\end{Verbatim}
+        
+    Если в функции нужно использовать какие-нибудь глобальные переменные, их
+нужно описать как \texttt{global}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{k}{global} \PY{n}{a}
+             \PY{n}{a}\PY{o}{=}\PY{l+m+mi}{2}
+             \PY{k}{return} \PY{n}{a}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{f}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}20}]:} 2
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{a}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}21}]:} 2
+\end{Verbatim}
+        
+    Пространство имён устанавливает соответствие между именами переменных и
+объектами --- их значениями. Есть пространство имён локальных переменных
+функции, пространство имён глобальных переменных программы и
+пространство имён встроенных функций языка питон. Для реализации
+пространств имён используются словари.
+
+Если функции передаётся в качестве аргумента какой-нибудь изменяемый
+объект, и функция его изменяет, то это изменение будет видно снаружи
+после этого вызова. Мы уже обсуждали эту ситуацию, когда две переменные
+(в данном случае глобальная переменная и параметр функции) указывают на
+один и тот же изменяемый объект объект.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{l}\PY{p}{)}\PY{p}{:}
+             \PY{n}{l}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+             \PY{k}{return} \PY{n}{l}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{l}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}
+         \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{l}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}23}]:} [1, 2, 3, 0]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{l}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}24}]:} [1, 2, 3, 0]
+\end{Verbatim}
+        
+    Если в качестве значения какого-нибудь параметра по умолчанию
+используется изменяемый объект, то это может приводить к неожиданным
+последствиям. В данном случае исполнение определения функции приводит к
+созданию двух объектов: собственно функции и объекта-списка,
+первоначально пустого, который используется для инициализации параметра
+функции при вызове. Функция изменяет этот объект. При следующем вызове
+он опять используется для инициализации параметра, но его значение уже
+изменилось.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{l}\PY{o}{=}\PY{p}{[}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+             \PY{n}{l}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+             \PY{k}{return} \PY{n}{l}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}26}]:} [0]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} [0, 1]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}28}]:} [0, 1, 2]
+\end{Verbatim}
+        
+    Чтобы избежать таких сюрпризов, в качестве значений по умолчанию лучше
+использовать только неизменяемые объекты.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{l}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+             \PY{k}{if} \PY{n}{l} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+                 \PY{n}{l}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+             \PY{n}{l}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+             \PY{k}{return} \PY{n}{l}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}30}]:} [0]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}31}]:} [1]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}32}]:} [0, 1, 2]
+\end{Verbatim}
+        
+    Эта функция имеет один обязательный параметр плюс произвольное число
+необязательных. При вызове все такие дополнительные аргументы
+объединяются в кортеж, который функция может использовать по своему
+усмотрению.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{o}{*}\PY{n}{l}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{l}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0    ()
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0    (1,)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0    (1, 2)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0    (1, 2, 3)
+
+    \end{Verbatim}
+
+    Звёздочку можно использовать и при вызове функции. Можно заранее
+построить список (или кортеж) аргументов, а потом вызвать функцию с
+этими аргументами.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{l}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}
+         \PY{n}{f}\PY{p}{(}\PY{o}{*}\PY{n}{l}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1    (2,)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{c}\PY{o}{=}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{f}\PY{p}{(}\PY{o}{*}\PY{n}{l}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{*}\PY{n}{c}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1    (2, 0, 'a', 'b')
+
+    \end{Verbatim}
+
+    Такую распаковку из списков и кортежей можно использовать не только при
+вызове функции, но и при построении списка или кортежа.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{p}{(}\PY{o}{*}\PY{n}{l}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{*}\PY{n}{c}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}40}]:} (1, 2, 0, 'a', 'b')
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{p}{[}\PY{o}{*}\PY{n}{l}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{*}\PY{n}{c}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}41}]:} [1, 2, 0, 'a', 'b']
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{p}{[}\PY{o}{*}\PY{n}{l}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}42}]:} [1, 2, 3]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{o}{*}\PY{n}{l}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}43}]:} [3, 1, 2]
+\end{Verbatim}
+        
+    Эта функция имеет два обязательных параметра плюс произвольное число
+необязательных ключевых параметров. При вызове они должны задаваться в
+виде \texttt{имя=значение}. Они собираются в словарь, который функция
+может использовать по своему усмотрению.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{o}{*}\PY{o}{*}\PY{n}{d}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{d}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{foo}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{bar}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0    1    \{'foo': 2, 'bar': 3\}
+
+    \end{Verbatim}
+
+    Двойную звёздочку можно использовать и при вызове функции. Можно заранее
+построить словарь аргументов, сопоставляющий значения именам параметров,
+а потом вызвать функцию с этими ключевыми аргументами.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{n}{d}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{foo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{\PYZcb{}}
+         \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{o}{*}\PY{o}{*}\PY{n}{d}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0    1    \{'foo': 2, 'bar': 3\}
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{n}{d}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}
+         \PY{n}{d}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{1}
+         \PY{n}{f}\PY{p}{(}\PY{o}{*}\PY{o}{*}\PY{n}{d}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0    1    \{'foo': 2, 'bar': 3\}
+
+    \end{Verbatim}
+
+    Вот любопытный способ построить словарь с ключами-строками.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{o}{*}\PY{o}{*}\PY{n}{d}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{d}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{z}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}49}]:} \{'x': 0, 'y': 1, 'z': 2\}
+\end{Verbatim}
+        
+    Двойную звёздочку можно использовать не только при вызове функции, но и
+при построении словаря.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}50}]:} \PY{n}{d}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+         \PY{p}{\PYZob{}}\PY{o}{*}\PY{o}{*}\PY{n}{d}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}50}]:} \{0: 'a', 1: 'b', 2: 'c'\}
+\end{Verbatim}
+        
+    Вот простой способ объединить два словаря.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}51}]:} \PY{n}{d1}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+         \PY{n}{d2}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mi}{2}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+         \PY{p}{\PYZob{}}\PY{o}{*}\PY{o}{*}\PY{n}{d1}\PY{p}{,}\PY{o}{*}\PY{o}{*}\PY{n}{d2}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}51}]:} \{0: 'a', 1: 'b', 2: 'c', 3: 'd'\}
+\end{Verbatim}
+        
+    Если один и тот же ключ встречается несколько раз, следующее значение
+затирает предыдущее.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{n}{d2}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{B}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+         \PY{p}{\PYZob{}}\PY{o}{*}\PY{o}{*}\PY{n}{d1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{D}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{o}{*}\PY{o}{*}\PY{n}{d2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}52}]:} \{0: 'a', 1: 'B', 2: 'C', 3: 'd'\}
+\end{Verbatim}
+        
+    Это наиболее общий вид списка параметров функции. Сначала идут
+обязательные параметры (в данном случае два), затем произвольное число
+необязательных (при вызове они будут объединены в кортеж), а затем
+произвольное число ключевых параметров (при вызове они будут объединены
+в словарь).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{o}{*}\PY{n}{l}\PY{p}{,}\PY{o}{*}\PY{o}{*}\PY{n}{d}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{l}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{d}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}54}]:} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{foo}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,}\PY{n}{bar}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0    1    (2, 3)    \{'foo': 4, 'bar': 5\}
+
+    \end{Verbatim}
+
+    Функции можно передать функцию в качестве аргумента. Например, эта
+функция реализует численное интегрирование по формуле Симпсона. Её
+первый параметр --- функция, которую надо проинтегрировать; далее задаются
+пределы интегрирования и число интервалов, на которое нужно разбить
+область интегрирования.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}55}]:} \PY{k}{def} \PY{n+nf}{simpson}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+             \PY{n}{h}\PY{o}{=}\PY{p}{(}\PY{n}{b}\PY{o}{\PYZhy{}}\PY{n}{a}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{n}\PY{p}{)}
+             \PY{n}{s}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{o}{*}\PY{p}{(}\PY{n}{f}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{+}\PY{n}{f}\PY{p}{(}\PY{n}{b}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{f}\PY{p}{(}\PY{n}{a}\PY{o}{+}\PY{n}{h}\PY{p}{)}
+             \PY{n}{x}\PY{o}{=}\PY{n}{a}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{h}
+             \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{s}\PY{o}{+}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{f}\PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{n}{h}\PY{p}{)}
+                 \PY{n}{x}\PY{o}{+}\PY{o}{=}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{h}
+             \PY{k}{return} \PY{l+m+mi}{2}\PY{o}{/}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{h}\PY{o}{*}\PY{n}{s}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}56}]:} \PY{k+kn}{from} \PY{n+nn}{math} \PY{k}{import} \PY{n}{sin}\PY{p}{,}\PY{n}{pi}
+         \PY{p}{[}\PY{n}{simpson}\PY{p}{(}\PY{n}{sin}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{pi}\PY{p}{,}\PY{n}{n}\PY{p}{)} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{,}\PY{l+m+mi}{1000}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}56}]:} [2.0943951023931953, 2.0000067844418012, 2.000000000676474, 2.000000000000091]
+\end{Verbatim}
+
+    В питоне функции являются гражданами первого сорта. Они могут
+присутствовать везде, где допустимы объекты других типов --- среди
+элементов списков, значений в словарях и т.д.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}57}]:} \PY{k}{def} \PY{n+nf}{f0}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{x}\PY{o}{+}\PY{l+m+mi}{2}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}58}]:} \PY{k}{def} \PY{n+nf}{f1}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}59}]:} \PY{n}{l}\PY{o}{=}\PY{p}{[}\PY{n}{f0}\PY{p}{,}\PY{n}{f1}\PY{p}{]}
+         \PY{n}{l}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}59}]:} [<function \_\_main\_\_.f0>, <function \_\_main\_\_.f1>]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}60}]:} \PY{n}{x}\PY{o}{=}\PY{l+m+mf}{2.0}
+         \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}
+         \PY{n}{l}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}60}]:} 4.0
+\end{Verbatim}
+        
+    Если Вы пишете функцию не для того, чтобы один раз её вызвать и навсегда
+забыть, то нужна документация, объясняющая, что эта функция делает. Для
+этого сразу после строчки \texttt{def} пишется строка. Она называется
+док-строкой, и сохраняется при трансляции исходного текста на питоне в
+байт-код (в отличие от комментариев, которые при этом отбрасываются).
+Обычно эта строка заключается в тройные кавычки и занимает несколько
+строчек. Док-строка доступна как атрибут \texttt{\_\_doc\_\_} функции, и
+используется функцией \texttt{help}. Вот пример культурно написанной
+функции, вычисляющей \(n\)-е число Фибоначчи.
+
+Для проверки типов аргументов, переданных функции, удобно использовать
+оператор \texttt{assert}. Если условие в нём истинно, всё в порядке, и
+он ничего не делает; если же оно ложно, выдаётся сообщение об ошибке.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}61}]:} \PY{k}{def} \PY{n+nf}{fib}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{вычисляет n\PYZhy{}е число Фибоначчи}\PY{l+s+s2}{\PYZdq{}}
+             \PY{k}{assert} \PY{n+nb}{type}\PY{p}{(}\PY{n}{n}\PY{p}{)} \PY{o+ow}{is} \PY{n+nb}{int} \PY{o+ow}{and} \PY{n}{n}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}
+             \PY{k}{if} \PY{n}{n}\PY{o}{\PYZlt{}}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{1}
+             \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}
+             \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{n}{y}\PY{p}{,}\PY{n}{x}\PY{o}{+}\PY{n}{y}
+             \PY{k}{return} \PY{n}{y}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}62}]:} \PY{n}{fib}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}doc\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}62}]:} 'вычисляет n-е число Фибоначчи'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}63}]:} \PY{n}{help}\PY{p}{(}\PY{n}{fib}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Help on function fib in module \_\_main\_\_:
+
+fib(n)
+    вычисляет n-е число Фибоначчи
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}64}]:} \PY{p}{[}\PY{n}{fib}\PY{p}{(}\PY{n}{n}\PY{p}{)} \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}64}]:} [1, 1, 2, 3, 5, 8, 13, 21, 34]
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}65}]:} \PY{n}{fib}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        AssertionError                            Traceback (most recent call last)
+
+        <ipython-input-66-b876e14fb318> in <module>()
+    ----> 1 fib(-1)
+    
+
+        <ipython-input-62-800ccd3a2d90> in fib(n)
+          1 def fib(n):
+          2     "вычисляет n-е число Фибоначчи"
+    ----> 3     assert type(n) is int and n>0
+          4     if n<=2:
+          5         return 1
+
+
+        AssertionError: 
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}66}]:} \PY{n}{fib}\PY{p}{(}\PY{l+m+mf}{2.0}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        AssertionError                            Traceback (most recent call last)
+
+        <ipython-input-67-363564e722ae> in <module>()
+    ----> 1 fib(2.0)
+    
+
+        <ipython-input-62-800ccd3a2d90> in fib(n)
+          1 def fib(n):
+          2     "вычисляет n-е число Фибоначчи"
+    ----> 3     assert type(n) is int and n>0
+          4     if n<=2:
+          5         return 1
+
+
+        AssertionError: 
+
+    \end{Verbatim}

@@ -1,0 +1,669 @@
+\section{Ввод-вывод, файлы, директории}
+\label{S112}
+
+Откроем текстовый файл на чтение (когда второй аргумент не указан, файл
+открывается именно на чтение).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{n}{f}\PY{o}{=}\PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{f}\PY{p}{,}\PY{n+nb}{type}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}1}]:} (<\_io.TextIOWrapper name='text.txt' mode='r' encoding='UTF-8'>,
+         \_io.TextIOWrapper)
+\end{Verbatim}
+        
+    Получился объект \texttt{f} одного из файловых типов. Что с ним можно
+делать? Можно его использовать в \texttt{for} цикле, каждый раз будет
+возвращаться очередная строка файла (включая
+\texttt{\textquotesingle{}\textbackslash{}n\textquotesingle{}} в конце;
+в конце последней строки текстового файла
+\texttt{\textquotesingle{}\textbackslash{}n\textquotesingle{}} может и
+не быть).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{f}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abcd
+
+efgh
+
+ijkl
+
+
+    \end{Verbatim}
+
+    Теперь файл нужно закрыть.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{f}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    Такой стиль работы с файлом (\texttt{f=open(...)}; работа с \texttt{f};
+\texttt{f.close()}) на самом деле не рекомендуется. Гораздо правильнее
+использовать оператор \texttt{with}. Он гарантирует, что файл будет
+закрыт как в том случае, когда исполнение тела \texttt{with} нормально
+дошло до конца, так и тогда, когда при этом произошло исключение, и мы
+покинули тело \texttt{with} аварийно.
+
+В операторе with может использоваться любой объект класса, реализующего
+методы \texttt{\_\_enter\_\_} и \texttt{\_\_exit\_\_}. Обычно это
+объект-файл, возвращаемый функцией \texttt{open}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+            \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{f}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abcd
+efgh
+ijkl
+
+    \end{Verbatim}
+
+    Метод \texttt{f.read(n)} читает \texttt{n} символов (когда файл близится
+к концу и прочитать именно \texttt{n} символов уже невозможно, читает
+меньше; в самый последний раз он читает 0 символов и возвращает
+\texttt{\textquotesingle{}\textquotesingle{}}). Прочитаем файл по 1
+символу.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+            \PY{k}{while} \PY{k+kc}{True}\PY{p}{:}
+                \PY{n}{c}\PY{o}{=}\PY{n}{f}\PY{o}{.}\PY{n}{read}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+                \PY{k}{if} \PY{n}{c}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+                    \PY{k}{break}
+                \PY{k}{else}\PY{p}{:}
+                    \PY{n+nb}{print}\PY{p}{(}\PY{n}{c}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+a
+b
+c
+d
+
+
+e
+f
+g
+h
+
+
+i
+j
+k
+l
+
+
+
+    \end{Verbatim}
+
+    Вызов \texttt{f.read()} без аргумента читает файл целиком (что не очень
+разумно, если в нём много гигабайт).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+            \PY{n}{s}\PY{o}{=}\PY{n}{f}\PY{o}{.}\PY{n}{read}\PY{p}{(}\PY{p}{)}
+        \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} 'abcd\textbackslash{}nefgh\textbackslash{}nijkl\textbackslash{}n'
+\end{Verbatim}
+        
+    \texttt{f.readline()} читает очередную строку (хотя проще использовать
+\texttt{for\ s\ in\ f:}).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+            \PY{k}{while} \PY{k+kc}{True}\PY{p}{:}
+                \PY{n}{s}\PY{o}{=}\PY{n}{f}\PY{o}{.}\PY{n}{readline}\PY{p}{(}\PY{p}{)}
+                \PY{k}{if} \PY{n}{s}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+                    \PY{k}{break}
+                \PY{k}{else}\PY{p}{:}
+                    \PY{n+nb}{print}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abcd
+
+efgh
+
+ijkl
+
+
+    \end{Verbatim}
+
+    Метод \texttt{f.readlines()} возвращает список строк (опять же его лучше
+не применять для очень больших файлов).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+            \PY{n}{l}\PY{o}{=}\PY{n}{f}\PY{o}{.}\PY{n}{readlines}\PY{p}{(}\PY{p}{)}
+        \PY{n}{l}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} ['abcd\textbackslash{}n', 'efgh\textbackslash{}n', 'ijkl\textbackslash{}n']
+\end{Verbatim}
+        
+    Теперь посмотрим, чем же оператор \texttt{with} лучше, чем пара
+\texttt{open} --- \texttt{close}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{k}{def} \PY{n+nf}{a}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+            \PY{k}{global} \PY{n}{f}
+            \PY{n}{f}\PY{o}{=}\PY{n+nb}{open}\PY{p}{(}\PY{n}{name}\PY{p}{)}
+            \PY{n}{s}\PY{o}{=}\PY{n}{f}\PY{o}{.}\PY{n}{readline}\PY{p}{(}\PY{p}{)}
+            \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{0}
+            \PY{n}{f}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+            \PY{k}{return} \PY{n}{s}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{a}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        ZeroDivisionError                         Traceback (most recent call last)
+
+        <ipython-input-10-d62372657d26> in <module>()
+    ----> 1 a('text.txt')
+    
+
+        <ipython-input-9-7f445757684d> in a(name)
+          3     f=open(name)
+          4     s=f.readline()
+    ----> 5     n=1/0
+          6     f.close()
+          7     return s
+
+
+        ZeroDivisionError: division by zero
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{f}\PY{o}{.}\PY{n}{closed}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} False
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{f}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    Произошло исключение, мы покинули функцию до строчки \texttt{close}, и
+файл не закрылся.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{k}{def} \PY{n+nf}{a}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+             \PY{k}{global} \PY{n}{f}
+             \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{n}{name}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+                 \PY{n}{s}\PY{o}{=}\PY{n}{f}\PY{o}{.}\PY{n}{readline}\PY{p}{(}\PY{p}{)}
+                 \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{0}
+             \PY{k}{return} \PY{n}{s}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{a}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        ZeroDivisionError                         Traceback (most recent call last)
+
+        <ipython-input-14-d62372657d26> in <module>()
+    ----> 1 a('text.txt')
+    
+
+        <ipython-input-13-cabd1416e96c> in a(name)
+          3     with open(name) as f:
+          4         s=f.readline()
+    ----> 5         n=1/0
+          6     return s
+
+
+        ZeroDivisionError: division by zero
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{f}\PY{o}{.}\PY{n}{closed}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} True
+\end{Verbatim}
+        
+    Теперь всё в порядке.
+
+Чтобы открыть файл на запись, нужно включить второй аргумент
+\texttt{\textquotesingle{}w\textquotesingle{}}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{f}\PY{o}{=}\PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{newtext.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaa}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}17}]:} 4
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bbb}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}18}]:} 4
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ccc}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}19}]:} 4
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{f}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    Метод \texttt{write} возвращает число записанных символов.
+
+Опять же, лучше использовать with.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{newtext.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
+             \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaa}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bbb}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{f}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ccc}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{o}{!}cat newtext.txt
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+aaa
+bbb
+ccc
+
+    \end{Verbatim}
+
+    Эта функция копирует старый текстовый файл в новый. Если строки нужно
+как-нибудь обработать, в последней строчке вместо \texttt{line} будет
+стоять что-нибудь вроде \texttt{f(line)}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{k}{def} \PY{n+nf}{copy}\PY{p}{(}\PY{n}{old\PYZus{}name}\PY{p}{,}\PY{n}{new\PYZus{}name}\PY{p}{)}\PY{p}{:}
+             \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{n}{old\PYZus{}name}\PY{p}{)} \PY{k}{as} \PY{n}{old}\PY{p}{,}\PY{n+nb}{open}\PY{p}{(}\PY{n}{new\PYZus{}name}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{as} \PY{n}{new}\PY{p}{:}
+                 \PY{k}{for} \PY{n}{line} \PY{o+ow}{in} \PY{n}{old}\PY{p}{:}
+                     \PY{n}{new}\PY{o}{.}\PY{n}{write}\PY{p}{(}\PY{n}{line}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{copy}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{newtext.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{o}{!}cat newtext.txt
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abcd
+efgh
+ijkl
+
+    \end{Verbatim}
+
+    В интерактивной сессии (или в программе, запущенной с командной строки)
+можно попросить пользователя что-нибудь ввести. Аргумент функции
+\texttt{input} --- это приглашение для ввода (prompt). Можно использовать
+просто \texttt{input()}, тогда приглашения не будет. Но это неудобно,
+т.к. в этом случае трудно заметить, что программа чего-то ждёт.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{s}\PY{o}{=}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Введите целое число }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Введите целое число 123
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} '123'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{n}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+         \PY{n}{n}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}28}]:} 123
+\end{Verbatim}
+        
+    Питон --- интерпретатор, поэтому он может во время выполнения программы
+интерпретировать строки как куски исходного текста на языке питон. Так,
+функция \texttt{eval} интерпретирует строку как выражение и вычисляет
+его (в текущем контексте --- подставляя текущие значения переменных).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{s}\PY{o}{=}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Введите выражение }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Введите выражение n+1
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}30}]:} 'n+1'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n+nb}{eval}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}31}]:} 124
+\end{Verbatim}
+        
+    А функция \texttt{exec} интерпретирует строку как оператор и выполняет
+его. Оператор может менять значения переменных в текущем пространстве
+имён.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{s}\PY{o}{=}\PY{n+nb}{input}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Введите оператор }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Введите оператор x=0
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}33}]:} 'x=0'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{exec}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+         \PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}34}]:} 0
+\end{Verbatim}
+        
+    Строка \texttt{s} может быть результатом длинного и сложного вычисления.
+Но лучше таких фокусов не делать, так как программа фактически
+становится самомодифицирующейся. Такие программы очень сложно
+отлаживать.
+
+Для работы с путями к файлам и директориям в стандартной библиотеке
+существует модуль \texttt{pathlib}. Объект класса \texttt{Path}
+представляет собой путь к файлу или директории.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{k+kn}{from} \PY{n+nn}{pathlib} \PY{k}{import} \PY{n}{Path}
+\end{Verbatim}
+
+    \texttt{Path()} возвращает текущую директорию.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{p}\PY{o}{=}\PY{n}{Path}\PY{p}{(}\PY{p}{)}
+         \PY{n}{p}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}36}]:} PosixPath('.')
+\end{Verbatim}
+        
+    Очень полезный метод \texttt{resolve} приводит путь к каноническому
+виду.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n}{p}\PY{o}{.}\PY{n}{resolve}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}37}]:} PosixPath('/home/grozin/python/book')
+\end{Verbatim}
+        
+    Путь может быть записан в совершенно идиотском виде; \texttt{resolve}
+его исправит.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{p}\PY{o}{=}\PY{n}{Path}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.././/book}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{p}\PY{o}{=}\PY{n}{p}\PY{o}{.}\PY{n}{resolve}\PY{p}{(}\PY{p}{)}
+         \PY{n}{p}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}38}]:} PosixPath('/home/grozin/python/book')
+\end{Verbatim}
+        
+    Статический метод \texttt{cwd} возвращает текущую директорию (current
+working directory).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{Path}\PY{o}{.}\PY{n}{cwd}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}39}]:} PosixPath('/home/grozin/python/book')
+\end{Verbatim}
+        
+    Если \texttt{p} --- путь к директории, то можно посмотреть все файлы в
+ней.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n}{p}\PY{o}{.}\PY{n}{iterdir}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/grozin/python/book/b102\_strings.ipynb
+/home/grozin/python/book/tex
+/home/grozin/python/book/.ipynb\_checkpoints
+/home/grozin/python/book/b103\_lists.ipynb
+/home/grozin/python/book/b109\_exceptions.ipynb
+/home/grozin/python/book/fac.py
+/home/grozin/python/book/d1
+/home/grozin/python/book/newtext.txt
+/home/grozin/python/book/b108\_oop.ipynb
+/home/grozin/python/book/b106\_dictionaries.ipynb
+/home/grozin/python/book/b101\_numbers.ipynb
+/home/grozin/python/book/text.txt
+/home/grozin/python/book/b104\_tuples.ipynb
+/home/grozin/python/book/\_\_pycache\_\_
+/home/grozin/python/book/p1
+/home/grozin/python/book/b107\_functions.ipynb
+/home/grozin/python/book/b110\_modules.ipynb
+/home/grozin/python/book/b105\_sets.ipynb
+/home/grozin/python/book/b111\_input\_output.ipynb
+
+    \end{Verbatim}
+
+    Если \texttt{p} --- путь к директории, то
+\texttt{p/\textquotesingle{}fname\textquotesingle{}} --- путь к файлу
+\texttt{fname} в ней (он, конечно, тоже может быть директорией).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{p2}\PY{o}{=}\PY{n}{p}\PY{o}{/}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b101\PYZus{}numbers.ipynb}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n}{p2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}41}]:} PosixPath('/home/grozin/python/book/b101\_numbers.ipynb')
+\end{Verbatim}
+        
+    Существует ли такой файл?
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{n}{p2}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}42}]:} True
+\end{Verbatim}
+        
+    Является ли он симлинком, директорией, файлом?
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{p2}\PY{o}{.}\PY{n}{is\PYZus{}symlink}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{p2}\PY{o}{.}\PY{n}{is\PYZus{}dir}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{p2}\PY{o}{.}\PY{n}{is\PYZus{}file}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}43}]:} (False, False, True)
+\end{Verbatim}
+        
+    Части пути \texttt{p2}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{n}{p2}\PY{o}{.}\PY{n}{parts}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}44}]:} ('/', 'home', 'grozin', 'python', 'book', 'b101\_numbers.ipynb')
+\end{Verbatim}
+        
+    Родитель --- директория, в которой находится этот файл.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n}{p2}\PY{o}{.}\PY{n}{parent}\PY{p}{,}\PY{n}{p2}\PY{o}{.}\PY{n}{parent}\PY{o}{.}\PY{n}{parent}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}45}]:} (PosixPath('/home/grozin/python/book'), PosixPath('/home/grozin/python'))
+\end{Verbatim}
+        
+    Имя файла, его основа и суффикс.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{n}{p2}\PY{o}{.}\PY{n}{name}\PY{p}{,}\PY{n}{p2}\PY{o}{.}\PY{n}{stem}\PY{p}{,}\PY{n}{p2}\PY{o}{.}\PY{n}{suffix}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}46}]:} ('b101\_numbers.ipynb', 'b101\_numbers', '.ipynb')
+\end{Verbatim}
+        
+    Метод \texttt{stat} возвращает всякую ценную информацию о файле.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{n}{s}\PY{o}{=}\PY{n}{p2}\PY{o}{.}\PY{n}{stat}\PY{p}{(}\PY{p}{)}
+         \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}47}]:} os.stat\_result(st\_mode=33188, st\_ino=2097706, st\_dev=2052, st\_nlink=1, st\_uid=1000, st\_gid=1000, st\_size=17223, st\_atime=1496721673, st\_mtime=1496738332, st\_ctime=1496799038)
+\end{Verbatim}
+        
+    Например, его размер в байтах.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{n}{s}\PY{o}{.}\PY{n}{st\PYZus{}size}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}48}]:} 17223
+\end{Verbatim}
+        
+    Я написал полезную утилиту для поиска одинаковых файлов. Ей передаётся
+произвольное число аргументов --- директорий и файлов. Она рекурсивно
+обходит директории, находит размер всех файлов (симлинки игнорируются) и
+строит словарь, сопоставляющий каждому размеру список файлов, имеющих
+такой размер. Это простой этап, не требующий чтения (возможно больших)
+файлов. После этого файлы из тех списков, длина которых \(>1\),
+сравниваются внешней программой \texttt{diff} (что, конечно, требует их
+чтения).
+
+В питоне можно работать с переменными окружения как с обычным словарём.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{k+kn}{from} \PY{n+nn}{os} \PY{k}{import} \PY{n}{environ}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}50}]:} \PY{n}{environ}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PATH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}50}]:} '/usr/lib/python-exec/python3.6:/home/grozin/bin:/home/grozin/reduce-3783/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/games/bin'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}51}]:} \PY{n}{environ}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ABCD}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        KeyError                                  Traceback (most recent call last)
+
+        <ipython-input-51-71e016be80d8> in <module>()
+    ----> 1 environ['ABCD']
+    
+
+        /usr/lib64/python3.6/os.py in \_\_getitem\_\_(self, key)
+        667         except KeyError:
+        668             \# raise KeyError with the original key value
+    --> 669             raise KeyError(key) from None
+        670         return self.decodevalue(value)
+        671 
+
+
+        KeyError: 'ABCD'
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{n}{environ}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ABCD}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{abcd}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{n}{environ}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ABCD}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}53}]:} 'abcd'
+\end{Verbatim}
+        
+    Мы не просто добавили пару ключ-значение в словарь, а действительно
+добавили новую переменную к текущему окружению. Если теперь вызвать из
+питона какую-нибудь внешнюю программу, то она эту переменную увидит. Эта
+переменная исчезнет, когда закончится выполнение текущей программы на
+питоне (или интерактивная сессия).

@@ -1,0 +1,633 @@
+\section{cython}
+\label{cython}
+
+\texttt{cython} позволяет писать программы, выглядящие почти как
+питонские, но с добавлением статических деклараций типов. Эти программы
+(\texttt{foo.pyx}) транслируются в исходные тексты на C (\texttt{foo.c})
+и затем компилируются. Определённые в них функции могут использоваться
+из программ на чистом питоне. Программа на \texttt{cython}-е может также
+вызывать функции из библиотек, написанных на C. \texttt{cython} не
+пытается автоматически сгенерировать интерфейсы к таким библиотекам,
+читая их \texttt{.h} файлы; для этого можно использовать \texttt{swig}
+или другие подобные системы.
+
+В \texttt{ipython} можно писать \texttt{cython} фрагменты inline, если
+загрузить расширение \texttt{cython}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} cython
+\end{Verbatim}
+
+\subsection{Функции}
+\label{cython2}
+
+Это интерпретируемая функция на питоне.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k}{def} \PY{n+nf}{fib}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{n}\PY{o}{\PYZlt{}}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{:}
+                \PY{k}{return} \PY{l+m+mi}{1}
+            \PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+                \PY{n}{a}\PY{p}{,}\PY{n}{b}\PY{o}{=}\PY{n}{b}\PY{p}{,}\PY{n}{a}\PY{o}{+}\PY{n}{b}
+            \PY{k}{return} \PY{n}{b}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{fib}\PY{p}{(}\PY{l+m+mi}{90}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} 2880067194370816120
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{o}{\PYZpc{}}\PY{k}{timeit} fib(90)
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+100000 loops, best of 3: 7.05 µs per loop
+
+    \end{Verbatim}
+
+    Это такая же функция на \texttt{cython}, типы переменных не объявлены ---
+то есть все они обычные питонские объекты.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{cython}
+        def dyn\PYZus{}fib(n):
+            if n\PYZlt{}=2:
+                return 1
+            a,b=1,1
+            for i in range(n\PYZhy{}2):
+                a,b=b,a+b
+            return b
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{dyn\PYZus{}fib}\PY{p}{(}\PY{l+m+mi}{90}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} 2880067194370816120
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{o}{\PYZpc{}}\PY{k}{timeit} dyn\PYZus{}fib(90)
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+100000 loops, best of 3: 5.52 µs per loop
+
+    \end{Verbatim}
+
+    Получилось чуть быстрее. Скомпилированная программа выполняет всю ту же
+возню с типами и их преобразованиями, что и интерпретируемая.
+
+Теперь типы декларированы статически.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{cython}
+        def stat\PYZus{}fib(long n):
+            cdef long i,a,b
+            if n\PYZlt{}=2:
+                return 1
+            a,b=1,1
+            for i in range(n\PYZhy{}2):
+                a,b=b,a+b
+            return b
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{stat\PYZus{}fib}\PY{p}{(}\PY{l+m+mi}{90}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} 2880067194370816120
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{o}{\PYZpc{}}\PY{k}{timeit} stat\PYZus{}fib(90)
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The slowest run took 6.68 times longer than the fastest. This could mean that an intermediate result is being cached.
+1000000 loops, best of 3: 630 ns per loop
+
+    \end{Verbatim}
+
+    Получилось на порядок быстрее.
+
+\texttt{c\_fib} --- это фактически функция на C, только написанная в
+\texttt{cython}-ском синтаксисе. Её можно вызывать откуда угодно в той
+же программе на \texttt{cython}, но не из питонской программы. Поэтому
+напишем обёртку, которую можно вызывать из питона.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{cython}
+         cdef long c\PYZus{}fib(long n):
+             cdef long i,a,b
+             if n\PYZlt{}=2:
+                 return 1
+             a,b=1,1
+             for i in range(n\PYZhy{}2):
+                 a,b=b,a+b
+             return b
+         def wrap\PYZus{}fib(long n):
+             return c\PYZus{}fib(n)
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{wrap\PYZus{}fib}\PY{p}{(}\PY{l+m+mi}{90}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} 2880067194370816120
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{o}{\PYZpc{}}\PY{k}{timeit} wrap\PYZus{}fib(90)
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The slowest run took 5.85 times longer than the fastest. This could mean that an intermediate result is being cached.
+1000000 loops, best of 3: 632 ns per loop
+
+    \end{Verbatim}
+
+    Время то же самое.
+
+\texttt{cpdef} создаёт как C функцию, так и питонскую. Первая вызывается
+из \texttt{cython}, вторая из питона.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{cython}
+         cpdef long cp\PYZus{}fib(long n):
+             cdef long i,a,b
+             if n\PYZlt{}=2:
+                 return 1
+             a,b=1,1
+             for i in range(n\PYZhy{}2):
+                 a,b=b,a+b
+             return b
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{cp\PYZus{}fib}\PY{p}{(}\PY{l+m+mi}{90}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} 2880067194370816120
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{o}{\PYZpc{}}\PY{k}{timeit} cp\PYZus{}fib(90)
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The slowest run took 5.04 times longer than the fastest. This could mean that an intermediate result is being cached.
+1000000 loops, best of 3: 637 ns per loop
+
+    \end{Verbatim}
+
+    Время то же самое.
+
+\subsection{Интерфейс к библиотеке на C}
+\label{cython3}
+
+Пусть у нас есть файл на C.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{o}{!}cat cfib.c
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+long cfib(long n)
+\{   long i,a,b,c;
+    if(n<=2) return 1;
+    \{   a=1; b=1;
+        for(i=2;i<n;++i)
+        \{ c=a+b; a=b; b=c; \}
+        return b;
+    \}
+\}
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{o}{!}cat cfib.h
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+long cfib(long n);
+
+    \end{Verbatim}
+
+    Скомпилируем его.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{o}{!}gcc \PYZhy{}fPIC \PYZhy{}c cfib.c
+\end{Verbatim}
+
+    Напишем обёртку на \texttt{cython}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{o}{!}cat wrap.pyx
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+cdef extern from "cfib.h":
+    long cfib(long n)
+
+def fib(long n):
+    return cfib(n)
+
+    \end{Verbatim}
+
+    Скомпилируем её и соберём в библиотеку.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{o}{\PYZpc{}\PYZpc{}!}
+         cython \PYZhy{}3 wrap.pyx
+         \PY{n+nv}{CFLAGS}\PY{o}{=}\PY{k}{\PYZdl{}(}python\PYZhy{}config \PYZhy{}\PYZhy{}cflags\PY{k}{)}
+         \PY{n+nv}{LDFLAGS}\PY{o}{=}\PY{k}{\PYZdl{}(}python\PYZhy{}config \PYZhy{}\PYZhy{}ldflags\PY{k}{)}
+         gcc \PY{n+nv}{\PYZdl{}CFLAGS} \PYZhy{}fPIC \PYZhy{}c wrap.c
+         gcc \PY{n+nv}{\PYZdl{}LDFLAGS} \PYZhy{}shared wrap.o cfib.o \PYZhy{}o wrap.so
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}21}]:} []
+\end{Verbatim}
+        
+    Эту библиотеку можно импортировать в программу на питоне.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{k+kn}{from} \PY{n+nn}{wrap} \PY{k}{import} \PY{n}{fib}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{fib}\PY{p}{(}\PY{l+m+mi}{90}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}23}]:} 2880067194370816120
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{o}{\PYZpc{}}\PY{k}{timeit} fib(90)
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The slowest run took 4.65 times longer than the fastest. This could mean that an intermediate result is being cached.
+1000000 loops, best of 3: 574 ns per loop
+
+    \end{Verbatim}
+
+    Пулучилось чуть быстрее, чем функция на \texttt{cython}.
+
+\subsection{Структуры}
+\label{cython4}
+
+Структуры можно описывать в \texttt{cython} с помощью
+\texttt{ctypedef\ struct}. Поля в них описываются фактически в
+синтаксисе C. Переменную, описываемую в \texttt{cdef}, можно, если
+хочется, сразу инициализировать. Имя типа-структуры можно использовать
+как функцию, аргументы которой --- её поля (в порядке описания).
+\texttt{print} печатает структуру как словарь; на самом деле это не
+словарь, а структура языка C, не содержащая накладных расходов по памяти
+и времени, имеющихся у словаря, но и не дающая гибкости словаря. Поля
+структуры обозначаются \texttt{z.re}; их можно менять.
+
+В \texttt{cython} можно работать с указателями. Импортируем
+\texttt{malloc} и \texttt{free} из стандартной библиотеки. Результат
+\texttt{malloc} --- адрес, его нужно привести к правильному типу,
+используя \texttt{\textless{}type\textgreater{}}. В C поля структуры, на
+которую ссылается \texttt{w}, обозначаются \texttt{w-\textgreater{}re};
+в \texttt{cython} --- просто \texttt{w.re}. В C структура, на которую
+ссылается \texttt{w}, обозначается \texttt{*w}; в \texttt{cython} такой
+синтаксис не разрешён, вместо этого надо писать \texttt{w{[}0{]}} (в C
+это тоже законная форма записи, но чаще используется \texttt{*w}). При
+работе с указателями управление памятью производится вручную, а не
+автоматически, как в питоне, так что не забывайте \texttt{free}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{cython}
+         ctypedef struct mycomplex:
+             double re
+             double im
+         cdef mycomplex z=mycomplex(1.,2.)
+         print(z)
+         print(z.re)
+         z.re=\PYZhy{}1
+         print(z)
+         \PYZsh{} pointers
+         from libc.stdlib cimport malloc,free
+         cdef mycomplex *w=\PYZlt{}mycomplex*\PYZgt{}malloc(sizeof(mycomplex))
+         w.re,w.im=2.,1.
+         print(w[0])
+         free(w)
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\{'re': 1.0, 'im': 2.0\}
+1.0
+\{'re': -1.0, 'im': 2.0\}
+\{'re': 2.0, 'im': 1.0\}
+
+    \end{Verbatim}
+
+\subsection{cdef классы}
+\label{cython5}
+
+\texttt{cython} позволяет определять классы, объекты которых являются
+фактически структурами языка C. Их атрибуты нужно статически описывать с
+помощью \texttt{cdef}; во время выполнения нельзя добавлять новые
+атрибуты (или уничножать имеющиеся). Вот пример такого класса. Его
+основной метод \texttt{atol} вызывает функцию \texttt{atol} из
+стандартной библиотеки C, преобразующую строку в \texttt{long}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{o}{!}cat C1.pyx
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+from libc.stdlib cimport atol
+
+cdef class C1:
+
+    cdef:
+        char *s
+        long n
+
+    def \_\_init\_\_(self):
+        self.s=NULL
+        self.n=0
+
+    def set\_s(self,bytes s):
+        self.s=s
+
+    def get\_n(self):
+        return self.n
+
+    def atol(self):
+        self.n=atol(self.s)
+
+    \end{Verbatim}
+
+    Есть удобный способ импортировать \texttt{pyx} модуль в питон:
+\texttt{pyximport}, он автоматически произведёт преобразование в C,
+компиляцию и сборку.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{k+kn}{import} \PY{n+nn}{pyximport}
+         \PY{n}{pyximport}\PY{o}{.}\PY{n}{install}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} (None, <pyximport.pyximport.PyxImporter at 0x7f2185779780>)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{k+kn}{from} \PY{n+nn}{C1} \PY{k}{import} \PY{n}{C1}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{o}\PY{o}{=}\PY{n}{C1}\PY{p}{(}\PY{p}{)}
+         \PY{n}{s}\PY{o}{=}\PY{l+s+sa}{b}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{12345}\PY{l+s+s2}{\PYZdq{}}
+         \PY{n}{o}\PY{o}{.}\PY{n}{set\PYZus{}s}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+         \PY{n}{o}\PY{o}{.}\PY{n}{atol}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{o}\PY{o}{.}\PY{n}{get\PYZus{}n}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+12345
+
+    \end{Verbatim}
+
+    Тип \texttt{char*} в C соответствует типу \texttt{bytes} в питоне. При
+совместном использовании питона с его автоматическим управлением памятью
+и C с указателями нужно соблюдать осторожность. Строка \texttt{b"12345"}
+доступна в питоне как значение переменной \texttt{s}, поэтому занимаемая
+ей память не будет освобождена, пока \texttt{s} не будет присвоено
+другое значение. Мы скопировали её адрес в атрибут \texttt{o.s} типа
+\texttt{char*}. Если бы мы не присвоили эту строку переменной
+\texttt{s}, а прямо подставили бы её в качестве аргумента метода
+\texttt{o.set\_s}, то питон не знал бы, что её надо сохранять, и
+освободил бы занимаемую её память. Указатель \texttt{o.s} указывал бы
+после этого неведомо куда, с катастрофическими последствиями.
+
+Усовершенствуем немного эту \texttt{cython} программу. По умолчанию
+\texttt{cdef} атрибуты недоступны ни из питона, ни из \texttt{cython}
+программы. Но можно описать их как \texttt{public} или
+\texttt{readonly}, тогда не нужны будут методы \texttt{get\_foo} и
+\texttt{set\_foo}. Метод \texttt{\_\_init\_\_} может быть и не будет
+вызван (например, другой класс унаследовал текущий, и его
+\texttt{\_\_init\_\_} не вызвал \texttt{\_\_init\_\_} родителя); если в
+структуре есть указатели, то они могут остаться неинициализированными.
+Поэтому лучше использовать \texttt{\_\_cinit\_\_}, который обязательно
+вызывается сразу после выделения память для объекта.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{o}{!}cat C2.pyx
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+from libc.stdlib cimport atol
+
+cdef class C2:
+
+    cdef public char *s
+    cdef readonly long n
+
+    def \_\_cinit\_\_(self):
+        self.s=NULL
+        self.n=0
+
+    def atol(self):
+        self.n=atol(self.s)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{k+kn}{from} \PY{n+nn}{C2} \PY{k}{import} \PY{n}{C2}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{o}\PY{o}{=}\PY{n}{C2}\PY{p}{(}\PY{p}{)}
+         \PY{n}{o}\PY{o}{.}\PY{n}{s}\PY{o}{=}\PY{n}{s}
+         \PY{n}{o}\PY{o}{.}\PY{n}{atol}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{o}\PY{o}{.}\PY{n}{n}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+12345
+
+    \end{Verbatim}
+
+    \texttt{cdef} классы поддерживают наследование (только от одного класса,
+не множественное). Можно написать класс-потомок как \texttt{cdef} класс
+на \texttt{cython}. Можно и написать класс-потомок на питоне. Пусть мы
+хотим добавить к нашему классу метод преобразования строки в число с
+плавающей точкой, но нам лень использовать \texttt{atof} из стандортной
+библиотеки C. Сделаем это обычными средствами питона. Атрибут \texttt{x}
+добавляется к объектам класса \texttt{C3} динамически, описывать его не
+надо.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{k}{class} \PY{n+nc}{C3}\PY{p}{(}\PY{n}{C2}\PY{p}{)}\PY{p}{:}
+             
+             \PY{k}{def} \PY{n+nf}{atof}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{=}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{o}\PY{o}{=}\PY{n}{C3}\PY{p}{(}\PY{p}{)}
+         \PY{n}{s}\PY{o}{=}\PY{l+s+sa}{b}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{12345.6789}\PY{l+s+s2}{\PYZdq{}}
+         \PY{n}{o}\PY{o}{.}\PY{n}{s}\PY{o}{=}\PY{n}{s}
+         \PY{n}{o}\PY{o}{.}\PY{n}{atof}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{o}\PY{o}{.}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+12345.6789
+
+    \end{Verbatim}
+
+\subsection{Интерфейс к библиотеке на C}
+\label{cython6}
+
+Рассмотрим очень упощённый пример того, как можно написать удобный
+питонский интерфейс к библиотеке на C, используя \texttt{cython}. Если
+бы мы хотели использовать эту библиотеку из программы на C, достаточно
+было бы включить \texttt{\#include\ "foo.h"} в эту программу.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{o}{!}cat cfoo.h
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+typedef struct \{ long n; double x; \} CFoo;
+CFoo *Foo\_new(long n,double x);
+void Foo\_del(CFoo *z);
+double Foo\_f(CFoo *z,double y);
+
+    \end{Verbatim}
+
+    Здесь описан тип-структура \texttt{CFoo}. Функция \texttt{Foo\_new}
+создаёт и инициализирует такую структуру и возвращает указатель на неё.
+Функция \texttt{Foo\_del} уничтожает эту структуру. Наконец, функция
+\texttt{Foo\_f} делает какое-то вычисление со своим параметром
+\texttt{y} и данными из структуры. Подобным образом часто выглядят
+интерфейсы к генераторам случайных чисел: мы можем создать несколько
+структур с начальными данными и получить несколько независимых потоков
+случайных чисел.
+
+А вот реализация на C.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{o}{!}cat cfoo.c
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\#include <stdlib.h>
+\#include "cfoo.h"
+
+CFoo *Foo\_new(long n,double x)
+\{   CFoo *r=(CFoo*)malloc(sizeof(CFoo));
+    r->n=n;
+    r->x=x;
+    return r;
+\}
+
+void Foo\_del(CFoo *z)
+\{ free(z); \}
+
+double Foo\_f(CFoo *z,double y)
+\{ return z->n*y+z->x; \}
+
+    \end{Verbatim}
+
+    В первую очередь мы напишем файл определений \texttt{cython}. Он почти
+копирует \texttt{foo.h} с минимальными синтаксическими изменениями.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{o}{!}cat foo.pxd
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+cdef extern from "cfoo.h":
+
+    ctypedef struct CFoo:
+        pass
+
+    CFoo *Foo\_new(long n,double x)
+    void Foo\_del(CFoo *z)
+    double Foo\_f(CFoo *z,double y)
+
+    \end{Verbatim}
+
+    Теперь напишем удобную объектно-ориентированную обёртку. Файл
+определений импортируется при помощи \texttt{cimport} (мы уже
+использовали эту команду, когда импортировали \texttt{libc.stdlib};
+\texttt{cython} содержит ряд стандартных \texttt{pxd} файлов, включая
+\texttt{stdlib.pxd}, \texttt{stdio.pxd} и т.д.). Теперь определим
+\texttt{cdef} класс \texttt{Foo}. Метод \texttt{\_\_dealloc\_\_}
+вызывается в последний момент перед уничтожением объекта (условие
+\texttt{if\ self.foo!=NULL:} написано из перестраховки, в законном
+объекте класса \texttt{Foo} этот атрибут всегда не \texttt{NULL}, т.к.
+он инициализируется в \texttt{\_\_cinit\_\_}).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{o}{!}cat foo.pyx
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+cimport foo
+
+cdef class Foo:
+
+    cdef foo.CFoo *foo
+
+    def \_\_cinit\_\_(self,long n,double x):
+        self.foo=foo.Foo\_new(n,x)
+
+    def \_\_dealloc\_\_(self):
+        if self.foo!=NULL:
+            foo.Foo\_del(self.foo)
+
+    def f(self,double y):
+        return foo.Foo\_f(self.foo,y)
+
+    \end{Verbatim}
+
+    Скомпилируем и соберём.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{o}{\PYZpc{}\PYZpc{}!}
+         gcc \PYZhy{}fPIC \PYZhy{}c cfoo.c
+         cython \PYZhy{}3 foo.pyx
+         \PY{n+nv}{CFLAGS}\PY{o}{=}\PY{k}{\PYZdl{}(}python\PYZhy{}config \PYZhy{}\PYZhy{}cflags\PY{k}{)}
+         \PY{n+nv}{LDFLAGS}\PY{o}{=}\PY{k}{\PYZdl{}(}python\PYZhy{}config \PYZhy{}\PYZhy{}ldflags\PY{k}{)}
+         gcc \PY{n+nv}{\PYZdl{}CFLAGS} \PYZhy{}fPIC \PYZhy{}c foo.c
+         gcc \PY{n+nv}{\PYZdl{}LDFLAGS} \PYZhy{}shared foo.o cfoo.o \PYZhy{}o foo.so
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}39}]:} []
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{k+kn}{from} \PY{n+nn}{foo} \PY{k}{import} \PY{n}{Foo}
+\end{Verbatim}
+
+    Теперь мы можем в питоне создавать объекты класса \texttt{Foo} и
+вызывать их метод \texttt{f}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{o}\PY{o}{=}\PY{n}{Foo}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mf}{0.}\PY{p}{)}
+         \PY{n}{o}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{l+m+mf}{3.}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}41}]:} 6.0
+\end{Verbatim}

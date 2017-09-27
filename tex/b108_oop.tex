@@ -1,0 +1,1039 @@
+\section{Объектно-ориентированное программирование}
+\label{S108}
+
+Питон является развитым объектно-ориентированным языком. Всё, с чем он
+работает, является объектами --- целые числа, строки, словари, функции и
+т.д. Каждый объект принадлежит определённому типу (или классу, что одно
+и то же). Класс тоже является объектом. Классы наследуют друг от друга.
+Класс \texttt{object} является корнем дерева классов --- каждый класс
+наследует от него прямо или через какие-то промежуточные классы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{n+nb}{object}\PY{p}{,}\PY{n+nb}{type}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}1}]:} (object, type)
+\end{Verbatim}
+        
+    Функция \texttt{dir} возвращает список атрибутов класса.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n+nb}{dir}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} ['\_\_class\_\_',
+         '\_\_delattr\_\_',
+         '\_\_dir\_\_',
+         '\_\_doc\_\_',
+         '\_\_eq\_\_',
+         '\_\_format\_\_',
+         '\_\_ge\_\_',
+         '\_\_getattribute\_\_',
+         '\_\_gt\_\_',
+         '\_\_hash\_\_',
+         '\_\_init\_\_',
+         '\_\_init\_subclass\_\_',
+         '\_\_le\_\_',
+         '\_\_lt\_\_',
+         '\_\_ne\_\_',
+         '\_\_new\_\_',
+         '\_\_reduce\_\_',
+         '\_\_reduce\_ex\_\_',
+         '\_\_repr\_\_',
+         '\_\_setattr\_\_',
+         '\_\_sizeof\_\_',
+         '\_\_str\_\_',
+         '\_\_subclasshook\_\_']
+\end{Verbatim}
+        
+    Атрибуты, имена которых начинаются и кончаются двойным подчерком,
+используются интерпретатором для особых целей. Например, атрибут
+\texttt{\_\_doc\_\_} содержит док-строку.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n+nb}{object}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}doc\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} 'The most base type'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{help}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Help on class object in module builtins:
+
+class object
+ |  The most base type
+
+
+    \end{Verbatim}
+
+    Ниже мы рассмотрим цели некоторых других специальных атрибутов.
+
+Вот простейший класс. Поскольку не указано, от чего он наследует, он
+наследует от \texttt{object}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k}{class} \PY{n+nc}{A}\PY{p}{:}
+            \PY{k}{pass}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{A}\PY{p}{,}\PY{n+nb}{type}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} (\_\_main\_\_.A, type)
+\end{Verbatim}
+        
+    Создать объект какого-то класса можно, вызвав имя класса как функцию
+(возможно, с какими-нибудь аргументами). Мы уже это видели: имена
+классов \texttt{int}, \texttt{str}, \texttt{list} и т.д. создают объекты
+этих классов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{o}\PY{o}{=}\PY{n}{A}\PY{p}{(}\PY{p}{)}
+        \PY{n}{o}\PY{p}{,}\PY{n+nb}{type}\PY{p}{(}\PY{n}{o}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} (<\_\_main\_\_.A at 0x7f5cb30bcbe0>, \_\_main\_\_.A)
+\end{Verbatim}
+        
+    Узнать, какому классу принадлежит объект, можно при помощи функции
+\texttt{type} или атрибута \texttt{\_\_class\_\_}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n+nb}{type}\PY{p}{(}\PY{n}{o}\PY{p}{)}\PY{p}{,}\PY{n}{o}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}class\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} (\_\_main\_\_.A, \_\_main\_\_.A)
+\end{Verbatim}
+        
+    У только что созданного объекта \texttt{o} нет атрибутов. Их можно
+создавать (и удалять) налету.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{o}\PY{o}{.}\PY{n}{x}\PY{o}{=}\PY{l+m+mi}{1}
+        \PY{n}{o}\PY{o}{.}\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{2}
+        \PY{n}{o}\PY{o}{.}\PY{n}{x}\PY{p}{,}\PY{n}{o}\PY{o}{.}\PY{n}{y}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} (1, 2)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{o}\PY{o}{.}\PY{n}{z}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        AttributeError                            Traceback (most recent call last)
+
+        <ipython-input-10-c8c0d478b237> in <module>()
+    ----> 1 o.z
+    
+
+        AttributeError: 'A' object has no attribute 'z'
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{k}{del} \PY{n}{o}\PY{o}{.}\PY{n}{y}
+         \PY{n}{o}\PY{o}{.}\PY{n}{y}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        AttributeError                            Traceback (most recent call last)
+
+        <ipython-input-11-68acd6859c06> in <module>()
+          1 del o.y
+    ----> 2 o.y
+    
+
+        AttributeError: 'A' object has no attribute 'y'
+
+    \end{Verbatim}
+
+    Такой объект похож на словарь, ключами которого являются имена
+атрибутов: можно узнать значение атрибута, изменить его, добавить новый
+или удалить старый. Это и неудивительно: для реализации атрибутов
+объекта используется именно словарь.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{o}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}dict\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} \{'x': 1\}
+\end{Verbatim}
+        
+    Класс вводит пространство имён. В описании класса мы определяем его
+атрибуты (атрибуты, являющиеся функциями, называются методами). Потом
+эти атрибуты можно использовать как \texttt{Class.attribute}. Принято,
+чтобы имена классов начинались с заглавной буквы.
+
+Вот более полный пример класса. В нём есть док-строка, метод \texttt{f},
+статический атрибут \texttt{x} (атрибут класса, а не конкретного
+объекта) и статический метод \texttt{getx} (опять же принадлежащий
+классу, а не конкретному объекту).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{k}{class} \PY{n+nc}{S}\PY{p}{:}
+             \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Простой класс}\PY{l+s+s1}{\PYZsq{}}
+             
+             \PY{n}{x}\PY{o}{=}\PY{l+m+mi}{1}
+             
+             \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}
+             
+             \PY{n+nd}{@staticmethod}
+             \PY{k}{def} \PY{n+nf}{getx}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{S}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+    Заклинание тёмной магии, начинающееся с \texttt{@}, называется
+декоратором. Запись
+
+\begin{verbatim}
+@dec
+def fun(x):
+    ...
+\end{verbatim}
+
+эквивалентна
+
+\begin{verbatim}
+def fun(x):
+    ...
+fun=dec(fun)
+\end{verbatim}
+
+То есть \texttt{dec} --- это функция, параметр которой --- функция, и он
+возвращает эту функцию, преобразованную некоторым образом. Мы не будем
+обсуждать, как самим сочинять такие заклинания --- за этим обращайтесь в
+Дурмстранг.
+
+Функция \texttt{dir} возвращает список атрибутов класса. Чтобы не
+смотреть снова на атрибуты, унаследованные от \texttt{object}, мы их
+вычтем.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n}{S}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} \{'\_\_dict\_\_', '\_\_module\_\_', '\_\_weakref\_\_', 'f', 'getx', 'x'\}
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n+nb}{dict}\PY{p}{(}\PY{n}{S}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}dict\PYZus{}\PYZus{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} \{'\_\_dict\_\_': <attribute '\_\_dict\_\_' of 'S' objects>,
+          '\_\_doc\_\_': 'Простой класс',
+          '\_\_module\_\_': '\_\_main\_\_',
+          '\_\_weakref\_\_': <attribute '\_\_weakref\_\_' of 'S' objects>,
+          'f': <function \_\_main\_\_.S.f>,
+          'getx': <staticmethod at 0x7f5cb28553c8>,
+          'x': 1\}
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{S}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} 1
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{S}\PY{o}{.}\PY{n}{x}\PY{o}{=}\PY{l+m+mi}{2}
+         \PY{n}{S}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}17}]:} 2
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{S}\PY{o}{.}\PY{n}{f}\PY{p}{,}\PY{n}{S}\PY{o}{.}\PY{n}{getx}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}18}]:} (<function \_\_main\_\_.S.f>, <function \_\_main\_\_.S.getx>)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{S}\PY{o}{.}\PY{n}{getx}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}19}]:} 2
+\end{Verbatim}
+        
+    Теперь создадим объект этого класса.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{o}\PY{o}{=}\PY{n}{S}\PY{p}{(}\PY{p}{)}
+         \PY{n}{o}\PY{p}{,}\PY{n+nb}{type}\PY{p}{(}\PY{n}{o}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}20}]:} (<\_\_main\_\_.S at 0x7f5cb2855c88>, \_\_main\_\_.S)
+\end{Verbatim}
+        
+    Метод класса можно вызвать и через объект.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{o}\PY{o}{.}\PY{n}{getx}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}21}]:} 2
+\end{Verbatim}
+        
+    Следующее присваивание создаёт атрибут объекта \texttt{o} с именем
+\texttt{x}. Когда мы запрашиваем \texttt{o.x}, атрибут \texttt{x} ищется
+сначала в объекте \texttt{o}, а если он там не найден --- в его классе. В
+данном случае он найдётся в объекте \texttt{o}. На атрибут класса
+\texttt{S.x} это присваивание не влияет.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{o}\PY{o}{.}\PY{n}{x}\PY{o}{=}\PY{l+m+mi}{5}
+         \PY{n}{o}\PY{o}{.}\PY{n}{x}\PY{p}{,}\PY{n}{S}\PY{o}{.}\PY{n}{x}\PY{p}{,}\PY{n}{o}\PY{o}{.}\PY{n}{getx}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}22}]:} (5, 2, 2)
+\end{Verbatim}
+        
+    Как мы уже обсуждали, можно вызвать метод класса \texttt{S.f} с
+каким-нибудь аргументом, например, \texttt{o}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{S}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{n}{o}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<\_\_main\_\_.S object at 0x7f5cb2855c88>
+
+    \end{Verbatim}
+
+    Следующий вызов означает в точности то же самое. Интерпретатор питон
+фактически преобразует его в предыдущий.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{o}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<\_\_main\_\_.S object at 0x7f5cb2855c88>
+
+    \end{Verbatim}
+
+    То есть текущий объект передаётся методу в качестве первого аргумента.
+Этот первый аргумент любого метода принято называть \texttt{self}. В
+принципе, Вы можете назвать его как угодно, но это затруднит понимание
+Вашего класса читателями, воспитанными в этой традиции.
+
+Отличие метода класса (\texttt{@staticmethod}) от метода объекта состоит
+в том, что такое автоматическое вставление первого аргумента не
+производится.
+
+\texttt{o.f} --- это связанный метод: \texttt{S.f} связанный с объектом
+\texttt{o}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{o}\PY{o}{.}\PY{n}{f}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}25}]:} <bound method S.f of <\_\_main\_\_.S object at 0x7f5cb2855c88>>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{g}\PY{o}{=}\PY{n}{o}\PY{o}{.}\PY{n}{f}
+         \PY{n}{g}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<\_\_main\_\_.S object at 0x7f5cb2855c88>
+
+    \end{Verbatim}
+
+    Док-строка доступна как атрибут \texttt{\_\_doc\_\_} и используется
+функцией \texttt{help}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{S}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}doc\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} 'Простой класс'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{help}\PY{p}{(}\PY{n}{S}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Help on class S in module \_\_main\_\_:
+
+class S(builtins.object)
+ |  Простой класс
+ |  
+ |  Methods defined here:
+ |  
+ |  f(self)
+ |  
+ |  ----------------------------------------------------------------------
+ |  Static methods defined here:
+ |  
+ |  getx()
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |  
+ |  \_\_dict\_\_
+ |      dictionary for instance variables (if defined)
+ |  
+ |  \_\_weakref\_\_
+ |      list of weak references to the object (if defined)
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data and other attributes defined here:
+ |  
+ |  x = 2
+
+
+    \end{Verbatim}
+
+    Классу можно добавить новый атрибут налету (равно как и удалить
+имеющийся).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{S}\PY{o}{.}\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{2}
+         \PY{n}{S}\PY{o}{.}\PY{n}{y}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}29}]:} 2
+\end{Verbatim}
+        
+    Можно добавить и атрибут, являющийся функцией, т.е. метод. Сначала
+опишем (вне тела класса!) какую-нибудь функцию, а потом добавим её к
+классу в качестве нового метода.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{k}{def} \PY{n+nf}{g}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{p}{)}
+         \PY{n}{S}\PY{o}{.}\PY{n}{g}\PY{o}{=}\PY{n}{g}
+         \PY{n}{o}\PY{o}{.}\PY{n}{g}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2
+
+    \end{Verbatim}
+
+    Менять класс налету таким образом --- плохая идея. Когда в каком-то месте
+программы Вы видете, что используется какой-то объект некоторого класса,
+первое, что Вы сделаете --- это посмотрите определение этого класса. И
+если текущее его состояние отлично от его определения, это сильно
+затрудняет понимание программы.
+
+Класс \texttt{S}, который мы рассмотрели в качестве примера --- отнюдь не
+пример для подражания. В нормальном объектно-ориентированном подходе
+объект класса должен создаваться в допустимом (пригодном к
+использованию) состоянии, со всеми необходимыми атрибутами. В других
+языках за это твечает конструктор. В питоне аналогичную роль играет
+метод инициализации \texttt{\_\_init\_\_}. Вот пример такого класса.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{k}{class} \PY{n+nc}{C}\PY{p}{:}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{=}\PY{n}{x}
+                 
+             \PY{k}{def} \PY{n+nf}{getx}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}
+             
+             \PY{k}{def} \PY{n+nf}{setx}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{=}\PY{n}{x}
+\end{Verbatim}
+
+    Теперь для создания объекта мы должны вызвать \texttt{C} с одним
+аргументом \texttt{x} (первый аргумент метода \texttt{\_\_init\_\_},
+\texttt{self}, это свежесозданный объект, в котором ещё ничего нет и
+который надо инициализировать).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{o}\PY{o}{=}\PY{n}{C}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{o}\PY{o}{.}\PY{n}{getx}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}32}]:} 1
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{o}\PY{o}{.}\PY{n}{setx}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{o}\PY{o}{.}\PY{n}{getx}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}33}]:} 2
+\end{Verbatim}
+        
+    Этот класс --- тоже не пример для подражания. В некоторых
+объектно-ориентированных языках считается некошерным напрямую читать и
+писать атрибуты; считается, что вся работа должна производиться через
+вызов методов. В питоне этот предрассудок не разделяют. Так что писать
+методы типа \texttt{getx} и \texttt{setx} абсолютно излишне. Они не
+добавляют никакой полезной функциональности --- всё можно сделать, просто
+используя атрибут \texttt{x}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{o}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}34}]:} 2
+\end{Verbatim}
+        
+    Любой объектно-ориентированный язык, заслуживающий такого названия,
+поддерживает наследование. Класс \texttt{C2} наследует от \texttt{C}.
+Его объекты являются вполне законными для класса \texttt{C} (имеют
+атрибут \texttt{x}), но в добавок к этому имеют ещё и атрибут
+\texttt{y}. Метод \texttt{\_\_init\_\_} теперь должен иметь 2 параметра
+\texttt{x} и \texttt{y} (не считая обязательного \texttt{self}). К
+методам \texttt{getx} и \texttt{setx}, унаследованным от \texttt{C},
+добавляются методы \texttt{gety} и \texttt{sety}.
+
+Чтобы инициализировать атрибут \texttt{x}, который был в родительском
+классе, мы могли бы, конечно, скопировать код из метода
+\texttt{\_\_init\_\_} класса \texttt{C}. В данном случае он столь прост,
+что это не преступление. Но, вообще говоря, копировать куски кода из
+одного места в другое категорически не рекомендуется. Допустим, в
+скопированном куске найден и исправлен баг. А в копии он остался.
+Поэтому для инициализации нового объекта, рассматриваемого как объект
+родительского класса \texttt{C}, нам следует вызвать метод
+\texttt{\_\_init\_\_} класса \texttt{C}, а после этого довавить
+инициализацию атрибута \texttt{y}, специфичного для дочернего класса
+\texttt{C2}. Первую часть задачи можно выполнить, вызвав
+\texttt{C.\_\_init\_\_(self,x)} (мы ведь только что написали строчку
+\texttt{class}, в которой указали, что класс-предок называется
+\texttt{C}). Но есть более универсальный метод, не требующий второй раз
+писать имя родительского класса. Функция super() возвращает текущий
+объект \texttt{self}, \emph{рассматриваемый как объект родительского
+класса \texttt{C}}. Поэтому мы можем написать
+\texttt{super().\_\_init\_\_(x)}.
+
+Конечно, не только \texttt{\_\_init\_\_}, но и другие методы дочернего
+класса могут захотеть вызвать методы родительского класса. Для этого
+используется либо вызов через имя родительского класса, либо
+\texttt{super()}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{k}{class} \PY{n+nc}{C2}\PY{p}{(}\PY{n}{C}\PY{p}{)}\PY{p}{:}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{=}\PY{n}{y}
+                 
+             \PY{k}{def} \PY{n+nf}{gety}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}
+             
+             \PY{k}{def} \PY{n+nf}{sety}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{=}\PY{n}{y}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{o}\PY{o}{=}\PY{n}{C2}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{o}\PY{o}{.}\PY{n}{getx}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{o}\PY{o}{.}\PY{n}{gety}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}36}]:} (1, 2)
+\end{Verbatim}
+        
+    \texttt{o} является объектом класса \texttt{C2}, а также его
+родительского класса \texttt{C} (и, конечно, класса \texttt{object}), но
+не является объектом класса \texttt{S}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{o}\PY{p}{,}\PY{n}{C2}\PY{p}{)}\PY{p}{,}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{o}\PY{p}{,}\PY{n}{C}\PY{p}{)}\PY{p}{,}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{o}\PY{p}{,}\PY{n+nb}{object}\PY{p}{)}\PY{p}{,}\PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{o}\PY{p}{,}\PY{n}{S}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}37}]:} (True, True, True, False)
+\end{Verbatim}
+        
+    \texttt{C2} является подклассом (потомком) себя, класса \texttt{C} и
+\texttt{object}, но не является подклассом \texttt{S}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n+nb}{issubclass}\PY{p}{(}\PY{n}{C2}\PY{p}{,}\PY{n}{C2}\PY{p}{)}\PY{p}{,}\PY{n+nb}{issubclass}\PY{p}{(}\PY{n}{C2}\PY{p}{,}\PY{n}{C}\PY{p}{)}\PY{p}{,}\PY{n+nb}{issubclass}\PY{p}{(}\PY{n}{C2}\PY{p}{,}\PY{n+nb}{object}\PY{p}{)}\PY{p}{,}\PY{n+nb}{issubclass}\PY{p}{(}\PY{n}{C2}\PY{p}{,}\PY{n}{S}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}38}]:} (True, True, True, False)
+\end{Verbatim}
+        
+    Эти функции используются редко. В питоне придерживаются принципа утиной
+типизации: \emph{если объект ходит, как утка, плавает, как утка, и
+крякает, как утка, значит, он утка}. Пусть у нас есть класс
+\texttt{Утка} с методами \texttt{иди}, \texttt{плыви} и \texttt{крякни}.
+Конечно, можно создать подкласс \texttt{Кряква}, наследующий эти методы
+и что-то в них переопределяющий. Но можно написать класс \texttt{Кряква}
+с нуля, без всякой генетической связи с классом \texttt{Утка}, и
+реализовать эти методы. Тогда в любую программу, ожидающую получить
+объект класса \texttt{Утка} (и общающуюся с ним при помощи методов
+\texttt{иди}, \texttt{плыви} и \texttt{крякни}), можно вместо этого
+подставить объект класса \texttt{Кряква}, и программа будет по-прежнему
+работать. А функции \texttt{isinstance} и \texttt{issubclass} нарушают
+принцип утиной типизации.
+
+Класс может наследовать от нескольких классов. Мы не будем обсуждать
+множественное наследование, оно используется редко. Атрибут
+\texttt{\_\_bases\_\_} даёт кортеж родительских классов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{C2}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}bases\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}39}]:} (\_\_main\_\_.C,)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{n}{C}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}bases\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}40}]:} (object,)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n+nb}{object}\PY{o}{.}\PY{n+nv+vm}{\PYZus{}\PYZus{}bases\PYZus{}\PYZus{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}41}]:} ()
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n}{C}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}42}]:} \{'\_\_dict\_\_', '\_\_module\_\_', '\_\_weakref\_\_', 'getx', 'setx'\}
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n}{C2}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}43}]:} \{'\_\_dict\_\_', '\_\_module\_\_', '\_\_weakref\_\_', 'getx', 'gety', 'setx', 'sety'\}
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n}{C2}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n+nb}{set}\PY{p}{(}\PY{n+nb}{dir}\PY{p}{(}\PY{n}{C}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}44}]:} \{'gety', 'sety'\}
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n}{help}\PY{p}{(}\PY{n}{C2}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Help on class C2 in module \_\_main\_\_:
+
+class C2(C)
+ |  Method resolution order:
+ |      C2
+ |      C
+ |      builtins.object
+ |  
+ |  Methods defined here:
+ |  
+ |  \_\_init\_\_(self, x, y)
+ |      Initialize self.  See help(type(self)) for accurate signature.
+ |  
+ |  gety(self)
+ |  
+ |  sety(self, y)
+ |  
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from C:
+ |  
+ |  getx(self)
+ |  
+ |  setx(self, x)
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors inherited from C:
+ |  
+ |  \_\_dict\_\_
+ |      dictionary for instance variables (if defined)
+ |  
+ |  \_\_weakref\_\_
+ |      list of weak references to the object (if defined)
+
+
+    \end{Verbatim}
+
+    В питоне все методы являются, в терминах других языков, виртуальными.
+Пусть у нас есть класс \texttt{A}; метод \texttt{get} вызывает метод
+\texttt{str}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{k}{class} \PY{n+nc}{A}\PY{p}{:}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{=}\PY{n}{x}
+                 
+             \PY{k}{def} \PY{n+nf}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{p}{)}
+                 
+             \PY{k}{def} \PY{n+nf}{get}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{str}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+    Класс \texttt{B} наследует от него и переопределяет метод \texttt{str}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{k}{class} \PY{n+nc}{B}\PY{p}{(}\PY{n}{A}\PY{p}{)}\PY{p}{:}
+             
+             \PY{k}{def} \PY{n+nf}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The value of x is }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{str}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    Создадим объект класса \texttt{A} и вызовем метод \texttt{get}. Он
+вызывает \texttt{self.str()}; \texttt{str} ищется (и находится) в классе
+\texttt{A}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{n}{oa}\PY{o}{=}\PY{n}{A}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{oa}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1
+
+    \end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}48}]:} 1
+\end{Verbatim}
+        
+    Теперь создадим объект класса \texttt{B} и вызовем метод \texttt{get}.
+Он ищется в \texttt{B}, не находится, потом ищется и находится в
+\texttt{A}. Этот метод \texttt{A.get(ob)} вызывает \texttt{self.str()},
+где \texttt{self} --- это \texttt{ob}. Поэтому метод \texttt{str} ищется в
+классе \texttt{B}, находится и вызывается. То есть метод родительского
+класса вызывает переопределённый метод дочернего класса.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{n}{ob}\PY{o}{=}\PY{n}{B}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{ob}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The value of x is 1
+
+    \end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}49}]:} 1
+\end{Verbatim}
+        
+    Напишем класс 2-мерных векторов, определяющий некоторые специальные
+методы для того, чтобы к его объектам можно было применять встроенные
+операции и функции языка питон (в тех случаях, когда это имеет смысл).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}50}]:} \PY{k+kn}{from} \PY{n+nn}{math} \PY{k}{import} \PY{n}{sqrt}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}51}]:} \PY{k}{class} \PY{n+nc}{Vec2}\PY{p}{:}
+             \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2\PYZhy{}dimensional vectors}\PY{l+s+s1}{\PYZsq{}}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{=}\PY{n}{x}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{=}\PY{n}{y}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}repr\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Vec2(}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}str\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}bool\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{!=}\PY{l+m+mi}{0} \PY{o+ow}{or} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{!=}\PY{l+m+mi}{0}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}eq\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{==}\PY{n}{other}\PY{o}{.}\PY{n}{x} \PY{o+ow}{and} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{==}\PY{n}{other}\PY{o}{.}\PY{n}{y}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}abs\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{sqrt}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}neg\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{Vec2}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}add\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{Vec2}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{+}\PY{n}{other}\PY{o}{.}\PY{n}{x}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{+}\PY{n}{other}\PY{o}{.}\PY{n}{y}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}sub\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{Vec2}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{other}\PY{o}{.}\PY{n}{x}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{n}{other}\PY{o}{.}\PY{n}{y}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}iadd\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{+}\PY{o}{=}\PY{n}{other}\PY{o}{.}\PY{n}{x}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{+}\PY{o}{=}\PY{n}{other}\PY{o}{.}\PY{n}{y}
+                 \PY{k}{return} \PY{n+nb+bp}{self}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}isub\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{o}{=}\PY{n}{other}\PY{o}{.}\PY{n}{x}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{o}{=}\PY{n}{other}\PY{o}{.}\PY{n}{y}
+                 \PY{k}{return} \PY{n+nb+bp}{self}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}mul\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{Vec2}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{*}\PY{n}{other}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{*}\PY{n}{other}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}rmul\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{Vec2}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{*}\PY{n}{other}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{*}\PY{n}{other}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}imul\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{*}\PY{o}{=}\PY{n}{other}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{*}\PY{o}{=}\PY{n}{other}
+                 \PY{k}{return} \PY{n+nb+bp}{self}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}truediv\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{Vec2}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{/}\PY{n}{other}\PY{p}{,}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{/}\PY{n}{other}\PY{p}{)}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}itruediv\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{other}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{x}\PY{o}{/}\PY{o}{=}\PY{n}{other}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{y}\PY{o}{/}\PY{o}{=}\PY{n}{other}
+                 \PY{k}{return} \PY{n+nb+bp}{self}
+\end{Verbatim}
+
+    Создадим вектор. Когда в командной строке питона написано выражение, его
+значение печатается при помощи метода \texttt{\_\_repr\_\_}. Он
+старается напечатать объект в таком виде, чтобы эту строку можно было
+вставить в исходный текст программы и воссоздать этот объект. (Для
+объектов некоторых классов это невозможно, тогда \texttt{\_\_repr\_\_}
+печатает некоторую информацию в угловых скобках
+\textless{}\ldots{}\textgreater{}).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{n}{u}\PY{o}{=}\PY{n}{Vec2}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{u}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}52}]:} Vec2(1,2)
+\end{Verbatim}
+        
+    Метод \texttt{\_\_str\_\_} печатает объект в виде, наиболее простом для
+восприятия человека (не обязательно машинно-читаемом). Функция
+\texttt{print} использует этот метод.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{u}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(1,2)
+
+    \end{Verbatim}
+
+    Это выражение автоматически преобразуется в следующий вызов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}54}]:} \PY{n}{u}\PY{o}{*}\PY{l+m+mi}{2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}54}]:} Vec2(2,4)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}55}]:} \PY{n}{u}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}mul\PYZus{}\PYZus{}}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}55}]:} Vec2(2,4)
+\end{Verbatim}
+        
+    А это выражение --- в следующий.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}56}]:} \PY{l+m+mi}{3}\PY{o}{*}\PY{n}{u}\PY{p}{,}\PY{n}{u}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}rmul\PYZus{}\PYZus{}}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}56}]:} (Vec2(3,6), Vec2(3,6))
+\end{Verbatim}
+        
+    Такой оператор преобразуется в вызов \texttt{u.\_\_imul\_\_(2)}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{u}\PY{o}{*}\PY{o}{=}\PY{l+m+mi}{2}
+         \PY{n}{u}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}57}]:} Vec2(2,4)
+\end{Verbatim}
+        
+    Другие арифметические операторы работают аналогично.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}58}]:} \PY{n}{v}\PY{o}{=}\PY{n}{Vec2}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{u}\PY{o}{+}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{v}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}58}]:} Vec2(1,14)
+\end{Verbatim}
+        
+    Унарный минус пеобразуется в \texttt{\_\_neg\_\_}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}59}]:} \PY{o}{\PYZhy{}}\PY{n}{v}\PY{p}{,}\PY{n}{v}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}neg\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}59}]:} (Vec2(1,-2), Vec2(1,-2))
+\end{Verbatim}
+        
+    Вызов встроенной функции \texttt{abs} --- в метод \texttt{\_\_abs\_\_}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}60}]:} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{u}\PY{p}{)}\PY{p}{,}\PY{n}{u}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}abs\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}60}]:} (4.47213595499958, 4.47213595499958)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}61}]:} \PY{n}{u}\PY{o}{+}\PY{o}{=}\PY{n}{v}
+         \PY{n}{u}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}61}]:} Vec2(1,6)
+\end{Verbatim}
+        
+    Питон позволяет переопределять то, что происходит при чтении и записи
+атрибута (а также при его удалении). Эту тёмную магию мы изучать не
+будем, за одним исключением. Можно определить пару методов, один из
+которых будет вызываться при чтении некоторого ``атрибута'', а другой
+при его записи. Такой ``атрибут'', которого на самом деле нет,
+называется свойством. Пользователь класса будес спокойно читать и писать
+этот ``атрибут'', не подозревая, что на самом деле для этого вызываются
+какие-то методы.
+
+В питоне нет приватных атрибутов (в том числе приватных методов). По
+традиции, атрибуты (включая методы), имена которых начинаются с
+\texttt{\_}, считаются приватными. Технически ничто не мешает
+пользователю класса обращаться к таким ``приватным'' атрибутам. Но автор
+класса может в любой момент изменить детали реализации, включая
+``приватные'' атрибуты. Использующий их код пользователя при этом
+сломается. Сам дурак.
+
+В этом классе есть свойство \texttt{x}. Его чтение и запись приводят к
+вызову пары методов, которые читают и пишут ``приватный'' атрибут
+\texttt{\_x}, а также выполняют некоторый код. Свойство создаётся при
+помощи декораторов. В принципе свойство может быть и чисто синтетическим
+(без соответствующего ``приватного'' атрибута) --- его ``чтение''
+возвращает результат некоторого вычисления, исходящего из реальных
+атрибутов, а ``запись'' меняет значения таких реальных атрибутов.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}62}]:} \PY{k}{class} \PY{n+nc}{D}\PY{p}{:}
+             
+             \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}x}\PY{o}{=}\PY{n}{x}
+                 
+             \PY{n+nd}{@property}
+             \PY{k}{def} \PY{n+nf}{x}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{getting x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}x}
+             
+             \PY{n+nd}{@x}\PY{o}{.}\PY{n}{setter}
+             \PY{k}{def} \PY{n+nf}{x}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{setting x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{\PYZus{}x}\PY{o}{=}\PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}63}]:} \PY{n}{o}\PY{o}{=}\PY{n}{D}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{o}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+getting x
+
+    \end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}63}]:} 'a'
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}64}]:} \PY{n}{o}\PY{o}{.}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+setting x
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}65}]:} \PY{n}{o}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+getting x
+
+    \end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}65}]:} 'b'
+\end{Verbatim}
+        
+    Я использовал свойство, когда писал Монте-Карловское моделирование
+модели Изинга. У изинговской решётки было свойство --- температура,
+которую можно было читать и писать. Но соответствующего атрибута не
+было. Был атрибут \(x=\exp(-J/T)\), где \(J\) --- энергия взаимодействия.
+
+Свойства полезны также для обёртки GUI библиотек. Например, окно имеет
+свойство --- заголовок. Чтение или изменение заголовка требует вызова
+соответствующих функций из низкоуровневой библиотеки (на \texttt{C} или
+\texttt{C++}). Но на питоне гораздо приятнее написать
+
+\begin{verbatim}
+w.title='Моё окно'
+\end{verbatim}

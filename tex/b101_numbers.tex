@@ -1,0 +1,357 @@
+\section{Числа}
+\label{S101}
+
+Арифметические операции имеют ожидаемые приоритеты. При необходимости
+используются скобки.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{l+m+mi}{1}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{l+m+mi}{3}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}1}]:} 7
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{3}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} 9
+\end{Verbatim}
+        
+    Возведение целого числа в целую степень даёт целое число, если
+показатель степени \(\ge0\), и число с плавающей точкой, если он \(<0\).
+Так что тип результата невозможно определить статически, если значение
+переменной \texttt{n} неизвестно.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{3}
+        \PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{n}{n}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} 8
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{n}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}
+        \PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{n}{n}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} 0.125
+\end{Verbatim}
+        
+    Арифметические операции можно применять к целым и числам с плавающей
+точкой в любых сочетаниях.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{n}\PY{o}{+}\PY{l+m+mf}{1.0}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} -2.0
+\end{Verbatim}
+        
+    Деление целых чисел всегда даёт результат с плавающей точкой, даже если
+они делятся нацело. Операторы \texttt{//} и \texttt{\%} дают целое
+частное и остаток.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{l+m+mi}{7}\PY{o}{/}\PY{l+m+mi}{4}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} 1.75
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{l+m+mi}{7}\PY{o}{/}\PY{o}{/}\PY{l+m+mi}{4}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} 1
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{l+m+mi}{7}\PY{o}{\PYZpc{}}\PY{k}{4}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} 3
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{l+m+mi}{4}\PY{o}{/}\PY{l+m+mi}{2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} 2.0
+\end{Verbatim}
+        
+    Если Вы попытаетесь использовать переменную, которой не присвоено
+никакого значения, то получите сообщение об ошибке.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{x}\PY{o}{+}\PY{l+m+mi}{1}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        NameError                                 Traceback (most recent call last)
+
+        <ipython-input-10-d9a77b2c0933> in <module>()
+    ----> 1 x+1
+    
+
+        NameError: name 'x' is not defined
+
+    \end{Verbatim}
+
+    \texttt{x+=1} означает \texttt{x=x+1}, аналогично для других операций. В
+питоне строго различаются операторы (например, присваивание) и
+выражения, так что таких операций, как \texttt{++} в C, нет. Хотя вызов
+функции в выражении может приводить к побочным эффектам.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{x}\PY{o}{=}\PY{l+m+mi}{1}
+         \PY{n}{x}\PY{o}{+}\PY{o}{=}\PY{l+m+mi}{1}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{x}\PY{o}{*}\PY{o}{=}\PY{l+m+mi}{2}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+4
+
+    \end{Verbatim}
+
+    Оператор \texttt{del} уничтожает переменную.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{k}{del} \PY{n}{x}
+         \PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        NameError                                 Traceback (most recent call last)
+
+        <ipython-input-13-726510e32795> in <module>()
+          1 del x
+    ----> 2 x
+    
+
+        NameError: name 'x' is not defined
+
+    \end{Verbatim}
+
+    Любопытная особенность питона: можно использовать привычные из
+математики сравнения вроде \(x<y<z\), которые в других языках пришлось
+бы записывать как \texttt{x\textless{}y\ and\ y\textless{}z}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{l+m+mi}{1}\PY{o}{\PYZlt{}}\PY{l+m+mi}{2}\PY{o}{\PYZlt{}}\PY{o}{=}\PY{l+m+mi}{2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} True
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{l+m+mi}{1}\PY{o}{\PYZlt{}}\PY{l+m+mi}{2}\PY{o}{\PYZlt{}}\PY{l+m+mi}{2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} False
+\end{Verbatim}
+        
+    Логические выражения можно комбинировать с помощью \texttt{and} и
+\texttt{or} (эти операции имеют более низкий приоритет, чем сравнения).
+Если результат уже ясен из первого операнда, второй операнд не
+вычисляется. А вот так выглядит оператор \texttt{if}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{4}
+         \PY{l+s+s1}{# Кстати, это комментарий}
+         \PY{k}{if} \PY{l+m+mi}{1}\PY{o}{\PYZlt{}}\PY{l+m+mi}{2} \PY{o+ow}{and} \PY{n}{n}\PY{o}{\PYZlt{}}\PY{l+m+mi}{3}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{T}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{k}{else}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+F
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{k}{if} \PY{l+m+mi}{1}\PY{o}{\PYZlt{}}\PY{l+m+mi}{2} \PY{o+ow}{or} \PY{n}{n}\PY{o}{\PYZlt{}}\PY{l+m+mi}{3}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{T}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{k}{else}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+T
+
+    \end{Verbatim}
+
+    После строчки, заканчивающейся \texttt{:}, можно писать
+последовательность операторов с одинаковым отступом (больше, чем у
+строчки \texttt{if}). Никакого признака конца такой группы операторов не
+нужно. Первая строчка после \texttt{else:}, имеющая тот же уровень
+отступа, что и \texttt{if} и \texttt{else:} --- это следующий оператор
+после \texttt{if}.
+
+Оператора, аналогичного \texttt{case} или \texttt{switch}, в питоне нет.
+Используйте длинную последовательность \texttt{if} \ldots{}
+\texttt{elif} \ldots{} \texttt{elif} \ldots{} \texttt{else}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{k}{if} \PY{n}{n}\PY{o}{==}\PY{l+m+mi}{1}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{один}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{k}{elif} \PY{n}{n}\PY{o}{==}\PY{l+m+mi}{2}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{два}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{k}{elif} \PY{n}{n}\PY{o}{==}\PY{l+m+mi}{3}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{три}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{k}{else}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{много}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+много
+
+    \end{Verbatim}
+
+    Есть и условные выражения:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{p}{(}\PY{l+m+mi}{0} \PY{k}{if} \PY{n}{n}\PY{o}{\PYZlt{}}\PY{l+m+mi}{0} \PY{k}{else} \PY{l+m+mi}{1}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}20}]:} 2
+\end{Verbatim}
+        
+    Обычно в начале пишется \emph{основное} выражение, оно защищается
+условием в \texttt{if}, а после \texttt{else} пишется
+\emph{исключительный случай}.
+
+В питоне немного встроенных функций. Большинство надо импортировать.
+Элементарные функции импортируют из модуля \texttt{math}. Заниматься
+импортозамещением (писать свою реализацию синуса) не нужно.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{k+kn}{from} \PY{n+nn}{math} \PY{k}{import} \PY{n}{sin}\PY{p}{,}\PY{n}{pi}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{pi}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}22}]:} 3.141592653589793
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{sin}\PY{p}{(}\PY{n}{pi}\PY{o}{/}\PY{l+m+mi}{6}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}23}]:} 0.49999999999999994
+\end{Verbatim}
+        
+    Любой объект имеет тип.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n+nb}{type}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}24}]:} int
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n+nb}{type}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}25}]:} type
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n+nb}{type}\PY{p}{(}\PY{l+m+mf}{2.1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}26}]:} float
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n+nb}{type}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} bool
+\end{Verbatim}
+        
+    Имена типов по совместительству являются функциями, преобразующими в
+этот тип объекты других типов (если такое преобразование имеет смысл).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n+nb}{float}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}28}]:} 2.0
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n+nb}{int}\PY{p}{(}\PY{l+m+mf}{2.0}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}29}]:} 2
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n+nb}{int}\PY{p}{(}\PY{l+m+mf}{2.9}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}30}]:} 2
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n+nb}{int}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{2.9}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}31}]:} -2
+\end{Verbatim}
+        
+    Преобразование числа с плавающей точкой в целое производится путём
+отбрасывания дробной части, а не округления. Для округления используется
+функция \texttt{round}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n+nb}{round}\PY{p}{(}\PY{l+m+mf}{2.9}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}32}]:} 3
+\end{Verbatim}

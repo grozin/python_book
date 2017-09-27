@@ -1,0 +1,186 @@
+\section{Множества}
+\label{S105}
+
+В соответствии с математическими обозначениями, множества пишутся в
+фигурных скобках. Элемент может содержаться в множестве только один раз.
+Порядок элементов в множестве не имеет значения, поэтому питон их
+сортирует. Элементы множества могут быть любых типов. Множества
+используются существенно реже, чем списки. Но иногда они бывают весьма
+полезны. Например, когда я собирался делать апгрейд системы на сервере,
+я написал на питоне программу, которая строила множество пакетов,
+установленных в системе до апгрейда; множество пакетов, имеющихся на
+инсталляционных CD; имеющихся на основных сайтах с дополнительными
+пакетами, и т.д. И она мне помогла восстановить функциональность после
+апгрейда.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{n}{s}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}
+        \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}1}]:} \{0, 1, 5\}
+\end{Verbatim}
+        
+    Принадлежит ли элемент множеству?
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{l+m+mi}{1} \PY{o+ow}{in} \PY{n}{s}\PY{p}{,} \PY{l+m+mi}{2} \PY{o+ow}{in} \PY{n}{s}\PY{p}{,} \PY{l+m+mi}{1} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{s}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} (True, False, False)
+\end{Verbatim}
+        
+    Множество можно получить из списка, или строки, или любого объекта,
+который можно использовать в \texttt{for} цикле (итерабельного).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{l}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+        \PY{n+nb}{set}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} \{0, 1, 5\}
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n+nb}{set}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{абба}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} \{'а', 'б'\}
+\end{Verbatim}
+        
+    Как записать пустое множество? Только так.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} set()
+\end{Verbatim}
+        
+    Дело в том, что в фигурных скобках в питоне пишутся также словари (мы
+будем их обсуждать в следующем параграфе). Когда в них есть хоть один
+элемент, можно отличить словарь от множества. Но пустые фигурные скобки
+означают пустой словарь.
+
+Работать с множествами можно как со списками.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{s}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} 3
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{s}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0
+1
+5
+
+    \end{Verbatim}
+
+    Это генератор множества (set comprehension).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{p}{\PYZob{}}\PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} \{0, 1, 2, 3, 4\}
+\end{Verbatim}
+        
+    Объединение множеств.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{s2}\PY{o}{=}\PY{n}{s}\PY{o}{|}\PY{p}{\PYZob{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{\PYZcb{}}
+        \PY{n}{s2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} \{0, 1, 2, 5\}
+\end{Verbatim}
+        
+    Проверка того, является ли одно множество подмножеством другого.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{s}\PY{o}{\PYZlt{}}\PY{n}{s2}\PY{p}{,} \PY{n}{s}\PY{o}{\PYZgt{}}\PY{n}{s2}\PY{p}{,} \PY{n}{s}\PY{o}{\PYZlt{}}\PY{o}{=}\PY{n}{s2}\PY{p}{,} \PY{n}{s}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{n}{s2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}10}]:} (True, False, True, False)
+\end{Verbatim}
+        
+    Пересечение.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{s2}\PY{o}{\PYZam{}}\PY{p}{\PYZob{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} \{1, 2\}
+\end{Verbatim}
+        
+    Разность и симметричная разность.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{s2}\PY{o}{\PYZhy{}}\PY{p}{\PYZob{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} \{0, 2\}
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{s2}\PY{o}{\PYZca{}}\PY{p}{\PYZob{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:} \{0, 2, 3\}
+\end{Verbatim}
+        
+    Множества (как и списки) являются изменяемыми объектами. Добавление
+элемента в множество и исключение из него.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{s2}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+         \PY{n}{s2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} \{0, 1, 2, 4, 5\}
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{s2}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{s2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} \{0, 2, 4, 5\}
+\end{Verbatim}
+        
+    Как и в случае \texttt{+=}, можно скомбинировать теоретико-множественную
+операцию с присваиванием.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{s2}\PY{o}{|}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{\PYZcb{}}
+         \PY{n}{s2}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} \{0, 1, 2, 4, 5\}
+\end{Verbatim}
+        
+    Существуют также неизменяемые множества. Этот тип данных называется
+\texttt{frozenset}. Операции над такими множествами подобны обычным,
+только невозможно изменять их (добавлять и исключать элементы).

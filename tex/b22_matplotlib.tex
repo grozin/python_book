@@ -1,0 +1,609 @@
+\section{matplotlib}
+\label{matplotlib}
+
+Есть несколько пакетов для построения графиков. Один из наиболее
+популярных --- \texttt{matplotlib}. Если в \texttt{jupyter\ notebook}
+выполнить специальную \texttt{ipython} команду
+\texttt{\%matplotlib\ inline}, то графики будут строиться в том же окне
+браузера. Есть другие варианты, в которых графики показываются в
+отдельных окнах. Это удобно для трёхмерных графиков --- тогда их можно
+вертеть мышкой (в случае inline графиков это невозможно). Графики можно
+также сохранять в файлы, как в векторных форматах (\texttt{eps},
+\texttt{pdf}, \texttt{svg}), так и в растровых (\texttt{png},
+\texttt{jpg}; конечно, растровые форматы годятся только для размещения
+графиков на web-страницах). \texttt{matplotlib} позволяет строить
+двумерные графики практически всех нужных типов, с достаточно гибкой
+регулировкой их параметров; он также поддерживает основные типы
+трёхмерных графиков, но для серьёзной трёхмерной визуализации данных
+лучше пользоваться более мощными специализированными системами.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{from} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{import} \PY{p}{(}\PY{n}{axes}\PY{p}{,}\PY{n}{axis}\PY{p}{,}\PY{n}{title}\PY{p}{,}\PY{n}{legend}\PY{p}{,}\PY{n}{figure}\PY{p}{,}
+                                       \PY{n}{xlabel}\PY{p}{,}\PY{n}{ylabel}\PY{p}{,}\PY{n}{xticks}\PY{p}{,}\PY{n}{yticks}\PY{p}{,}
+                                       \PY{n}{xscale}\PY{p}{,}\PY{n}{yscale}\PY{p}{,}\PY{n}{text}\PY{p}{,}\PY{n}{grid}\PY{p}{,}
+                                       \PY{n}{plot}\PY{p}{,}\PY{n}{scatter}\PY{p}{,}\PY{n}{errorbar}\PY{p}{,}\PY{n}{hist}\PY{p}{,}\PY{n}{polar}\PY{p}{,}
+                                       \PY{n}{contour}\PY{p}{,}\PY{n}{contourf}\PY{p}{,}\PY{n}{colorbar}\PY{p}{,}\PY{n}{clabel}\PY{p}{,}
+                                       \PY{n}{imshow}\PY{p}{)}
+        \PY{k+kn}{from} \PY{n+nn}{mpl\PYZus{}toolkits}\PY{n+nn}{.}\PY{n+nn}{mplot3d} \PY{k}{import} \PY{n}{Axes3D}
+        \PY{k+kn}{from} \PY{n+nn}{numpy} \PY{k}{import} \PY{p}{(}\PY{n}{linspace}\PY{p}{,}\PY{n}{logspace}\PY{p}{,}\PY{n}{zeros}\PY{p}{,}\PY{n}{ones}\PY{p}{,}\PY{n}{outer}\PY{p}{,}\PY{n}{meshgrid}\PY{p}{,}
+                           \PY{n}{pi}\PY{p}{,}\PY{n}{sin}\PY{p}{,}\PY{n}{cos}\PY{p}{,}\PY{n}{sqrt}\PY{p}{,}\PY{n}{exp}\PY{p}{)}
+        \PY{k+kn}{from} \PY{n+nn}{numpy}\PY{n+nn}{.}\PY{n+nn}{random} \PY{k}{import} \PY{n}{normal}
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+
+    Список \(y\) координат; \(x\) координаты образуют последовательность 0,
+1, 2, \ldots{}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{0.5}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} [<matplotlib.lines.Line2D at 0x7fcbd1a559e8>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_01.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Списки \(x\) и \(y\) координат точек. Точки соединяются прямыми, т.е.
+строится ломаная линия.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mf}{0.25}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{0.5}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} [<matplotlib.lines.Line2D at 0x7fcbd1939f98>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_02.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \texttt{scatter} просто рисует точки, не соединяя из линиями.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{scatter}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mf}{0.25}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{0.5}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} <matplotlib.collections.PathCollection at 0x7fcbd18d5358>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_03.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \(x\) координаты не обязаны монотонно возрастать. Тут, например, мы
+строим замкнутый многоугольник.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mf}{0.25}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mf}{0.5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} [<matplotlib.lines.Line2D at 0x7fcbd17ebdd8>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_04.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Когда точек много, ломаная неотличима от гладкой кривой.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+        \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} [<matplotlib.lines.Line2D at 0x7fcbd1780cf8>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_05.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Массив \(x\) не обязан быть монотонно возрастающим. Можно строить любую
+параметрическую линию \(x=x(t)\), \(y=y(t)\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{t}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+        \PY{n}{plot}\PY{p}{(}\PY{n}{cos}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}aspect}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_06.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Чтобы окружности выглядели как окружности, а не как эллипсы, (а квадраты
+как квадраты, а не как прямоугольники), нужно установить aspect ratio,
+равный 1.
+
+А вот одна из фигур Лиссажу, которые все мы любили смотреть на
+осциллографе.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{plot}\PY{p}{(}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}aspect}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_07.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Несколько кривых на одном графике. Каждая задаётся парой массивов ---
+\(x\) и \(y\) координаты. По умолчанию, им присваиваются цвета из
+некоторой последовательности цветов; разумеется, их можно изменить.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+        \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} [<matplotlib.lines.Line2D at 0x7fcbd155e2e8>,
+         <matplotlib.lines.Line2D at 0x7fcbd155e4a8>,
+         <matplotlib.lines.Line2D at 0x7fcbd155ee48>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_08.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Для простой регулировки цветов и типов линий после пары \(x\) и \(y\)
+координат вставляется форматная строка. Первая буква определяет цвет
+(\texttt{\textquotesingle{}r\textquotesingle{}} --- красный,
+\texttt{\textquotesingle{}b\textquotesingle{}} --- синий и т.д.), дальше
+задаётся тип линии (\texttt{\textquotesingle{}-\textquotesingle{}} ---
+сплошная, \texttt{\textquotesingle{}-\/-\textquotesingle{}} ---
+пунктирная, \texttt{\textquotesingle{}-.\textquotesingle{}} ---
+штрих-пунктирная и т.д.).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{cos}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}10}]:} [<matplotlib.lines.Line2D at 0x7fcbd179b898>,
+          <matplotlib.lines.Line2D at 0x7fcbd1705c50>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_09.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Если в качестве ``типа линии'' указано
+\texttt{\textquotesingle{}o\textquotesingle{}}, то это означает рисовать
+точки кружочками и не соединять их линиями; аналогично,
+\texttt{\textquotesingle{}s\textquotesingle{}} означает квадратики.
+Конечно, такие графики имеют смысл только тогда, когда точек не очень
+много.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} [<matplotlib.lines.Line2D at 0x7fcbd16b9f60>,
+          <matplotlib.lines.Line2D at 0x7fcbd16b9cc0>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_10.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Вот пример настройки почти всего, что можно настроить. Можно задать
+последовательность засечек на оси \(x\) (и \(y\)) и подписи к ним (в
+них, как и в других текстах, можно использовать \LaTeX-овские
+обозначения). Задать подписи осей \(x\) и \(y\) и заголовок графика. Во
+всех текстовых элементах можно задать размер шрифта. Можно задать
+толщину линий и штрихи (так, на графике косинуса рисуется штрих длины 8,
+потом участок длины 4 не рисуется, потом участок длины 2 рисуется, потом
+участок длины 4 опять не рисуется, и так по циклу; поскольку толщина
+линии равна 2, эти короткие штрихи длины 2 фактически выглядят как
+точки). Можно задать подписи к кривым (legend); где разместить эти
+подписи тоже можно регулировать.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{axis}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+         \PY{n}{xticks}\PY{p}{(}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}
+                \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{0}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+si}{\PYZob{}1\PYZcb{}}\PY{l+s+si}{\PYZob{}4\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{pi\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+si}{\PYZob{}1\PYZcb{}}\PY{l+s+si}{\PYZob{}2\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{pi\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+si}{\PYZob{}3\PYZcb{}}\PY{l+s+si}{\PYZob{}4\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{pi\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{pi\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+si}{\PYZob{}5\PYZcb{}}\PY{l+s+si}{\PYZob{}4\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{pi\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+si}{\PYZob{}3\PYZcb{}}\PY{l+s+si}{\PYZob{}2\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{pi\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+si}{\PYZob{}7\PYZcb{}}\PY{l+s+si}{\PYZob{}4\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{pi\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}2}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{pi\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,}
+               \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+         \PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}x\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}y\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{title}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{sin x\PYZdl{}, \PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{cos x\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+         \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{dashes}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}
+              \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{sin x\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{cos}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,}\PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{dashes}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}
+              \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{cos x\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{legend}\PY{p}{(}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} <matplotlib.legend.Legend at 0x7fcbd14af978>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_11.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Если \texttt{linestyle=\textquotesingle{}\textquotesingle{}}, то точки
+не соединяются линиями. Сами точки рисуются маркерами разных типов. Тип
+определяется строкой из одного символа, который чем-то похож на нужный
+маркер. В добавок к стандартным маркерам, можно определить самодельные.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}
+         \PY{n}{axis}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.05}\PY{p}{,}\PY{l+m+mf}{1.05}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.05}\PY{p}{,}\PY{l+m+mf}{1.05}\PY{p}{]}\PY{p}{)}
+         \PY{n}{axes}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}aspect}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZlt{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{markersize}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+              \PY{n}{markerfacecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}FF0000}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZca{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{markersize}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+              \PY{n}{markerfacecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}00FF00}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{v}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{markersize}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+              \PY{n}{markerfacecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}0000FF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{,}\PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{+}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{markersize}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+              \PY{n}{markerfacecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}0F0F00}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{markersize}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+              \PY{n}{markerfacecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}0F000F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:} [<matplotlib.lines.Line2D at 0x7fcbd12d6ef0>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_12.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{Логарифмический масштаб}
+\label{matplotlib2}
+
+Если \(y\) меняется на много порядков, то удобно использовать
+логарифмический масштаб по \(y\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+         \PY{n}{yscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{exp}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} [<matplotlib.lines.Line2D at 0x7fcbd12ff908>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_13.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Можно задать логарифмический масштаб по обоим осям.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{x}\PY{o}{=}\PY{n}{logspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+         \PY{n}{xscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{yscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{x}\PY{o}{+}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} [<matplotlib.lines.Line2D at 0x7fcbd12a55f8>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_14.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{Полярные координаты}
+\label{matplotlib3}
+
+Первый массив --- \(\varphi\), второй --- \(r\). Вот спираль.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{t}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+         \PY{n}{polar}\PY{p}{(}\PY{n}{t}\PY{p}{,}\PY{n}{t}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} [<matplotlib.lines.Line2D at 0x7fcbd0e8f390>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_15.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    А это угловое распределение пионов в \(e^+ e^-\) аннигиляции.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{phi}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+         \PY{n}{polar}\PY{p}{(}\PY{n}{phi}\PY{p}{,}\PY{n}{sin}\PY{p}{(}\PY{n}{phi}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}17}]:} [<matplotlib.lines.Line2D at 0x7fcbd0fe2c50>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_16.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{Экпериментальные данные}
+\label{matplotlib4}
+
+Допустим, имеется теоретическая кривая (резонанс без фона).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{xt}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{101}\PY{p}{)}
+         \PY{n}{yt}\PY{o}{=}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{n}{xt}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    Поскольку реальных экспериментальных данных под рукой нет, мы их
+сгенерируем. Пусть они согласуются с теорией, и все статистические
+ошибки равны 0.1.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{xe}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}
+         \PY{n}{yerr}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{o}{*}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{21}\PY{p}{)}
+         \PY{n}{ye}\PY{o}{=}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{n}{xe}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{+}\PY{n}{yerr}\PY{o}{*}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{l+m+mi}{21}\PY{p}{)}
+\end{Verbatim}
+
+    Экспериментальные точки с усами и теоретическая кривая на одном графике.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{plot}\PY{p}{(}\PY{n}{xt}\PY{p}{,}\PY{n}{yt}\PY{p}{)}
+         \PY{n}{errorbar}\PY{p}{(}\PY{n}{xe}\PY{p}{,}\PY{n}{ye}\PY{p}{,}\PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{yerr}\PY{o}{=}\PY{n}{yerr}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}20}]:} <Container object of 3 artists>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_17.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{Гистограмма}
+\label{matplotlib5}
+
+Сгенерируем \(N\) случайных чисел с нормальным (гауссовым)
+распределением (среднее 0, среднеквадратичное отклонение 1), и раскидаем
+их по 20 бинам от \(-3\) до \(3\) (точки за пределами этого интервала
+отбрасываются). Для сравнения, вместе с гистограммой нарисуем Гауссову
+кривую в том же масштабе. И даже напишем формулу Гаусса.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{N}\PY{o}{=}\PY{l+m+mi}{10000}
+         \PY{n}{r}\PY{o}{=}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{n}{N}\PY{p}{)}
+         \PY{n}{n}\PY{p}{,}\PY{n}{bins}\PY{p}{,}\PY{n}{patches}\PY{o}{=}\PY{n}{hist}\PY{p}{(}\PY{n}{r}\PY{p}{,}\PY{n+nb}{range}\PY{o}{=}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+         \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+         \PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{N}\PY{o}{/}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{o}{*}\PY{l+m+mf}{0.3}\PY{o}{*}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{text}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1000}\PY{p}{,}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{frac}\PY{l+s+si}{\PYZob{}1\PYZcb{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{sqrt}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{2}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{pi\PYZcb{}\PYZcb{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{,e\PYZca{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZhy{}x\PYZca{}2/2\PYZcb{}\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+              \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,}\PY{n}{horizontalalignment}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+              \PY{n}{verticalalignment}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}21}]:} <matplotlib.text.Text at 0x7fcbd1011390>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_18.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{Контурные графики}
+\label{matplotlib6}
+
+Пусть мы хотим изучить поверхность \(z=xy\). Вот её горизонтали.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{x}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{)}
+         \PY{n}{y}\PY{o}{=}\PY{n}{x}
+         \PY{n}{z}\PY{o}{=}\PY{n}{outer}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+         \PY{n}{contour}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}
+         \PY{n}{axes}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}aspect}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_19.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Что-то их маловато. Сделаем побольше и подпишем.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{title}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}z=xy\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+         \PY{n}{curves}\PY{o}{=}\PY{n}{contour}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{)}
+         \PY{n}{clabel}\PY{p}{(}\PY{n}{curves}\PY{p}{)}
+         \PY{n}{axes}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}aspect}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_20.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    А здесь высота даётся цветом, как на физических географических картах.
+\texttt{colorbar} показывает соответствие цветов и значений \(z\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{contourf}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{)}\PY{p}{)}
+         \PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+         \PY{n}{axes}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}aspect}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_21.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{Images (пиксельные картинки)}
+\label{matplotlib7}
+
+Картинка задаётся массивом \texttt{z}: \texttt{z{[}i,j{]}} --- это цвет
+пикселя \texttt{i,j}, массив из 3 элементов (\texttt{rgb}, числа от 0 до
+1).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{256}
+         \PY{n}{u}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{n}\PY{p}{)}
+         \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{n}{meshgrid}\PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{n}{u}\PY{p}{)}
+         \PY{n}{z}\PY{o}{=}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+         \PY{n}{z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{=}\PY{n}{x}
+         \PY{n}{z}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{n}{y}
+         \PY{n}{imshow}\PY{p}{(}\PY{n}{z}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}25}]:} <matplotlib.image.AxesImage at 0x7fcbd0c9c390>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_22.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{Трёхмерная линия}
+\label{matplotlib8}
+
+Задаётся параметрически: \(x=x(t)\), \(y=y(t)\), \(z=z(t)\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{t}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+         \PY{n}{x}\PY{o}{=}\PY{n}{cos}\PY{p}{(}\PY{n}{t}\PY{p}{)}
+         \PY{n}{y}\PY{o}{=}\PY{n}{sin}\PY{p}{(}\PY{n}{t}\PY{p}{)}
+         \PY{n}{z}\PY{o}{=}\PY{n}{t}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{pi}\PY{p}{)}
+\end{Verbatim}
+
+    Тут нужен объект класса \texttt{Axes3D} из пакета
+\texttt{mpl\_toolkits.mplot3d}. \texttt{figure()} --- это текущий рисунок,
+создаём в нём объект \texttt{ax}, потом используем его методы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{fig}\PY{o}{=}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{=}\PY{n}{Axes3D}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}27}]:} [<mpl\_toolkits.mplot3d.art3d.Line3D at 0x7fcbd0c7f780>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_23.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    К сожалению, inline трёхмерную картинку нельзя вертеть мышкой (это можно
+делать с трёхмерными картинками в отдельных окнах). Но можно задать, с
+какой стороны мы смотрим.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{fig}\PY{o}{=}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{=}\PY{n}{Axes3D}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{elev}\PY{p}{,}\PY{n}{ax}\PY{o}{.}\PY{n}{azim}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{30}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}28}]:} [<mpl\_toolkits.mplot3d.art3d.Line3D at 0x7fcbd09ff390>]
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_24.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+\subsection{Поверхности}
+\label{matplotlib9}
+
+Все поверхности параметрические: \(x=x(u,v)\), \(y=y(u,v)\),
+\(z=z(u,v)\). Если мы хотим построить явную поверхность \(z=z(x,y)\), то
+удобно создать массивы \(x=u\) и \(y=v\) функцией \texttt{meshgrid}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{X}\PY{o}{=}\PY{l+m+mi}{10}
+         \PY{n}{N}\PY{o}{=}\PY{l+m+mi}{50}
+         \PY{n}{u}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{X}\PY{p}{,}\PY{n}{X}\PY{p}{,}\PY{n}{N}\PY{p}{)}
+         \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{n}{meshgrid}\PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{n}{u}\PY{p}{)}
+         \PY{n}{r}\PY{o}{=}\PY{n}{sqrt}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{z}\PY{o}{=}\PY{n}{sin}\PY{p}{(}\PY{n}{r}\PY{p}{)}\PY{o}{/}\PY{n}{r}
+         \PY{n}{fig}\PY{o}{=}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{=}\PY{n}{Axes3D}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{plot\PYZus{}surface}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{rstride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{cstride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}29}]:} <mpl\_toolkits.mplot3d.art3d.Poly3DCollection at 0x7fcbd0c95320>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_25.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Есть много встроенных способов раскраски поверхностей. Так, в методе
+\texttt{gnuplot} цвет зависит от высоты \(z\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{fig}\PY{o}{=}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{=}\PY{n}{Axes3D}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{plot\PYZus{}surface}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{rstride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{cstride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gnuplot}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}30}]:} <mpl\_toolkits.mplot3d.art3d.Poly3DCollection at 0x7fcbd09d1048>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_26.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Построим бублик --- параметрическую поверхность с параметрами
+\(\vartheta\), \(\varphi\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{t}\PY{o}{=}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{)}
+         \PY{n}{th}\PY{p}{,}\PY{n}{ph}\PY{o}{=}\PY{n}{meshgrid}\PY{p}{(}\PY{n}{t}\PY{p}{,}\PY{n}{t}\PY{p}{)}
+         \PY{n}{r}\PY{o}{=}\PY{l+m+mf}{0.4}
+         \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{r}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{ph}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{r}\PY{o}{*}\PY{n}{cos}\PY{p}{(}\PY{n}{ph}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{th}\PY{p}{)}\PY{p}{,}\PY{n}{r}\PY{o}{*}\PY{n}{sin}\PY{p}{(}\PY{n}{ph}\PY{p}{)}
+         \PY{n}{fig}\PY{o}{=}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{=}\PY{n}{Axes3D}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{elev}\PY{o}{=}\PY{l+m+mi}{60}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}aspect}\PY{p}{(}\PY{n}{r}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{+}\PY{n}{r}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax}\PY{o}{.}\PY{n}{plot\PYZus{}surface}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{z}\PY{p}{,}\PY{n}{rstride}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{cstride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}31}]:} <mpl\_toolkits.mplot3d.art3d.Poly3DCollection at 0x7fcbd06e6f28>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{b22_matplotlib_27.pdf}
+    \end{center}
+    { \hspace*{\fill} \\}

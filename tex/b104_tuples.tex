@@ -1,0 +1,184 @@
+\section{Кортежи}
+\label{S104}
+
+Кортежи (tuples) очень похожи на списки, но являются неизменяемыми. Как
+мы видели, использование изменяемых объектов может приводить к
+неприятным сюрпризам.
+
+Кортежи пишутся в круглых скобках. Если элементов \(>1\) или 0, это не
+вызывает проблем. Но как записать кортеж с одним элементом? Конструкция
+\texttt{(x)} абсолютно легальна в любом месте любого выражения, и
+означает просто \texttt{x}. Чтобы избежать неоднозначности, кортеж с
+одним элементом \texttt{x} записывается в виде \texttt{(x,)}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}1}]:} (1, 2, 3)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} ()
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} (1,)
+\end{Verbatim}
+        
+    Скобки ставить не обязательно, если кортеж --- единственная вещь в правой
+части присваивания.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{t}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}
+        \PY{n}{t}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} (1, 2, 3)
+\end{Verbatim}
+        
+    Работать с кортежами можно так же, как со списками. Нельзя только
+изменять их.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{t}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} 3
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{t}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} 2
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{u}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}
+        \PY{n}{t}\PY{o}{+}\PY{n}{u}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} (1, 2, 3, 4, 5)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{u}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} (4, 5, 4, 5)
+\end{Verbatim}
+        
+    В левой части присваивания можно написать несколько переменных через
+запятую, а в правой кортеж. Это одновременное присваивание значений
+нескольким переменным.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}10}]:} 1
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{y}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} 2
+\end{Verbatim}
+        
+    Сначала вычисляется кортеж в правой части, исходя из \emph{старых}
+значений переменных (до этого присваивания). Потом одновременно всем
+переменным присваиваются новые значения из этого кортежа. Поэтому так
+можно обменять значения двух переменных.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{o}{=}\PY{n}{y}\PY{p}{,}\PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{x}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:} 2
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{y}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} 1
+\end{Verbatim}
+        
+    Это проще, чем в других языках, где приходится использовать третью
+переменную.
+
+В стандартной библиотеке есть полезный тип \texttt{namedtuple}:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{k+kn}{from} \PY{n+nn}{collections} \PY{k}{import} \PY{n}{namedtuple}
+         \PY{n}{point}\PY{o}{=}\PY{n}{namedtuple}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{point}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{z}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{p}\PY{o}{=}\PY{n}{point}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{p}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+point(x=0, y=1, z=2)
+
+    \end{Verbatim}
+
+    К его полям можно обращаться как по имени, так и по номеру (как для
+обычного кортежа).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{p}\PY{o}{.}\PY{n}{y}\PY{p}{,}\PY{n}{p}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} (1, 1)
+\end{Verbatim}
+            
+    При создании объекта типа \texttt{namedtuple} аргументы можно задавать в
+любом порядке, если указывать их имена.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{p}\PY{o}{=}\PY{n}{point}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{z}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{x}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{p}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}17}]:} point(x=0, y=1, z=2)
+\end{Verbatim}
+            
+    В этих объектах нет накладных расходов по памяти: только значения полей
+(как в \texttt{structure} в \texttt{C} или \texttt{record} в
+\texttt{Pascal}). Соответствие между именами полей и их номерами
+хранится в памяти один раз для всего типа (в нашем примере
+\texttt{point}). В этом состоит важное отличие от словарей с
+ключами-строками. Кроме того, невозможно длбавлять или удалять поля
+налету.
