@@ -1,0 +1,882 @@
+\section{plumbum}
+\label{S26b1}
+
+Другой пакет для написания shell-скриптов.
+
+\subsection{Работа на локальной
+машине}\label{ux440ux430ux431ux43eux442ux430-ux43dux430-ux43bux43eux43aux430ux43bux44cux43dux43eux439-ux43cux430ux448ux438ux43dux435}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{from} \PY{n+nn}{plumbum} \PY{k}{import} \PY{n}{local}
+\end{Verbatim}
+
+
+    Из объекта \texttt{local} можно получать питонские объекты,
+представляющие внешние программы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{ls}\PY{o}{=}\PY{n}{local}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ls}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{ls}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/bin/ls
+
+    \end{Verbatim}
+
+    Их можно вызывать.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{ls}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C1.pyx
+C2.pyx
+C3.pyx
+Untitled.ipynb
+Untitled1.ipynb
+Untitled2.ipynb
+Untitled3.ipynb
+Zskim.root
+\_\_pycache\_\_
+cfib.c
+cfib.h
+cfib.o
+cfoo.c
+cfoo.h
+cfoo.o
+d1
+du
+fac.py
+foo.c
+foo.o
+foo.pxd
+foo.pyx
+foo.so
+google-python-exercises
+ind.gle
+ind.png
+iterators\_generators.ipynb
+minuit.html
+minuit.ipynb
+mpmath.html
+mpmath.ipynb
+newtext.txt
+osc.ipynb
+p1
+pandas.html
+pandas.ipynb
+poster
+python.png
+python0.png
+python1.html
+python1.ipynb
+python2.html
+python2.ipynb
+python3.html
+python3.ipynb
+python4.html
+python4.ipynb
+python5.html
+python5.ipynb
+python6.html
+python6.ipynb
+python7.html
+python7.ipynb
+python8.html
+python8.ipynb
+root.ipynb
+rpyc.html
+rpyc.ipynb
+rpyc\_old.ipynb
+sh.ipynb
+sympy.html
+sympy.ipynb
+tasks
+text.txt
+text2.txt
+wrap.c
+wrap.o
+wrap.pyx
+wrap.so
+
+
+    \end{Verbatim}
+
+    Они возвращают строки, которые можна присваивать переменным или ещё
+как-то использовать.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{s}\PY{o}{=}\PY{n}{ls}\PY{p}{(}\PY{p}{)}
+        \PY{n}{s}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} ['C1.pyx',
+         'C2.pyx',
+         'C3.pyx',
+         'Untitled.ipynb',
+         'Untitled1.ipynb',
+         'Untitled2.ipynb',
+         'Untitled3.ipynb',
+         'Zskim.root',
+         '\_\_pycache\_\_',
+         'cfib.c',
+         'cfib.h',
+         'cfib.o',
+         'cfoo.c',
+         'cfoo.h',
+         'cfoo.o',
+         'd1',
+         'du',
+         'fac.py',
+         'foo.c',
+         'foo.o',
+         'foo.pxd',
+         'foo.pyx',
+         'foo.so',
+         'google-python-exercises',
+         'ind.gle',
+         'ind.png',
+         'iterators\_generators.ipynb',
+         'minuit.html',
+         'minuit.ipynb',
+         'mpmath.html',
+         'mpmath.ipynb',
+         'newtext.txt',
+         'osc.ipynb',
+         'p1',
+         'pandas.html',
+         'pandas.ipynb',
+         'poster',
+         'python.png',
+         'python0.png',
+         'python1.html',
+         'python1.ipynb',
+         'python2.html',
+         'python2.ipynb',
+         'python3.html',
+         'python3.ipynb',
+         'python4.html',
+         'python4.ipynb',
+         'python5.html',
+         'python5.ipynb',
+         'python6.html',
+         'python6.ipynb',
+         'python7.html',
+         'python7.ipynb',
+         'python8.html',
+         'python8.ipynb',
+         'root.ipynb',
+         'rpyc.html',
+         'rpyc.ipynb',
+         'rpyc\_old.ipynb',
+         'sh.ipynb',
+         'sympy.html',
+         'sympy.ipynb',
+         'tasks',
+         'text.txt',
+         'text2.txt',
+         'wrap.c',
+         'wrap.o',
+         'wrap.pyx',
+         'wrap.so']
+\end{Verbatim}
+            
+    Можно вызывать их с аргументами.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{ls}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}l}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+итого 12
+drwxr-xr-x 2 grozin grozin 4096 ноя  4  2015 \_\_pycache\_\_
+drwxr-xr-x 3 grozin grozin 4096 ноя  4  2015 d2
+-rw-r--r-- 1 grozin grozin   23 ноя  4  2015 m1.py
+
+
+    \end{Verbatim}
+
+    Следующая строчка означает в точности то же самое, что
+
+\begin{verbatim}
+cat=local['cat']
+grep=local['grep']
+\end{verbatim}
+
+(модуль \texttt{plumbum.cmd} использует чёрную магию для переопределения
+импорта из него).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{k+kn}{from} \PY{n+nn}{plumbum}\PY{n+nn}{.}\PY{n+nn}{cmd} \PY{k}{import} \PY{n}{cat}\PY{p}{,}\PY{n}{grep}
+\end{Verbatim}
+
+
+    Это объект, представляющий внешнюю программу с привязанными аргументами.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{ll}\PY{o}{=}\PY{n}{ls}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}l}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{ll}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/bin/ls -l
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{ll}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+итого 17856
+-rw-r--r-- 1 grozin grozin     290 дек 10  2015 C1.pyx
+-rw-r--r-- 1 grozin grozin     208 дек 10  2015 C2.pyx
+-rw-r--r-- 1 grozin grozin     310 дек 10  2015 C3.pyx
+-rw-r--r-- 1 grozin grozin   18997 ноя 12  2015 Untitled.ipynb
+-rw-r--r-- 1 grozin grozin    1588 ноя 29  2015 Untitled1.ipynb
+-rw-r--r-- 1 grozin grozin     841 дек 13  2015 Untitled2.ipynb
+-rw-r--r-- 1 grozin grozin   16752 дек 28  2015 Untitled3.ipynb
+-rw-r--r-- 1 grozin grozin 9231391 дек 13  2015 Zskim.root
+drwxr-xr-x 2 grozin grozin    4096 ноя  4  2015 \_\_pycache\_\_
+-rw-r--r-- 1 grozin grozin     157 дек  6  2015 cfib.c
+-rw-r--r-- 1 grozin grozin      19 дек  6  2015 cfib.h
+-rw-r--r-- 1 grozin grozin    1312 ноя 16 19:08 cfib.o
+-rw-r--r-- 1 grozin grozin     243 дек 10  2015 cfoo.c
+-rw-r--r-- 1 grozin grozin     130 дек 10  2015 cfoo.h
+-rw-r--r-- 1 grozin grozin    1752 ноя 16 19:45 cfoo.o
+drwxr-xr-x 4 grozin grozin    4096 ноя  4  2015 d1
+drwxr-xr-x 3 grozin grozin    4096 окт  9 21:13 du
+-rwxr-xr-x 1 grozin grozin     401 ноя  4  2015 fac.py
+-rw-r--r-- 1 grozin grozin   85006 ноя 16 19:45 foo.c
+-rw-r--r-- 1 grozin grozin   21512 ноя 16 19:45 foo.o
+-rw-r--r-- 1 grozin grozin     164 дек 10  2015 foo.pxd
+-rw-r--r-- 1 grozin grozin     282 дек 10  2015 foo.pyx
+-rwxr-xr-x 1 grozin grozin   24200 ноя 16 19:45 foo.so
+drwxr-xr-x 6 grozin grozin    4096 сен 28 16:50 google-python-exercises
+-rw-r--r-- 1 grozin grozin     630 окт 11  2015 ind.gle
+-rw-r--r-- 1 grozin grozin    3945 окт 12  2015 ind.png
+-rw-r--r-- 1 grozin grozin   11154 ноя  2 16:25 iterators\_generators.ipynb
+-rw-r--r-- 1 grozin grozin  421451 дек 25  2015 minuit.html
+-rw-r--r-- 1 grozin grozin  294985 ноя  9 17:37 minuit.ipynb
+-rw-r--r-- 1 grozin grozin  543403 ноя  2 20:51 mpmath.html
+-rw-r--r-- 1 grozin grozin  266855 ноя  2 19:39 mpmath.ipynb
+-rw-r--r-- 1 grozin grozin      15 ноя  8  2015 newtext.txt
+-rw-r--r-- 1 grozin grozin   10665 дек  3  2015 osc.ipynb
+drwxr-xr-x 4 grozin grozin    4096 ноя  8  2015 p1
+-rw-r--r-- 1 grozin grozin  299444 дек 25  2015 pandas.html
+-rw-r--r-- 1 grozin grozin  130941 ноя  2 18:51 pandas.ipynb
+drwxr-xr-x 2 grozin grozin    4096 авг 29 15:48 poster
+-rw-r--r-- 1 grozin grozin   67230 окт 11  2015 python.png
+-rw-r--r-- 1 grozin grozin  146956 окт 10  2015 python0.png
+-rw-r--r-- 1 grozin grozin  371477 сен 17 23:16 python1.html
+-rw-r--r-- 1 grozin grozin   81013 сен 21 19:23 python1.ipynb
+-rw-r--r-- 1 grozin grozin  373780 сен 28 16:20 python2.html
+-rw-r--r-- 1 grozin grozin   68480 сен 28 22:18 python2.ipynb
+-rw-r--r-- 1 grozin grozin  295939 ноя  5  2015 python3.html
+-rw-r--r-- 1 grozin grozin   47236 окт 22 10:51 python3.ipynb
+-rw-r--r-- 1 grozin grozin  291364 ноя  5  2015 python4.html
+-rw-r--r-- 1 grozin grozin   58657 окт 12 19:46 python4.ipynb
+-rw-r--r-- 1 grozin grozin  349899 дек  5  2015 python5.html
+-rw-r--r-- 1 grozin grozin  101188 окт 19 19:47 python5.ipynb
+-rw-r--r-- 1 grozin grozin  919499 дек  5  2015 python6.html
+-rw-r--r-- 1 grozin grozin 1018131 окт 26 19:37 python6.ipynb
+-rw-r--r-- 1 grozin grozin  390422 дек 19  2015 python7.html
+-rw-r--r-- 1 grozin grozin  730517 ноя 16 18:48 python7.ipynb
+-rw-r--r-- 1 grozin grozin  240728 дек 24  2015 python8.html
+-rw-r--r-- 1 grozin grozin   30472 ноя 16 19:49 python8.ipynb
+-rw-r--r-- 1 grozin grozin   16206 дек 14  2015 root.ipynb
+-rw-r--r-- 1 grozin grozin  243066 дек 28  2015 rpyc.html
+-rw-r--r-- 1 grozin grozin   26991 ноя 23 18:36 rpyc.ipynb
+-rw-r--r-- 1 grozin grozin   23252 дек 28  2015 rpyc\_old.ipynb
+-rw-r--r-- 1 grozin grozin    7492 ноя 23 18:31 sh.ipynb
+-rw-r--r-- 1 grozin grozin  378705 дек 25  2015 sympy.html
+-rw-r--r-- 1 grozin grozin  332000 дек 25  2015 sympy.ipynb
+drwxr-xr-x 3 grozin grozin    4096 дек  3  2015 tasks
+-rw-r--r-- 1 grozin grozin      15 окт 11  2015 text.txt
+-rw-r--r-- 1 grozin grozin       5 ноя 23 15:09 text2.txt
+-rw-r--r-- 1 grozin grozin   73021 ноя 16 19:11 wrap.c
+-rw-r--r-- 1 grozin grozin   16216 ноя 16 19:11 wrap.o
+-rw-r--r-- 1 grozin grozin      86 дек  6  2015 wrap.pyx
+-rwxr-xr-x 1 grozin grozin   19048 ноя 16 19:11 wrap.so
+
+
+    \end{Verbatim}
+
+    Из таких объектов можно строить цепочки.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{chain}\PY{o}{=}\PY{n}{ll} \PY{o}{|} \PY{n}{grep}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ipynb}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{chain}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/bin/ls -l | /bin/grep ipynb
+
+    \end{Verbatim}
+
+    Цепочки можно вызывать.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{chain}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+-rw-r--r-- 1 grozin grozin   18997 ноя 12  2015 Untitled.ipynb
+-rw-r--r-- 1 grozin grozin    1588 ноя 29  2015 Untitled1.ipynb
+-rw-r--r-- 1 grozin grozin     841 дек 13  2015 Untitled2.ipynb
+-rw-r--r-- 1 grozin grozin   16752 дек 28  2015 Untitled3.ipynb
+-rw-r--r-- 1 grozin grozin   11154 ноя  2 16:25 iterators\_generators.ipynb
+-rw-r--r-- 1 grozin grozin  294985 ноя  9 17:37 minuit.ipynb
+-rw-r--r-- 1 grozin grozin  266855 ноя  2 19:39 mpmath.ipynb
+-rw-r--r-- 1 grozin grozin   10665 дек  3  2015 osc.ipynb
+-rw-r--r-- 1 grozin grozin  130941 ноя  2 18:51 pandas.ipynb
+-rw-r--r-- 1 grozin grozin   81013 сен 21 19:23 python1.ipynb
+-rw-r--r-- 1 grozin grozin   68480 сен 28 22:18 python2.ipynb
+-rw-r--r-- 1 grozin grozin   47236 окт 22 10:51 python3.ipynb
+-rw-r--r-- 1 grozin grozin   58657 окт 12 19:46 python4.ipynb
+-rw-r--r-- 1 grozin grozin  101188 окт 19 19:47 python5.ipynb
+-rw-r--r-- 1 grozin grozin 1018131 окт 26 19:37 python6.ipynb
+-rw-r--r-- 1 grozin grozin  730517 ноя 16 18:48 python7.ipynb
+-rw-r--r-- 1 grozin grozin   30472 ноя 16 19:49 python8.ipynb
+-rw-r--r-- 1 grozin grozin   16206 дек 14  2015 root.ipynb
+-rw-r--r-- 1 grozin grozin   32413 ноя 23 18:38 rpyc.ipynb
+-rw-r--r-- 1 grozin grozin   23252 дек 28  2015 rpyc\_old.ipynb
+-rw-r--r-- 1 grozin grozin    7492 ноя 23 18:31 sh.ipynb
+-rw-r--r-- 1 grozin grozin  332000 дек 25  2015 sympy.ipynb
+
+
+    \end{Verbatim}
+
+    Можно использовать перенаправления ввода-вывода.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{o}{!}cat newtext.txt
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abcd
+efgh
+ijkl
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{chain}\PY{o}{=}\PY{p}{(}\PY{n}{grep}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ab}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{newtext.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text2.txt}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{chain}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/bin/grep ab < newtext.txt > text2.txt
+
+    \end{Verbatim}
+
+    (скобки здесь обязательны)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{chain}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{cat}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text2.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abcd
+
+
+    \end{Verbatim}
+
+    Если нужно послать текст в \texttt{stdin} внешней программы,
+используется оператор \texttt{\textless{}\textless{}}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n+nb}{print}\PY{p}{(}\PY{p}{(}\PY{n}{grep}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ab}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}\PYZlt{}} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xxx}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{abc}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{yyy}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abc
+
+
+    \end{Verbatim}
+
+    \subsection{Работа на удалённой
+машине}\label{ux440ux430ux431ux43eux442ux430-ux43dux430-ux443ux434ux430ux43bux451ux43dux43dux43eux439-ux43cux430ux448ux438ux43dux435}
+
+Допустим, в локальной сети есть машина eeepc (192.168.0.105), доступная
+по \texttt{ssh}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{ip}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{192.168.43.95}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{k+kn}{from} \PY{n+nn}{plumbum} \PY{k}{import} \PY{n}{SshMachine}
+         \PY{n}{eeepc}\PY{o}{=}\PY{n}{SshMachine}\PY{p}{(}\PY{n}{ip}\PY{p}{)}
+\end{Verbatim}
+
+
+    Теперь мы можем выполнять на ней команды.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{eeepc\PYZus{}ls}\PY{o}{=}\PY{n}{eeepc}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ls}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{eeepc\PYZus{}ls}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/bin/ls
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{eeepc\PYZus{}ls}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rpyc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\_\_pycache\_\_
+mymodule.py
+rpyc.txt
+
+
+    \end{Verbatim}
+
+    Можно строить цепочки из локальных и удалённых команд.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{chain}\PY{o}{=}\PY{n}{eeepc\PYZus{}ls}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rpyc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{|} \PY{n}{grep}\PY{p}{[}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{.py}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{chain}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/bin/ls rpyc | /bin/grep '\textbackslash{}.py'
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{chain}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}22}]:} Pipeline(BoundCommand(RemoteCommand(<SshMachine ssh://192.168.43.95>, <RemotePath /bin/ls>), ['rpyc']), BoundCommand(LocalCommand(/bin/grep), ['\textbackslash{}\textbackslash{}.py']))
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{chain}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+mymodule.py
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{eeepc\PYZus{}grep}\PY{o}{=}\PY{n}{eeepc}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grep}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{p}{(}\PY{n}{eeepc\PYZus{}grep}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ab}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{newtext.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abcd
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n+nb}{print}\PY{p}{(}\PY{p}{(}\PY{n}{eeepc\PYZus{}grep}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ab}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}\PYZlt{}} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xxx}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{abc}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{yyy}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abc
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n+nb}{print}\PY{p}{(}\PY{p}{(}\PY{n}{cat}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{newtext.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{|} \PY{n}{eeepc\PYZus{}grep}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ab}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+abcd
+
+
+    \end{Verbatim}
+
+    Теперь закроем связь с eeepc.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{eeepc}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    Сеанс работы с eeepc удобно записать в виде
+
+\begin{verbatim}
+with SshMachine('192.168.0.105') as eeeps:
+    eeepc['ls']()
+    # и так далее
+\end{verbatim}
+
+\section{RPyC}
+\label{S26b2}
+
+Remote Python Call \url{http://rpyc.sourceforge.net/} --- очень простой
+пакет для организации распределённых вычислений. Он работает на любой
+платформе, где есть питон, так что Вы можете объединить в вычислительный
+кластер всё, что подвернётся под руку - Linux, Windows, Mac, хоть свой
+телефон.
+
+На всех компьютерах, которые мы хотим использовать, запускаются
+\texttt{rpyc} серверы. Клиент обращается к ним и поручает выполнить
+какую-нибудь работу. Есть два типа серверов --- классический (или
+slave-сервер) и современный. Классический сервер может (по поручению
+клиента) делать всё, что может делать интерпретатор питон (от имени того
+пользователя, который запустил сервер). Он не производит аутентификацию
+клиента. Поэтому его можно запускать только в защищённой локальной сети
+(возможно виртуальной), или он должен принимать соединения только с
+\texttt{localhost} (а другие машины получают к нему доступ через
+\texttt{ssh} туннели). В отличие от классического сервера (который
+поставляется в пакете \texttt{RPyC}), современный сервер должен быть
+написан пользователем под конкретную задачу. Он предоставляет клиентам
+некоторый набор сервисов; клиенты могут вызывать их. Если эти сервисы
+безопасны, такой сервер может работать и в открытом интернете.
+
+Есть более простой способ использования \texttt{RPyC}, который даже не
+требует, чтобы этот пакет был установлен на всех машинах --- достаточно
+иметь его на клиентской (локальной) машине. Установим \texttt{ssh} связь
+с удалённой машиной.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{eeepc}\PY{o}{=}\PY{n}{SshMachine}\PY{p}{(}\PY{n}{ip}\PY{p}{)}
+\end{Verbatim}
+
+
+    Функция \texttt{DeployedServer} передаёт на \texttt{eeepc} нужные
+исходные тексты, запускает там классический \texttt{rpyc} сервер,
+принимающий соединения только с локальной машины, и создаёт \texttt{ssh}
+туннель на \texttt{eeepc}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{k+kn}{import} \PY{n+nn}{rpyc}
+         \PY{k+kn}{from} \PY{n+nn}{rpyc}\PY{n+nn}{.}\PY{n+nn}{utils}\PY{n+nn}{.}\PY{n+nn}{zerodeploy} \PY{k}{import} \PY{n}{DeployedServer}
+         \PY{n}{server}\PY{o}{=}\PY{n}{DeployedServer}\PY{p}{(}\PY{n}{eeepc}\PY{p}{)}
+\end{Verbatim}
+
+
+    Теперь мы можем установить связь с этим сервером.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{n}{eee}\PY{o}{=}\PY{n}{server}\PY{o}{.}\PY{n}{classic\PYZus{}connect}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    Теперь я могу выполнять различные действия на \texttt{eeepc}:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{eee}\PY{o}{.}\PY{n}{execute}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n=2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{eee}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n+1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}31}]:} 3
+\end{Verbatim}
+            
+    Я могу использовать встроенные функции питона.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{eee\PYZus{}file}\PY{o}{=}\PY{n}{eee}\PY{o}{.}\PY{n}{builtins}\PY{o}{.}\PY{n}{open}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/home/grozin/rpyc/mymodule.py}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    В отличие от простых неизменяемых объектов (чисел, строк и т.д.),
+которые передаются между машинами по значению, изменяемые объекты
+передаются по ссылке. То есть на \texttt{eeepc} создался файловый
+объект; на локальной машине создалась сетевая ссылка на него ---
+прокси-объект \texttt{eee\_file}. Мы можем производить над ним любые
+действия, доступные для файлового объекта. Все они переадресутся объекту
+на \texttt{eeepc}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{eee\PYZus{}file}\PY{o}{.}\PY{n}{read}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\#!/usr/bin/env python
+from time import sleep
+
+class MyClass:
+
+    def \_\_init\_\_(self,t):
+        self.t=t
+
+    def f(self,n):
+        sleep(self.t)
+        return n+1
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{eee\PYZus{}file}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    Этот прокси-объект можно подставить в любую программу, ожидающую иметь
+файловый объект. По принципу утиной типизации этот объект --- файл.
+
+Я могу использовать функции и прочие объекты из библиотечных модулей
+питона на \texttt{eeepc}:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{n}{eee\PYZus{}path}\PY{o}{=}\PY{n}{eee}\PY{o}{.}\PY{n}{modules}\PY{o}{.}\PY{n}{sys}\PY{o}{.}\PY{n}{path}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{eee\PYZus{}path}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['/home/grozin/tmp.hK717huHzN', '/home/grozin/tmp.hK717huHzN', '/usr/lib/python35.zip', '/usr/lib/python3.5', '/usr/lib/python3.5/plat-linux', '/usr/lib/python3.5/lib-dynload', '/usr/lib/python3.5/site-packages']
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{eee\PYZus{}path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/home/grozin/rpyc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \texttt{eee\_path} --- это прокси-объект для \texttt{sys.path} на
+\texttt{eeepc}; любые изменения этого объекта сразу передаются туда.
+Теперь, расширив \texttt{path}, я могу использовать файл из этой
+директории на \texttt{eeepc}:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n}{eee\PYZus{}object}\PY{o}{=}\PY{n}{eee}\PY{o}{.}\PY{n}{modules}\PY{o}{.}\PY{n}{mymodule}\PY{o}{.}\PY{n}{MyClass}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{eee\PYZus{}object}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}38}]:} 4
+\end{Verbatim}
+            
+    \texttt{eee\_object} --- это прокси-объект (сетевая ссылка) для объекта
+класса \texttt{MyClass} на машине \texttt{eeepc}. Его метод \texttt{f}
+прибавляет 1 к аргументу; чтобы у нас была возможность моделировать
+длительные вычисления, он это делает за \texttt{t} секунд, где
+\texttt{t} --- атрибут этого объекта.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{eee\PYZus{}object}\PY{o}{.}\PY{n}{t}\PY{o}{=}\PY{l+m+mi}{2}
+         \PY{n}{eee\PYZus{}object}\PY{o}{.}\PY{n}{f}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}39}]:} 5
+\end{Verbatim}
+            
+    Теперь нам пришлось ждать 2 секунды.
+
+Можно передавать удалённым функциям в качестве параметров любые объекты,
+в частности, локальные функции. Определим
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{k}{def} \PY{n+nf}{loc}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{n}\PY{p}{)}
+             \PY{k}{return} \PY{n}{n}\PY{o}{+}\PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    Тогда
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{n+nb}{list}\PY{p}{(}\PY{n}{eee}\PY{o}{.}\PY{n}{builtins}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{loc}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+loc 1
+loc 2
+loc 3
+
+    \end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}41}]:} [2, 3, 4]
+\end{Verbatim}
+            
+    То есть функция map на \texttt{eeepc} на каждом шаге вызывает функцию
+\texttt{loc} на локальной машине (callback).
+
+Всё, что мы до сих пор обсуждали, несомненно, красиво --- разные объекты
+могут жить на разных машинах, и единая программа работает с ними, не
+замечая этого. Но все эти операции синхронные --- одна машина просит
+другую что-то сделать и ждёт, когда та вернёт ей результат. Для
+организации распределённых вычислений нужны асинхронные операции:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{n}{eee\PYZus{}object}\PY{o}{.}\PY{n}{t}\PY{o}{=}\PY{l+m+mi}{10}
+         \PY{n}{async\PYZus{}f}\PY{o}{=}\PY{n}{rpyc}\PY{o}{.}\PY{k}{async}\PY{p}{(}\PY{n}{eee\PYZus{}object}\PY{o}{.}\PY{n}{f}\PY{p}{)}
+         \PY{n}{res}\PY{o}{=}\PY{n}{async\PYZus{}f}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{res}\PY{o}{.}\PY{n}{ready}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}42}]:} False
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{res}\PY{o}{.}\PY{n}{ready}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}43}]:} False
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n}{res}\PY{o}{.}\PY{n}{ready}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}45}]:} True
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{n}{res}\PY{o}{.}\PY{n}{value}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}46}]:} 2
+\end{Verbatim}
+            
+    Это уже лучше. Клиент может время от времени спрашивать, готов ли
+результат, и когда он будет готов, забрать его. Если запросить
+\texttt{res.value} когда результат ещё не готов, то клиент блокируется
+до момента, когда он будет готов:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{n}{res}\PY{o}{=}\PY{n}{async\PYZus{}f}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{res}\PY{o}{.}\PY{n}{value}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}47}]:} 3
+\end{Verbatim}
+            
+    (после \texttt{res.value} 10 секунд ожидания, потом появляется ответ).
+
+Но ещё лучше определить callback-функцию, которая будет вызвана на
+локальной машине, когда результат будет готов:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{k}{def} \PY{n+nf}{callback}\PY{p}{(}\PY{n}{res}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{res}\PY{o}{.}\PY{n}{value}\PY{p}{)}
+\end{Verbatim}
+
+
+    Эта функция может быть вызвана только в отдельном thread-е:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{n}{thr}\PY{o}{=}\PY{n}{rpyc}\PY{o}{.}\PY{n}{BgServingThread}\PY{p}{(}\PY{n}{eee}\PY{p}{)}
+         \PY{n}{res}\PY{o}{=}\PY{n}{async\PYZus{}f}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+         \PY{n}{res}\PY{o}{.}\PY{n}{add\PYZus{}callback}\PY{p}{(}\PY{n}{callback}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}50}]:} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}51}]:} \PY{n}{n}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}51}]:} 1
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{n}{n}\PY{o}{+}\PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}52}]:} 2
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+4
+
+    \end{Verbatim}
+
+    Это печать из функции callback из другого thread-а. Теперь это thread
+можно и остановить.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{n}{thr}\PY{o}{.}\PY{n}{stop}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    Например, на клиентской машине может работать графический
+пользовательский интерфейс (на питоне легко написать такой интерфейс,
+причём он будет работать на любой платформе --- Linux, Windows, Mac --- без
+малейших изменений в программе). Эта клиентская программа обращается к
+нескольким мощным серверам для проведения длинных вычислений, и
+регистрирует callback функции, которые, наприер, добавляют очередную
+точку на график.
+
+Наконец, закроем связь с машиной eeepc:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}54}]:} \PY{n}{eee}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    Сеанс связи с \texttt{rpyc} сервером удобно записывать как
+
+\begin{verbatim}
+with server.classic_connection() as eee:
+    eee.execute('n=2')
+    # и так далее
+\end{verbatim}
+
+Наконец, закроем \texttt{ssh} связь с eeepc.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}55}]:} \PY{n}{eeepc}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}

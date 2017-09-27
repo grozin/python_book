@@ -1,0 +1,167 @@
+\section{sh, или как писать shell-скрипты на питоне}
+\label{S26a}
+
+Очень простой и удобный пакет для запуска внешних программ из питона.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{sh}
+\end{Verbatim}
+
+
+    Вызовем команду \texttt{ls}. Это не значит, что в модуле \texttt{sh}
+есть 100500 функций, соответствующих всем командам; это было бы
+невозможно. Модуль \texttt{sh} производит тёмную магию, переопределяющую
+вызов \texttt{sh.something} в вызов внешней программы.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{sh}\PY{o}{.}\PY{n}{ls}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} C1.pyx		 foo.c			     poster	    python8.ipynb
+        C2.pyx		 foo.o			     python.png     root.ipynb
+        C3.pyx		 foo.pxd		     python0.png    rpyc.html
+        Untitled.ipynb	 foo.pyx		     python1.html   rpyc.ipynb
+        Untitled1.ipynb  foo.so			     python1.ipynb  rpyc\_old.ipynb
+        Untitled2.ipynb  google-python-exercises     python2.html   sh.ipynb
+        Untitled3.ipynb  ind.gle		     python2.ipynb  sympy.html
+        Zskim.root	 ind.png		     python3.html   sympy.ipynb
+        \_\_pycache\_\_	 iterators\_generators.ipynb  python3.ipynb  tasks
+        cfib.c		 minuit.html		     python4.html   text.txt
+        cfib.h		 minuit.ipynb		     python4.ipynb  text2.txt
+        cfib.o		 mpmath.html		     python5.html   wrap.c
+        cfoo.c		 mpmath.ipynb		     python5.ipynb  wrap.o
+        cfoo.h		 newtext.txt		     python6.html   wrap.pyx
+        cfoo.o		 osc.ipynb		     python6.ipynb  wrap.so
+        d1		 p1			     python7.html
+        du		 pandas.html		     python7.ipynb
+        fac.py		 pandas.ipynb		     python8.html
+\end{Verbatim}
+            
+    Результат можно присвоить строковой переменной.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{s}\PY{o}{=}\PY{n}{sh}\PY{o}{.}\PY{n}{ls}\PY{p}{(}\PY{p}{)}
+        \PY{n}{s}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} ['C1.pyx',
+         'foo.c',
+         'poster',
+         'python8.ipynb',
+         'C2.pyx',
+         'foo.o',
+         'python.png',
+         'root.ipynb',
+         'C3.pyx',
+         'foo.pxd',
+         'python0.png',
+         'rpyc.html',
+         'Untitled.ipynb',
+         'foo.pyx',
+         'python1.html',
+         'rpyc.ipynb',
+         'Untitled1.ipynb',
+         'foo.so',
+         'python1.ipynb',
+         'rpyc\_old.ipynb',
+         'Untitled2.ipynb',
+         'google-python-exercises',
+         'python2.html',
+         'sh.ipynb',
+         'Untitled3.ipynb',
+         'ind.gle',
+         'python2.ipynb',
+         'sympy.html',
+         'Zskim.root',
+         'ind.png',
+         'python3.html',
+         'sympy.ipynb',
+         '\_\_pycache\_\_',
+         'iterators\_generators.ipynb',
+         'python3.ipynb',
+         'tasks',
+         'cfib.c',
+         'minuit.html',
+         'python4.html',
+         'text.txt',
+         'cfib.h',
+         'minuit.ipynb',
+         'python4.ipynb',
+         'text2.txt',
+         'cfib.o',
+         'mpmath.html',
+         'python5.html',
+         'wrap.c',
+         'cfoo.c',
+         'mpmath.ipynb',
+         'python5.ipynb',
+         'wrap.o',
+         'cfoo.h',
+         'newtext.txt',
+         'python6.html',
+         'wrap.pyx',
+         'cfoo.o',
+         'osc.ipynb',
+         'python6.ipynb',
+         'wrap.so',
+         'd1',
+         'p1',
+         'python7.html',
+         'du',
+         'pandas.html',
+         'python7.ipynb',
+         'fac.py',
+         'pandas.ipynb',
+         'python8.html']
+\end{Verbatim}
+            
+    Командам можно передавать параметры.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{sh}\PY{o}{.}\PY{n}{ls}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} \_\_pycache\_\_  d2  m1.py
+\end{Verbatim}
+            
+    Допустим, мы хотим вызывать команду \texttt{ls} много раз. \texttt{sh}
+также производит тёмную магию, переопределяющую
+\texttt{from\ sh\ import\ something}, так что после этого импорта
+\texttt{ls} становится полноправной питонской функцией (вызывающей
+внешнюю программу).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k+kn}{from} \PY{n+nn}{sh} \PY{k}{import} \PY{n}{ls}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{s}\PY{o}{=}\PY{n}{ls}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{s}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} ['\_\_pycache\_\_', 'd2', 'm1.py']
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{ls}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}l}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} итого 12
+        drwxr-xr-x 2 grozin grozin 4096 ноя  4  2015 \_\_pycache\_\_
+        drwxr-xr-x 3 grozin grozin 4096 ноя  4  2015 d2
+        -rw-r--r-- 1 grozin grozin   23 ноя  4  2015 m1.py
+\end{Verbatim}
+            
+    Разумеется, таким же образом Вы можете вызвать Вашу программу
+(написанную на любом языке).
