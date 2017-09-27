@@ -1,0 +1,42 @@
+a = 1
+b = 0.2
+d = 0.1
+d2 = 0.5
+d3 = 0.5
+d4 = 0.3
+
+size 6*a+2*d+d3 a+2*(b+d2)+d4-0.4
+
+begin translate d b+d+d4
+    amove 0 0
+    aline 6*a 0
+    amove 0 a
+    aline 6*a a
+    amove 0 a
+    aline 0 -b
+    amove a a
+    aline a -b
+    amove 2*a a
+    aline 2*a -b
+    amove 3*a a
+    aline 3*a 0
+    amove 4*a a+b
+    aline 4*a 0
+    amove 5*a a+b
+    aline 5*a 0
+    amove 6*a a
+    aline 6*a -b
+    set just cc
+    amove 0 -b-0.5*d2
+    tex "0"
+    amove a -b-0.5*d2
+    tex "1"
+    amove 2*a -b-0.5*d2
+    tex "2"
+    amove 4*a a+b+0.5*d2
+    tex "$-2$"
+    amove 5*a a+b+0.5*d2
+    tex "$-1$"
+    amove 6*a -b-0.5*d2
+    tex "len(s)"
+end translate
